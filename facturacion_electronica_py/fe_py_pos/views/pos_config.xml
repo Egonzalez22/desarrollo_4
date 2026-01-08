@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record id="pos_config_form_inherit_fe" model="ir.ui.view">
+            <field name="name">pos_config_form_inherit_fe</field>
+            <field name="model">pos.config</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@id='other_devices']" position="before">
+
+                    <!-- Agregamos para que se seleccione el tipo de documento, porque pueden ser 3 -->
+
+                    <div class="col-12 col-lg-6 o_setting_box" id="tipo_documento_factura">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="tipo_documento_factura" string="Tipo documento impresión" />
+                            <div class="text-muted mb16">
+                                <field name="tipo_documento_factura" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box" id="indicador_presencia">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="indicador_presencia" string="Indicador de Presencia" />
+                            <div class="text-muted mb16">
+                                <field name="indicador_presencia" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box" id="iTipTra">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="iTipTra" string="Tipo transacción" />
+                            <div class="text-muted mb16">
+                                <field name="iTipTra" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+  

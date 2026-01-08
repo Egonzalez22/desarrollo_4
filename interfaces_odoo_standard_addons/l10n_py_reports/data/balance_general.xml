@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        
+        <!-- Balance general -->
+        <record id="account_financial_report_bg_l10n_py" model="account.report">
+            <field name="name">Balance General</field>
+            <field name="country_id" ref="base.py"/>
+            <field name="filter_hierarchy">never</field>
+            <field name="filter_unfold_all" eval="True"/>
+            <field name="filter_partner" eval="True"/>
+            <field name="filter_analytic" eval="True"/>
+            <field name="filter_analytic_groupby" eval="True"/>
+            <field name="filter_multi_company">selector</field>
+            <field name="column_ids">
+                <record id="account_financial_report_l10n_py_bg_column" model="account.report.column">
+                    <field name="name">Saldo</field>
+                    <field name="expression_label">balance</field>
+                </record>
+            </field>
+            <field name="line_ids">
+                <record id="account_financial_report_line_py_A_ROOT" model="account.report.line">
+                    <field name="name">Activo</field>
+                    <field name="code">AC_ROOT</field>
+                    <field name="aggregation_formula">AC_GRP.balance+ANC_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_AC_GRP" model="account.report.line">
+                            <field name="name">Activo corriente</field>
+                            <field name="code">AC_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="aggregation_formula">DIS_LINE.balance+INV_TEMP_LINE.balance+CRED_LINE.balance+INV_LINE.balance+GTO_PAG_AD_LINE.balance+OT_AC_LINE.balance</field>
+                            <field name="children_ids">
+                                <record id="account_financial_report_line_DIS_line" model="account.report.line">
+                                    <field name="name">Disponibilidades</field>
+                                    <field name="code">DIS_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_DIS_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Disponibilidades')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_INV_TEMP_line" model="account.report.line">
+                                    <field name="name">Inversiones temporarias</field>
+                                    <field name="code">INV_TEMP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_INV_TEMP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Inversiones temporarias')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_CRED_line" model="account.report.line">
+                                    <field name="name">Créditos</field>
+                                    <field name="code">CRED_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_CRED_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Créditos')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_INV_line" model="account.report.line">
+                                    <field name="name">Inventarios</field>
+                                    <field name="code">INV_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_INV_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Inventarios')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_GTO_PAG_AD_line" model="account.report.line">
+                                    <field name="name">Gastos pagados por adelantado</field>
+                                    <field name="code">GTO_PAG_AD_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_GTO_PAG_AD_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Gastos pagados por adelantado')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_OT_AC_line" model="account.report.line">
+                                    <field name="name">Otros activos</field>
+                                    <field name="code">OT_AC_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_OT_AC_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Otros activos')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ANC_GRP" model="account.report.line">
+                            <field name="name">Activo no corriente</field>
+                            <field name="code">ANC_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="aggregation_formula">CRED_LP_LINE.balance+INV_A_R_LP_LINE.balance+INV_LP_LINE.balance+PROP_PL_EQ_LINE.balance+OTRO_AC_LP_LINE.balance+CAR_DIF_LINE.balance+AC_INT_LINE.balance</field>
+                            <field name="children_ids">
+                                <record id="account_financial_report_line_CRED_LP_line" model="account.report.line">
+                                    <field name="name">Créditos a largo plazo</field>
+                                    <field name="code">CRED_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_CRED_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Créditos a largo plazo')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_INV_A_R_LP_line" model="account.report.line">
+                                    <field name="name">Inventarios a realizar a largo plazo</field>
+                                    <field name="code">INV_A_R_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_INV_A_R_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Inventarios a realizar a largo plazo')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_INV_LP_line" model="account.report.line">
+                                    <field name="name">Inversiones a largo plazo</field>
+                                    <field name="code">INV_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_INV_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Inversiones a largo plazo')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PROP_PL_EQ_line" model="account.report.line">
+                                    <field name="name">Propiedad, planta y equipo</field>
+                                    <field name="code">PROP_PL_EQ_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PROP_PL_EQ_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Propiedad, planta y equipo')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_OTRO_AC_LP_line" model="account.report.line">
+                                    <field name="name">Otros activos a largo plazo</field>
+                                    <field name="code">OTRO_AC_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_OTRO_AC_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Otros activos a largo plazo')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_CAR_DIF_line" model="account.report.line">
+                                    <field name="name">Cargos diferidos</field>
+                                    <field name="code">CAR_DIF_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_CAR_DIF_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Cargos diferidos')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_AC_INT_line" model="account.report.line">
+                                    <field name="name">Activos intangibles</field>
+                                    <field name="code">AC_INT_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_AC_INT_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Activos intangibles')]</field>
+                                            <field name="subformula">sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                            </field>
+                        </record>
+
+                    </field>
+                </record>
+
+                <record id="account_financial_report_line_py_P_ROOT" model="account.report.line">
+                    <field name="name">Pasivo</field>
+                    <field name="code">P_ROOT</field>
+                    <field name="aggregation_formula">PC_GRP.balance+PNC_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_PC_GRP" model="account.report.line">
+                            <field name="name">Pasivo corriente</field>
+                            <field name="code">PC_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="aggregation_formula">PC_AC_COM_LINE.balance+PC_DEU_FIN_LINE.balance+PC_OR_CP_LINE.balance+PC_PROV_LINE.balance+PC_ING_DIF_LINE.balance</field>
+                            <field name="children_ids">
+                                <record id="account_financial_report_line_PC_AC_COM_line" model="account.report.line">
+                                    <field name="name">Acreedores comerciales</field>
+                                    <field name="code">PC_AC_COM_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PC_AC_COM_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Acreedores comerciales')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PC_DEU_FIN_line" model="account.report.line">
+                                    <field name="name">Deudas financieras</field>
+                                    <field name="code">PC_DEU_FIN_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PC_DEU_FIN_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Deudas financieras')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PC_OT_CP_line" model="account.report.line">
+                                    <field name="name">Otras cuentas por pagar</field>
+                                    <field name="code">PC_OR_CP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PC_OT_CP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Otras cuentas por pagar')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PC_PROV_line" model="account.report.line">
+                                    <field name="name">Provisiones</field>
+                                    <field name="code">PC_PROV_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PC_PROV_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Provisiones')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PC_ING_DIF_line" model="account.report.line">
+                                    <field name="name">Ingresos diferidos</field>
+                                    <field name="code">PC_ING_DIF_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PC_ING_DIF_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Ingresos diferidos')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_PNC_GRP" model="account.report.line">
+                            <field name="name">Pasivo no corriente</field>
+                            <field name="code">PNC_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="aggregation_formula">PC_AC_COM_LP_LINE.balance+PNC_DEU_FIN_LP_LINE.balance+PNC_OT_CP_LP_LINE.balance+PNC_PROV_OB_LP_LINE.balance+PNC_ING_DIF_LP_LINE.balance</field>
+                            <field name="children_ids">
+                                <record id="account_financial_report_line_PNC_AC_COM_LP_line" model="account.report.line">
+                                    <field name="name">Acreedores comerciales a largo plazo</field>
+                                    <field name="code">PC_AC_COM_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PNC_AC_COM_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Acreedores comerciales a largo plazo')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PNC_DEU_FIN_LP_line" model="account.report.line">
+                                    <field name="name">Deudas financieras a largo plazo</field>
+                                    <field name="code">PNC_DEU_FIN_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PNC_DEU_FIN_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Deudas financieras a largo plazo')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PNC_OT_CP_LP_line" model="account.report.line">
+                                    <field name="name">Otras cuentas por pagar a largo plazo</field>
+                                    <field name="code">PNC_OT_CP_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PNC_OT_CP_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Otras cuentas por pagar a largo plazo')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PNC_PROV_OB_LP_line" model="account.report.line">
+                                    <field name="name">Provisiones para obligaciones a largo plazo</field>
+                                    <field name="code">PNC_PROV_OB_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PNC_PROV_OB_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Provisiones para obligaciones a largo plazo')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+                                <record id="account_financial_report_line_PNC_ING_DIF_LP_line" model="account.report.line">
+                                    <field name="name">Ingresos diferidos a largo plazo</field>
+                                    <field name="code">PNC_ING_DIF_LP_LINE</field>
+                                    <field name="foldable" eval="True"/>
+                                    <field name="hide_if_zero" eval="True"/>
+                                    <field name="groupby">account_id</field>
+                                    <field name="expression_ids">
+                                        <record id="account_financial_report_line_PNC_ING_DIF_LP_line_expr" model="account.report.expression">
+                                            <field name="label">balance</field>
+                                            <field name="engine">domain</field>
+                                            <field name="date_scope">from_beginning</field>
+                                            <field name="formula">[('account_id.tag_ids.name', '=', 'Ingresos diferidos a largo plazo')]</field>
+                                            <field name="subformula">-sum</field>
+                                        </record>
+                                    </field>
+                                </record>
+
+                            </field>
+                        </record>
+
+                    </field>
+                </record>
+
+                <record id="account_financial_report_line_py_PN_ROOT" model="account.report.line">
+                    <field name="name">Patrimonio neto</field>
+                    <field name="code">PN_ROOT</field>
+                    <field name="aggregation_formula">PN_CP_GRP.balance+PN_RES_GRP.balance+PN_RESU_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_PN_CP_GRP" model="account.report.line">
+                            <field name="name">Capital</field>
+                            <field name="code">PN_CP_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_PN_CP_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Capital')]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_PN_RES_GRP" model="account.report.line">
+                            <field name="name">Reservas</field>
+                            <field name="code">PN_RES_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_PN_RES_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Reservas')]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_PN_RESU_GRP" model="account.report.line">
+                            <field name="name">Resultados</field>
+                            <field name="code">PN_RESU_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_PN_RESU_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">aggregation</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">ER_RES_EJERC.balance</field>
+                                    <field name="subformula">cross_report</field>
+                                </record>
+                            </field>
+
+
+
+                        </record>
+                    </field>
+
+                </record>
+                <record id="account_financial_report_line_py_PPN_ROOT" model="account.report.line">
+                    <field name="name">Pasivo + Patrimonio neto</field>
+                    <field name="code">PPN_ROOT</field>
+                    <field name="aggregation_formula">P_ROOT.balance+PN_ROOT.balance</field>
+                </record>
+            </field>
+        </record>
+        <record id="account_financial_report_l10n_py_bg_action" model="ir.actions.client">
+            <field name="name">Balance General</field>
+            <field name="context" eval="{'model': 'account.report', 'report_id': ref('account_financial_report_bg_l10n_py')}"/>
+            <field name="tag">account_report</field>
+
+        </record>
+        <menuitem id="menu_bg" name="Balance General" parent="l10n_py.account_reports_py_statements_menu" action="account_financial_report_l10n_py_bg_action" sequence="0"/>
+
+    
+    </data>
+    
+
+</odoo>

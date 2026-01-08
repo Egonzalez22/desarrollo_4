@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+
+        <record id="product_template_only_form_view_inherit_ventas" model="ir.ui.view">
+            <field name="name">product.template.only.form.view.inherit.ventas</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook/page[@name='general_information']/group" position="after">
+                    <group name="sustancias_activas">
+                        <field name="sustancias_activas_ids" >
+                            <tree editable="bottom">
+                                <field name="name" readonly="1"/>
+                                <field name="lod" readonly="1" />
+                                <field name="intervalo_referencia"  readonly="1"/>
+                                <field name="u_unidad_loq" readonly="1" />
+                                <field name="u_loq" readonly="1" />
+                                <field name="referencia" readonly="1" />
+                            </tree>
+                            
+                        </field>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

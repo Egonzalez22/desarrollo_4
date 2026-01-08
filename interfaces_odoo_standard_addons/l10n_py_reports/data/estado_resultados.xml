@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <!-- Estado de resultados -->
+        <record id="account_financial_report_er_l10n_py" model="account.report">
+            <field name="name">Estado de resultados</field>
+            <field name="country_id" ref="base.py"/>
+            <field name="filter_hierarchy">never</field>
+            <field name="filter_unfold_all" eval="True"/>
+            <field name="filter_partner" eval="True"/>
+            <field name="filter_analytic" eval="True"/>
+            <field name="filter_analytic_groupby" eval="True"/>
+            <field name="filter_multi_company">selector</field>
+            <field name="column_ids">
+                <record id="account_financial_report_l10n_py_er_column" model="account.report.column">
+                    <field name="name">Saldo</field>
+                    <field name="expression_label">balance</field>
+                </record>
+            </field>
+            <field name="line_ids">
+                <record id="account_financial_report_line_py_ER_RESUL_BRU_VT_GRP" model="account.report.line">
+                    <field name="name">Ganancias (o Pérdidas) brutas en ventas</field>
+                    <field name="code">ER_RESUL_BRU_VT_GRP</field>
+                    <field name="aggregation_formula">ER_ING_OP_ROOT.balance-ER_COS_OP_ROOT.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_ER_ING_OP_GRP" model="account.report.line">
+                            <field name="name">Ingresos operativos</field>
+                            <field name="code">ER_ING_OP_ROOT</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_ING_OP_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Ingresos operativos')]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_COS_OP_GRP" model="account.report.line">
+                            <field name="name">Costos operativos</field>
+                            <field name="code">ER_COS_OP_ROOT</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_COS_OP_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Costos operativos')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                    </field>
+                </record>
+                <record id="account_financial_report_line_py_ER_RESUL_BRUT_TOT" model="account.report.line">
+                    <field name="name">Ganancias (o Pérdidas) brutas totales</field>
+                    <field name="code">ER_RESUL_BRUT_TOT</field>
+                    <field name="aggregation_formula">ER_RESUL_BRU_VT_GRP.balance + ER_ING_BAGF_GRP.balance - ER_COS_BAGF_GRP.balance + ER_OTRO_ING_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_ER_ING_BAGF_GRP" model="account.report.line">
+                            <field name="name">Ingresos por actividades biológicas, agricolas, ganadaderas y/o forestales</field>
+                            <field name="code">ER_ING_BAGF_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_ING_BAGF_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', 'in', ['Ingresos por activos biológicos','Ingresos por activos agrícolas','Ingresos por activos ganaderos','Ingresos por activos forestales'])]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_COS_BAGF_GRP" model="account.report.line">
+                            <field name="name">Costos por actividades biológicas, agricolas, ganadaderas y/o forestales</field>
+                            <field name="code">ER_COS_BAGF_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_COS_BAGF_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', 'in', ['Costo de producción y tenencia de activos biológicos','Costo de producción y tenencia de activos agrícolas','Costo de producción y tenencia de activos ganaderos','Costo de producción y tenencia de activos forestales'])]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_OTRO_ING_GRP" model="account.report.line">
+                            <field name="name">Otros ingresos</field>
+                            <field name="code">ER_OTRO_ING_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_OTRO_ING_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Otros ingresos')]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+                    </field>
+                </record>
+
+                <record id="account_financial_report_line_py_ER_RESUL_COM_ADM" model="account.report.line">
+                    <field name="name">Ganancias (o Pérdidas) antes de gastos financieros</field>
+                    <field name="code">ER_RESUL_COM_ADM</field>
+                    <field name="aggregation_formula">ER_RESUL_BRUT_TOT.balance -ER_GTO_COM_GRP.balance-ER_GTO_ADM_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_ER_GTO_COM_GRP" model="account.report.line">
+                            <field name="name">Gastos de comercialización</field>
+                            <field name="code">ER_GTO_COM_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_GTO_COM_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Gastos comerciales')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_GTO_ADM_GRP" model="account.report.line">
+                            <field name="name">Gastos de administración</field>
+                            <field name="code">ER_GTO_ADM_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_GTO_ADM_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Gastos administrativos')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                    </field>
+                </record>
+                <record id="account_financial_report_line_py_ER_RESUL_OPER" model="account.report.line">
+                    <field name="name">Ganancias (o Pérdidas) operativas</field>
+                    <field name="code">ER_RESUL_OPER</field>
+                    <field name="aggregation_formula">ER_RESUL_COM_ADM.balance-ER_GTO_BANC_GRP.balance-ER_GTO_PREV_GRP.balance-ER_GTO_DEPR_GRP.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_ER_GTO_BANC_GRP" model="account.report.line">
+                            <field name="name">Gastos bancarios y financieros</field>
+                            <field name="code">ER_GTO_BANC_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_GTO_BANC_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Gastos financieros')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_GTO_PREV_GRP" model="account.report.line">
+                            <field name="name">Previsiones</field>
+                            <field name="code">ER_GTO_PREV_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_GTO_PREV_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Previsiones')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_line_py_ER_GTO_DEPR_GRP" model="account.report.line">
+                            <field name="name">Depreciaciones y amortización de activos</field>
+                            <field name="code">ER_GTO_DEPR_GRP</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_GTO_DEPR_GRP_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Depreciaciones y amortizaciones')]</field>
+                                    <field name="subformula">sum</field>
+                                </record>
+                            </field>
+                        </record>
+                    </field>
+                </record>
+                <record id="account_financial_report_line_py_ER_RESUL_ANT_IMP_REN" model="account.report.line">
+                    <field name="name">Ganancias (o Pérdidas) antes del Impuesto a la Renta</field>
+                    <field name="code">ER_RESUL_ANT_IMP_REN</field>
+                    <field name="aggregation_formula">ER_RESUL_OPER.balance+ER_OTRO_RESUL_NO_OPER.balance</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+                    <field name="children_ids">
+                        <record id="account_financial_report_line_py_ER_OTRO_RESUL_NO_OPER" model="account.report.line">
+                            <field name="name">Otros resultados no operativos</field>
+                            <field name="code">ER_OTRO_RESUL_NO_OPER</field>
+                            <field name="foldable" eval="True"/>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="groupby">account_id</field>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_line_py_ER_OTRO_RESUL_NO_OPER_expr" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="date_scope">from_beginning</field>
+                                    <field name="formula">[('account_id.tag_ids.name', '=', 'Otros resultados no operativos')]</field>
+                                    <field name="subformula">-sum</field>
+                                </record>
+                            </field>
+                        </record>
+
+                    </field>
+                </record>
+                <record id="account_financial_report_line_py_ER_IMP_REN" model="account.report.line">
+                    <field name="name">Impuesto a la Renta</field>
+                    <field name="groupby">account_id</field>
+                    <field name="foldable" eval="True"/>
+                    <field name="hide_if_zero" eval="True"/>
+
+                    <field name="code">ER_IMP_REN</field>
+                    <field name="expression_ids">
+                        <record id="account_financial_report_line_py_ER_IMP_REN_expr2" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">domain</field>
+                            <field name="date_scope">from_beginning</field>
+                            <field name="formula">[('account_id.tag_ids.name', '=', 'Impuesto a la renta')]</field>
+                            <field name="subformula">sum</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="account_financial_report_line_py_ER_RES_EJERC" model="account.report.line">
+                    <field name="name">Ganacias o Pérdidas netas del ejercicio</field>
+                    <field name="code">ER_RES_EJERC</field>
+                    <field name="aggregation_formula">ER_RESUL_ANT_IMP_REN.balance-ER_IMP_REN.balance</field>
+                </record>
+
+            </field>
+        </record>
+        <record id="account_financial_report_l10n_py_er_action" model="ir.actions.client">
+            <field name="name">Estado de resultados</field>
+            <field name="context" eval="{'model': 'account.report', 'report_id': ref('account_financial_report_er_l10n_py')}"/>
+            <field name="tag">account_report</field>
+
+        </record>
+
+        <menuitem id="menu_er" name="Estado de resultados" parent="l10n_py.account_reports_py_statements_menu" action="account_financial_report_l10n_py_er_action" sequence="1"/>
+
+    </data>
+
+
+</odoo>

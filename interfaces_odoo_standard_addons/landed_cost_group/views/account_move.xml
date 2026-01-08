@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="account_view_move_form_inherited" model="ir.ui.view">
+            <field name="name">account.view.move.form.inherited</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <t groups="stock.group_stock_manager">
+                        <field name="grouped_landed_cost_ids" invisible="1"/>
+                        <button string="Costos en destino" type="object" name="action_view_landed_costs" class="oe_stat_button" icon="fa-plus-square" attrs="{'invisible': [('grouped_landed_cost_ids', '=', [])]}"/>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

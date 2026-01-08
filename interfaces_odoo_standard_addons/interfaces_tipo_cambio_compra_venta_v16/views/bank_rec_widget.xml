@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="bank_rec_widget_form_inherit" model="ir.ui.view">
+            <field name="name">bank_rec_widget_form_inherit</field>
+            <field name="model">bank.rec.widget</field>
+            <field name="inherit_id" ref="account_accountant.view_bank_rec_widget_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_validate']/.." position="after">
+                    <field name="automatic_currency_rate_possible" invisible="True"/>
+                    <div class="alert alert-warning mb-0" role="alert"
+                         attrs="{'invisible': ['|',('state','!=','valid'),('automatic_currency_rate_possible', '=', False)]}">
+                        La cotización de ésta línea de extracto bancario será ajustada automáticamente a la cotización de los apuntes contables a
+                        conciliarse.
+                        <br/>Siempre que no se congele el tipo de cambio y no se use más de una moneda en toda la conciliación.
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

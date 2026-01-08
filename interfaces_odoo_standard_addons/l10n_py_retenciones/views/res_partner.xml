@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data >
+        <!-- res.partner inherit form view -->
+        <record id="view_partner_property_form" model="ir.ui.view">
+            <field name="name">res.partner.inherit.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']" position="inside">
+                    <group>
+                        <group string="Retenciones">
+                            <field name="no_retener_iva"/>
+                            <field name="constancia_no_retencion_iva" attrs="{'invisible':[('no_retener_iva','=',False)]}"/>
+                            <field name="fecha_inicio_no_ret" attrs="{'required':[('constancia_no_retencion_iva','!=',False)],'readonly':[('constancia_no_retencion_iva','=',False)]}" />
+                            <field name="fecha_fin_no_ret" attrs="{'required':[('constancia_no_retencion_iva','!=',False)],'readonly':[('constancia_no_retencion_iva','=',False)]}" />
+                        </group>
+                    </group>
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

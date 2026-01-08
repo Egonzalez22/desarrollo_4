@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_message,interfaces_whatsapp_api.access_message,interfaces_whatsapp_api.model_interfaces_whatsapp_api_message,base.group_user,1,1,1,1
+access_message_template,interfaces_whatsapp_api.access_message_template,interfaces_whatsapp_api.model_interfaces_whatsapp_api_message_template,base.group_user,1,1,1,1

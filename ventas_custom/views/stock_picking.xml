@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- sobreescribimos las lineas de orden de venta -->
+        <record id="stock_view_picking_form_inherit_ventas_custom" model="ir.ui.view">
+            <field name="name">stock.view.picking.form.inherit.ventas.custom</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='lot_ids']" position="after">
+                    <field name="motivo_id" />
+                    <field name="presentacion_id" />
+                    <!-- <field name="codigo_muestra" /> -->
+                    <!-- <field name="metodos_ids" readonly="1" widget="many2many_tags" /> -->
+                </xpath>
+                <xpath expr="//page[@name='note']" position="after">
+                    <field name="tipo_grupo" invisible="1"/>
+                    <page string="Datos ANALITICA" attrs="{'invisible': [('tipo_grupo', '=', False)]}">
+                        <!--Campos extra Farma-->
+                        <group attrs="{'invisible': [('tipo_grupo', '!=', 'farma')]}">
+                            <field name="condicion_almacenamiento"/>
+                            <field name="descipcion_envase"/>
+                            <field name="fabricante"/>
+                            <field name="origen"/>
+                            <field name="forma_farmaceutica"/>
+                        </group>
+                        <!--Campos extra alta_complejidad-->
+                        <group attrs="{'invisible': [('tipo_grupo', '!=', 'alta_complejidad')]}">
+                            <field name="procedencia"/>
+                            <field name="condicion"/>
+                        </group>
+                        <!--Campos extra agroquimico-->
+                        <group attrs="{'invisible': [('tipo_grupo', '!=', 'agroquimico')]}">
+                            <field name="tipo_solicitud"/>
+                            <field name="aspecto"/>
+                            <field name="tipo_envase"/>
+                            <field name="concentracion"/>
+                            <field name="composicion"/>
+                            <field name="tipo_formulacion"/>
+                            <field name="uso"/>
+                            <field name="importador"/>
+                            <field name="fecha_elaboracion"/>
+                            <field name="lugar_muestreo"/>
+                            <field name="color"/>
+                            <field name="densidad"/>
+                        </group>
+                        <!--Campos extra toxicologico-->
+                        <group attrs="{'invisible': [('tipo_grupo', '!=', 'toxicologico')]}">
+                            <field name="paciente"/>
+                            <field name="sexo"/>
+                            <field name="edad"/>
+                            <field name="nro_orden"/>
+                            <field name="medico"/>
+                            <field name="codigo_remision"/>
+                            <field name="almacenamiento"/>
+                            <field name="solicitud_urgente"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+                    <button name="button_imprimir_action" string="Solicitud de Analisis" type="object" class="oe_highlight"  attrs="{'invisible': [('tipo_grupo', 'not in', ['agroquimico','alta_complejidad','farma'])]}"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

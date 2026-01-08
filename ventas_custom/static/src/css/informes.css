@@ -1,0 +1,334 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.border {
+    border: 1px solid #ccc;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.border-t {
+    border-top: 1px solid #ccc;
+}
+
+.border-b {
+    border-bottom: 1px solid #ccc;
+}
+
+.border-l {
+    border-left: 1px solid #ccc;
+}
+
+.border-r {
+    border-right: 1px solid #ccc;
+}
+
+#logo {
+    width: 160px;
+}
+
+#asunto {
+    margin: 15px 0;
+}
+
+.linea {
+    width: 100%;
+    padding: 2px 0;
+    border-bottom: 1px solid #ccc;
+}
+.col-15 {
+    min-height: 10px;
+    width: 15%;
+    float: left;
+}
+
+.col-25 {
+    min-height: 10px;
+    width: 25%;
+    float: left;
+}
+
+.col-33 {
+    min-height: 10px;
+    width: 33%;
+    float: left;
+}
+
+.col-50 {
+    min-height: 10px;
+    width: 50%;
+    float: left;
+}
+
+.col-75 {
+    min-height: 10px;
+    width: 75%;
+    float: left;
+}
+
+.col-85 {
+    min-height: 10px;
+    width: 85%;
+    float: left;
+}
+.col-100 {
+    min-height: 10px;
+    width: 100%;
+    float: left;
+}
+
+.title-desc {
+    background-color: #f2f2f2;
+    font-size: 12px;
+    text-align: left;
+    text-align: left;
+    padding: 4px 6px;
+    font-weight: semi-bold;
+}
+.title-white{
+    color: #fff;
+}
+
+.title-bg-blue{
+    background: #022D48 !important;
+}
+
+#firma {
+    width: 100%;
+    text-align: right;
+}
+
+.firma-derecho {
+    background-color: #f2f2f2;
+    padding: 6px 10px;
+    font-weight: bold;
+    float: right;
+}
+
+.firma-izquierdo {
+    padding: 6px 10px;
+    font-weight: bold;
+    float: left;
+}
+
+.font-11 {
+    font-size: 11px;
+}
+
+.font-10 {
+    font-size: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.p-6 {
+    padding: 6px;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+/* .clearfix {
+    clear: both;
+} */
+
+.border {
+    border: 1px solid #ccc;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.border-t {
+    border-top: 1px solid #ccc;
+}
+
+.border-b {
+    border-bottom: 1px solid #ccc;
+}
+
+.border-l {
+    border-left: 1px solid #ccc;
+}
+
+.border-r {
+    border-right: 1px solid #ccc;
+}
+
+#logo {
+    width: 160px;
+}
+
+#asunto {
+    margin: 15px 0;
+}
+
+.linea {
+    width: 100%;
+    padding: 2px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.col-25 {
+    min-height: 10px;
+    width: 25%;
+    float: left;
+}
+
+.col-33 {
+    min-height: 10px;
+    width: 33%;
+    float: left;
+}
+
+.col-50 {
+    min-height: 10px;
+    width: 50%;
+    float: left;
+}
+
+.col-75 {
+    min-height: 10px;
+    width: 75%;
+    float: left;
+}
+
+.col-100 {
+    min-height: 10px;
+    width: 100%;
+    float: left;
+}
+
+.bg-gray {
+    background-color: #f2f2f2;
+}
+
+.title-desc {
+    background-color: #f2f2f2;
+    font-size: 12px;
+    text-align: left;
+    padding: 4px 6px;
+    font-weight: semi-bold;
+}
+
+#firma {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.firma-derecho {
+    background-color: #f2f2f2;
+    padding: 6px 10px;
+    font-weight: bold;
+    float: right;
+}
+
+.firma-izquierdo {
+    padding: 6px 10px;
+    font-weight: bold;
+    float: left;
+}
+
+.font-11 {
+    font-size: 11px;
+}
+
+.font-10 {
+    font-size: 10px;
+}
+
+.font-9 {
+    font-size: 9px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.p-3 {
+    padding: 3px;
+}
+
+.p-6 {
+    padding: 6px;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+#fecha {
+    text-align: right;
+}
+
+.seccion {
+    margin-top: 15px;
+}
+
+.titulo {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.table {
+    border: none !important;
+}
+
+.table-condiciones {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-condiciones tr td {
+    padding: 5px;
+}
+
+* {
+    color: #333;
+}
+.muestras {
+    margin-bottom: 30px;
+}
+.new-page {
+    page-break-before: always;
+}

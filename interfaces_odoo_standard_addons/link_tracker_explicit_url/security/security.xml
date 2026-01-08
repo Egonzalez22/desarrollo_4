@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.rule" id="link_tracker_explicit_url_company_id_user">
+            <field name="name">link_tracker_explicit_url_company_id_user</field>
+            <field name="model_id" ref="link_tracker_explicit_url.model_link_tracker_explicit_url"/>
+            <field name="domain_force">['|',('company_id', '=', False),('company_id', 'in', company_ids)]</field>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <!-- You can attach this rule to a specific group, Or make it Global -->
+            <!--            <field name="groups" eval="[(4, ref('base.group_user'))]"/>-->
+            <!--<field name="global" eval="1"/> -->
+        </record>
+        <record model="ir.rule" id="link_tracker_explicit_url_company_id_admin">
+            <field name="name">link_tracker_explicit_url_company_id_admin</field>
+            <field name="model_id" ref="link_tracker_explicit_url.model_link_tracker_explicit_url"/>
+            <field name="domain_force">['|',('company_id', '=', False),('company_id', 'in', company_ids)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <!-- You can attach this rule to a specific group, Or make it Global -->
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <!--<field name="global" eval="1"/> -->
+        </record>
+    </data>
+</odoo>

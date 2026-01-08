@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="requiere_aprobacion" invisible="1"/>
+                <button name="action_request_currency_update" type="object" string="Solicitar Actualización de Cotización"
+                    attrs="{'invisible': ['|',('requiere_aprobacion','=', False)]}" states="assigned"
+                    groups="sumi_purchase_aprobacion.group_deposito"/>
+                <button name="action_submit_for_approval" type="object" string="Enviar para Aprobación"
+                    attrs="{'invisible': [('state', '!=', 'waiting_currency_update')]}"
+                    groups="sumi_purchase_aprobacion.group_contabilidad"/>
+                <button name="action_approve" type="object" string="Aprobar"
+                    attrs="{'invisible': [('state', '!=', 'waiting_approval')]}"
+                    groups="sumi_purchase_aprobacion.group_directorio"/>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="attrs">{
+                    'invisible': [('state', 'not in', ['assigned', 'approved'])]}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

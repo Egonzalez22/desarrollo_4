@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- sale.order inherit form view -->
+            <record id="view_order_form" model="ir.ui.view">
+                <field name="name">sale.order.inherit.view.form</field>
+                <field name="model">sale.order</field>
+                <field name="inherit_id" ref="sale.view_order_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//header" position="inside">
+                        <button string="Seleccionar productos" type="object" name="button_seleccion_variantes"/>
+                        
+                    </xpath>
+                    
+                </field>
+            </record>            
+        </data>
+</odoo>

@@ -1,0 +1,332 @@
+<odoo>
+    <data>
+        <template id="modulo_pharma.reporte_certificado_alta_complejidad">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style>
+                                table{
+                                width:100%;
+                                border: solid white 1px !important;
+                                border-collapse: collapse;
+                                }
+                                tr, td{
+                                border: solid white 1px !important;
+                                }
+                                .bold{
+                                font-weight: bold;
+                                }
+                                td{
+                                padding:5px;
+                                }
+                                .contenido{
+                                font-size:9px;
+                                }
+
+                            </style>
+
+                            <div class="header">
+                                <link rel='stylesheet' href="/modulo_pharma/static/src/css/informes.css" />
+                                <div class="">
+                                    <div class="col-25 p-6">
+                                        <div id="logo">
+                                            <img t-att-src="'/modulo_pharma/static/src/logo.png'" style="text-align: center; width:195%" />
+                                        </div>
+                                    </div>
+                                    <div class="" style="padding-top:20px; font-size:9px !important;">
+                                        <div id="fecha">
+                                            <div>CERTIFICADO DE ANÁLISIS N°:  <span t-field="o.certificado_analisis_nro"/></div>
+                                            <div>LAMBARÉ, <t t-esc="o.get_current_date()" /></div>
+                                            <div style="padding: 2px 0">
+                                                <strong t-field="o.grupo_id.nombre_iso"/>  <br/>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    Página <span class="page"/> de <span class="topage"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr></hr>
+                            <div class="contenido">
+                                <table>
+                                    <tr>
+                                        <td style="border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Ensayo en:
+                                            </span>
+                                            <span t-field="o.ensayo_en"/>
+                                        </td>
+                                        <td style="border-top:1px solid black !important;
+                                        border-left:1px solid black !important;
+                                        border-right:1px solid black !important"><span class="bold">
+                                            Cliente:
+                                        </span>
+                                            <span t-field="o.cliente_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Datos provistos por el cliente:
+                                            </span>
+                                        </td>
+                                        <td style="border-left:1px solid black !important;
+                                        border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Contacto:
+                                            </span>
+                                            <span t-field="o.contacto"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-right:1px solid black !important;">>
+                                            <span class="bold">
+                                                Matriz:
+                                            </span>
+                                            <span t-field="o.matriz_id"/>
+                                        </td>
+                                        <td style="border-left:1px solid black !important;
+                                        border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Dirección:
+                                            </span>
+                                            <span t-field="o.cliente_id.street"/>
+                                            <span t-field="o.cliente_id.city"/>
+                                            <span t-field="o.cliente_id.state_id"/>
+                                            <span t-field="o.cliente_id.country_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Nro de Lote:
+                                            </span>
+                                            <span t-field="o.nro_lote"/>
+                                        </td>
+                                        <td style="border-bottom:1px solid black !important;
+                                        border-left:1px solid black !important;
+                                        border-right:1px solid black !important;">
+                                            <span class="bold">
+                                                Teléfono:
+                                            </span>
+                                            <span t-field="o.cliente_id.phone"/>
+                                        </td>
+                                    </tr>
+                                    <tr/>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Origen:
+                                            </span>
+                                            <span t-esc="o.procedencia"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="bold">INFORMACIÓN DE LA MUESTRA</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Código de muestra:
+                                            </span>
+                                            <span t-field="o.codigo_muestra"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Nro de Solicitud:
+                                            </span>
+                                            <span t-field="o.nro_solicitud"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Peso:
+                                            </span>
+                                            <span t-field="o.peso"/> <span t-field="o.product_uom_id"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Fecha de Recepción:
+                                            </span>
+                                            <t t-if="o.fecha_recepcion">
+                                                <span t-esc="o.fecha_recepcion.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Fecha de Análisis:
+                                            </span>
+                                            <t t-if="o.fecha_analisis">
+                                                <span t-esc="o.fecha_analisis.strftime('%d/%m/%Y') "/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Fecha de Finalización:
+                                            </span>
+                                            <t t-if="o.fecha_finalizacion">
+                                                <span t-esc="o.fecha_finalizacion.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td style="border:1px solid black !important">
+                                            <span class="bold">ANALISIS SOLICITADOS:</span>
+                                        </td>
+                                        <td style="border:1px solid black !important">
+                                            <span class="bold">
+                                                REFERENCIA
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="o.analisis_referencia_ids" t-as="ar">
+                                        <tr>
+                                            <td style="border:1px solid black !important">
+                                                <span t-esc="ar.metodo_id.display_name"/>
+                                            </td>
+                                            <td style="border:1px solid black !important">
+                                                <span t-esc="ar.referencia_bibliografica"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                                <br/>
+                                <br/>
+                                <span class="bold">
+                                    RESULTADOS
+                                </span>
+                                <br/>
+                                <table style="width:100%">
+                                    <t t-foreach="o.resultado_alta_ids" t-as="ra">
+                                        <t t-if="ra.resultado_alta_ids">
+                                            <tr>
+                                                <td colspan="4" style="border:1px solid black !important">
+                                                    <span class="bold" t-esc="ra.product_id.display_name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center bold" style="border:1px solid black !important">
+                                                    SUSTANCIAS ACTIVAS
+                                                </td>
+                                                <td class="text-center bold" style="border:1px solid black !important">
+                                                    RESULTADOS mg/kg
+                                                </td>
+                                                <td class="text-center bold" style="border:1px solid black !important">
+                                                    LOD mg/kg
+                                                </td>
+                                                <td class="text-center bold" style="border:1px solid black !important">
+                                                    INTERVALO DE REFERENCIA
+                                                </td>
+                                            </tr>
+                                            <t t-foreach="ra.resultado_alta_ids" t-as="alta">
+                                                <tr>
+                                                    <td class="text-center" style="border:1px solid black !important">
+                                                        <t t-esc="alta.sustancia_activa_id.name"/>
+                                                    </td>
+                                                    <td class="text-center" style="border:1px solid black !important">
+                                                        <t t-if="alta.resultado == 0.0">
+                                                            <span t-esc="alta.resultado_txt"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span t-esc="alta.resultado"/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center" style="border:1px solid black !important">
+                                                        <t t-esc="alta.lod"/>
+                                                    </td>
+                                                    <td class="text-center" style="border:1px solid black !important">
+                                                        <t t-esc="alta.intervalo_referencia"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </table>
+                                <br/>
+                                <t t-raw="o.grupo_id.notas"/>
+                                <table  class="table" style="margin-bottom: 10px; border: 0;border-collapse: collapse;font-size: 10px; ">
+                                    <tr>
+                                        <!--td style=" border:1px solid white; text-align: center;">___________________________________________<br /> <br />
+                                            Lic. Allan Samaniego
+                                            <br/> <br/>
+                                            ANALISTA/COORDINADOR </td-->
+                                        <td  style=" border:1px solid white; text-align: center;">
+                                            ___________________________________________
+                                            <br/> <br/>
+                                            <span t-field="o.grupo_id.gerencia_tecnica"/>
+                                            <br/> <br/>
+                                            GERENCIA TÉCNICA
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="footer">
+                                <link rel='stylesheet' href="/modulo_pharma/static/src/css/informes.css" />
+                                <div>
+                                    <div class="col-25">
+                                        ANALITICA S. A. <br />
+                                        Pedro Gill 935 c/ Ytororó <br />
+                                        Lambaré - Paraguay <br />
+                                    </div>
+                                    <div class="col-25">
+                                        Telefono: 595 (21) 908555 <br />
+                                        info@analitica.com.py<br />
+                                        www.analitica.com.py
+                                    </div>
+                                    <div class="col-25">
+                                        <span style="font-size:7.5px !important">Escanee el QR para descargar en PDF.</span>
+                                        <img t-att-src="image_data_uri(o.qr_code)" style="width: 80px; height: 80px;"/>
+                                    </div>
+                                    <t t-if="o.grupo_id.es_acreditado and o.company_id.logo_acreditado">
+                                        <div class="col-25">
+                                            <img t-att-src='image_data_uri(o.company_id.logo_acreditado)'
+                                                 style="width:30mm;height:auto"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+        <record model="ir.actions.report" id="reporte_certificado_alta_complejidad_action">
+            <field name="name">Certificado Alta Complejidad</field>
+            <field name="model">certificados.laboratorio</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="paperformat_id" ref="modulo_pharma.formato"/>
+            <field name="report_name">modulo_pharma.reporte_certificado_alta_complejidad</field>
+            <field name="print_report_name">'Certificado Alta Complejidad  %s' % (object.certificado_analisis_nro or '')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    </data>
+</odoo>

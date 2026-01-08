@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.workorder.form.view.inherit</field>
+            <field name="model">mrp.workorder</field>
+            <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Resultados" name="resultados" attrs="{'invisible':[('show_results_page','=',False)]}">
+                        <field name="tipo_grupo" invisible="1"/>
+                        <field name="show_results_page" invisible="1"/>
+                        <field name="resultado_alta_ids"
+                               attrs="{'readonly': [('state', 'in', ['done','cancel'])], 'invisible':[('tipo_grupo','!=','alta_complejidad')]}">
+                            <tree editable="top">
+                                <field name="workorder_id" invisible="1"/>
+                                <field name="sustancia_activa_id"/>
+                                <field name="resultado"/>
+                                <field name="resultado_txt"/>
+                                <field name="lod"/>
+                                <field name="intervalo_referencia"/>
+                            </tree>
+                        </field>
+                        <field name="resultado_farma_ids"
+                               attrs="{'readonly': [('state', 'in', ['done','cancel'])], 'invisible':[('tipo_grupo','!=','farma')]}">
+                            <tree editable="top">
+                                <field name="workorder_id" invisible="1"/>
+                                <field name="principio_activo_id"/>
+                                <field name="resultado"/>
+                                <field name="especificacion"/>
+                                <field name="limite_deteccion"/>
+                            </tree>
+                        </field>
+                        <field name="resultado_toxi_ids"
+                               attrs="{'readonly': [('state', 'in', ['done','cancel'])], 'invisible':[('tipo_grupo','!=','toxicologico')]}">
+                            <tree editable="top">
+                                <field name="workorder_id" invisible="1"/>
+                                <field name="sustancia_activa_id"/>
+                                <field name="resultado"/>
+                                <field name="resultado_txt"/>
+                                <field name="intervalo_referencia"/>
+                            </tree>
+                        </field>
+                        <field name="resultado_agro_ids"
+                               attrs="{'readonly': [('state', 'in', ['done','cancel'])], 'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                            <tree editable="top">
+                                <field name="workorder_id" invisible="1"/>
+                                <field name="principio_activo_id"/>
+                                <field name="resultado"/>
+                                <field name="resultado_txt"/>
+                                <field name="tolerancia"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

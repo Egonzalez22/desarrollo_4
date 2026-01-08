@@ -1,0 +1,27 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="secuencia_cotizacion_informes" model="ir.sequence">
+            <field name="name">Secuencia de Nro de Cotización</field>
+            <field name="code">seq_cotizacion_nro_informes_presupuestos</field>
+            <field name="implementation">no_gap</field>
+            <field name="use_date_range">True</field>
+            <field name="padding">3</field>
+            <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+        
+        <record id="secuencia_cotizacion_calificativo_informes" model="ir.sequence">
+            <field name="name">Secuencia de Nro de Cotización Calificativo</field>
+            <field name="code">seq_cotizacion_calificativo_nro_informes_presupuestos</field>
+            <field name="implementation">no_gap</field>
+            <field name="use_date_range">True</field>
+            <field name="padding">3</field>
+            <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wizard_reporte_libro_inventario_form_view">
+            <field name="name">wizard_reporte_libro_inventario_form</field>
+            <field name="model">wizard.reporte_libro_inventario</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="company_id" options="{'no_quick_create':True, 'no_create_edit':True}"/>
+                        <field name="year"/>
+                    </group>
+                    <footer>
+                        <button string="Generar Reporte XLSX" class="oe_highlight" type="object" name="download_report_xlsx"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="wizard_reporte_libro_inventario_action">
+            <field name="name">Reporte Libro Inventario</field>
+            <field name="res_model">wizard.reporte_libro_inventario</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Libro Inventario"
+                  id="wizard_reporte_libro_inventario_menuitem" sequence="28"
+                  parent="account.menu_finance_reports"
+                  action="wizard_reporte_libro_inventario_action"/>
+    </data>
+</odoo>

@@ -1,0 +1,293 @@
+<odoo>
+	<data>
+		<!-- Equipos analiticos -->
+		<template id="informes_servicios.certificado_servicio">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.basic_layout">
+					<link rel='stylesheet' href="/informes_servicios/static/src/css/informes.css" />
+					<style>
+					</style>
+
+					<div class="page">
+						<!-- # Cabecera -->
+						<div class="header">
+							<link rel='stylesheet'
+								href="/informes_servicios/static/src/css/informes.css" />
+
+							<div class="border">
+								<div class="col-33 p-6">
+									<div id="logo">
+										<img t-att-src='image_data_uri(o.company_id.logo)'
+											style="width: 100%" />
+									</div>
+								</div>
+
+								<div class="col-33 text-center">
+									<div id="logo">
+										<!-- <img t-att-src='image_data_uri(o.company_id.logo)'
+											style="width: 100%" /> -->
+									</div>
+								</div>
+
+								<div class="col-33 font-11">
+									<div id="logo">
+										<!-- <img t-att-src='image_data_uri(o.company_id.logo)'
+											style="width: 100%" /> -->
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<div class="text-center">
+							<h4 class="bold">CERTIFICADO DE CALIBRACIÓN DEL INSTRUMENTO ANALITICO</h4>
+						</div>
+
+						<div class="text-right">
+							<h5 class="bold">CERTIFICADO N°: <span t-field="o.id" /></h5> 
+						</div>
+
+						<div id="asunto" class="border">
+							<div id="titulo" class="title-desc bold">INFORMACIÓN DEL CLIENTE</div>
+							<div class="linea">
+								<div class="col-25 title-desc">Nombre</div>
+								<div class="col-75 text-left">
+									<span t-field="o.partner_id" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea no-border">
+								<div class="col-25 title-desc">Dirección</div>
+								<div class="col-75"></div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">INSTRUMENTO CALIBRADO</div>
+							<div class="linea">
+								<div class="col-25 title-desc">Equipo</div>
+								<div class="col-25 text-left">
+									<span t-field="o.product_id" />
+								</div>
+
+								<div class="col-25 title-desc">Fecha de recepción</div>
+								<div class="col-25 text-left">
+									<span t-esc="o.create_date.strftime('%d-%m-%Y %H:%M:%S')" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">Modelo</div>
+								<div class="col-25 text-left">
+									
+								</div>
+
+								<div class="col-25 title-desc">ID del equipo</div>
+								<div class="col-25">
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">Número de serie</div>
+								<div class="col-25"></div>
+
+								<div class="col-25 title-desc">Fecha de ejecución</div>
+								<div class="col-25"></div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea no-border">
+								<div class="col-25 title-desc">Ubicación</div>
+								<div class="col-75"></div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">CONDICIONES AMBIENTALES</div>
+							<br />
+							<br />
+							<!-- <div class="linea no-border" >
+
+								<div class="col-50">
+									<div class="linea no-border">
+										<div class="col-25 title-desc bold font-10 no-padding">Equipo</div>
+										<div class="col-75">
+											<div class="linea no-border">
+												<div class="col-25 title-desc font-10 no-padding">Inicial</div>
+												<div class="col-25 no-padding"></div>
+												<div class="col-25 title-desc font-10 no-padding">Final</div>
+												<div class="col-25 no-padding"></div>
+
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+								<div class="col-50">
+									<div class="linea no-border">
+										<div class="col-25 title-desc bold font-10 no-padding">Humedad</div>
+										<div class="col-75">
+											<div class="linea no-border">
+												<div class="col-25 title-desc font-10 no-padding">Inicial</div>
+												<div class="col-25 no-padding"></div>
+												<div class="col-25 title-desc font-10 no-padding">Final</div>
+												<div class="col-25 no-padding"></div>
+
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+
+								<div class="clearfix"></div>
+							</div> -->
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">ESTIMACIÓN DE INCERTIDUMBRE</div>
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">DENSIDAD ÓTICA/ EXACTITUD DE
+								LONGITUD DE ONDA/ EXACTITUD DE NÚMERO DE ONDA</div>
+							<div class="linea no-border">
+								<br />
+								<br />
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">TRAZABILIDAD</div>
+							<div class="linea title-desc">
+								<div class="col-25 title-desc bold">Patrón utilizado</div>
+								<div class="col-25 title-desc bold">Trazable a</div>
+								<div class="col-25 title-desc bold">Código</div>
+								<div class="col-25 title-desc bold">Certificado de Calibración</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25"></div>
+								<div class="col-25"></div>
+								<div class="col-25">SU-MR-XX</div>
+								<div class="col-25"></div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea no-border">
+								<div class="col-25"></div>
+								<div class="col-25"></div>
+								<div class="col-25">SU-MR-XX</div>
+								<div class="col-25"></div>
+
+								<div class="clearfix"></div>
+							</div>
+
+						</div>
+
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">PROCEDIMIENTOS DE CALIBRACIÓN</div>
+							<br />
+							<br />
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">OBSERVACIÓN</div>
+							<p class="p-6">
+								La incertidumbre Expandida (U) de medida informada se expresa como
+								la incertidumbre de medida estándar
+								multiplicado por el factor de cobertura k con una probabilidad
+								correspondiente a aproximadamente del 95%.
+							</p>
+						</div>
+
+						<div class="border" style="margin-bottom:10px;">
+							<div id="titulo" class="title-desc bold">NOTAS</div>
+							<p class="p-6">
+								<span class="bold">
+									- Laboratorio de Calibración acreditado por el Organismo Nacional de Acreditación, conforme con la Norma
+NP-ISO/IEC 17025:2018.
+								</span>
+<br /> - El material utilizado durante el Procedimiento de Calibración acredita la trazabilidad.
+<br /> - Los resultados contenidos en el presente documento se relacionan únicamente con el equipo calibrado al
+momento y condiciones en que se realizaron.
+<br /> - Este certificado no podrá ser reproducido parcialmente sin autorización por escrito del Laboratorio.
+<br /> - El presente certificados presenta validez solamente con el sello en relieve y firma de SUMI S.A.
+<br /> - SUMI S.A. no se responsabiliza de los perjuicios que puedan derivarse del uso inadecuado de los objetos
+calibrados.
+<br /> - La conformidad del equipo calibrado queda a total y absoluto criterio de los requerimientos del cliente.
+							</p>
+						</div>
+
+						<!-- # Firma -->
+						<div id="firma">
+							<div class="firma-izquierdo bold">
+								Fecha de emisión:
+							</div>
+
+							<div class="firma-derecho bold">
+								<t t-set="employee" t-value="o.get_employee()" />
+								<t t-if="employee">
+									<span t-esc="employee[0]" />
+								</t>
+							</div>
+
+							<div class="clearfix"></div>
+						</div>
+
+						<div class="text-center" style="margin-top:25px">
+							-Fin del certificado de calibración-
+						</div>
+
+					</div>
+				</t>
+			</t>
+		</template>
+
+
+		<record id="informes_servicios.informe_paper_format" model="report.paperformat">
+			<field name="name">Formato Impresión Certificado</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">96</field>
+		</record>
+
+		<record model="ir.actions.report" id="informes_servicios.certificado_servicio_action">
+			<field name="name">Certificado de Servicio</field>
+			<field name="model">helpdesk.ticket</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="paperformat_id" ref="informes_servicios.informe_paper_format" />
+			<field name="report_name">informes_servicios.certificado_servicio</field>
+			<field name="print_report_name">'Certificado %s' % (object.name or '')</field>
+			<field name="binding_model_id" ref="model_helpdesk_ticket" />
+		</record>
+
+	</data>
+</odoo>

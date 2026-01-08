@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Heredar la vista de account.asset -->
+        <record id="view_account_asset_form_inherit" model="ir.ui.view">
+            <field name="name">account.asset.form.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="replace"/>
+                <xpath expr="//field[@name='original_value']" position="before">
+                    <field name="currency_id" widget="selection" required="True" readonly="False" force_save="True"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

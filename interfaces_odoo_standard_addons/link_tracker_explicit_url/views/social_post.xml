@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="social_post_form_inherit">
+            <field name="name">social_post_form_inherit</field>
+            <field name="model">social.post</field>
+            <field name="inherit_id" ref="social.social_post_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="explicit_url_id" required="True" domain="[('company_id','!=',False)]"
+                           options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

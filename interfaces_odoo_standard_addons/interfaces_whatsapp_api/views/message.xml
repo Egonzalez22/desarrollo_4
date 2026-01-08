@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <!-- interfaces_whatsapp_api.message form view -->
+        <record id="interfaces_whatsapp_api.message_view_form" model="ir.ui.view">
+            <field name="name">interfaces_whatsapp_api.message.view.form</field>
+            <field name="model">interfaces_whatsapp_api.message</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button string="Enviar mensaje" type="object" name="button_enviar_mensaje" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <h4 class="oe_title">
+                            <field name="name" readonly="True"/>
+                        </h4>
+                        <group>
+                            <group>
+                                <field name="partner_id" required="True"/>
+                                <field name="message_type" required="True"/>
+                                <field name="template_id" attrs="{'invisible':[('message_type','!=','template')]}"/>
+                                <field name="from_number" readonly="True"/>
+                                <field name="from_name" readonly="True"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page name="page_message" string="Texto del mensaje" attrs="{'invisible':[('message_type','!=','text')]}">
+                                <field name="message_text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- interfaces_whatsapp_api.message tree view -->
+        <record id="interfaces_whatsapp_api.message_view_tree" model="ir.ui.view">
+            <field name="name">interfaces_whatsapp_api.message.view.tree</field>
+            <field name="model">interfaces_whatsapp_api.message</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="from_number" readonly="True"/>
+                    <field name="from_name" readonly="True"/>
+                    <field name="message_type"/>
+                    <field name="template_id"/>
+                    <field name="message_text"/>
+                    <field name="state"/>
+                    <field name="status_code" optional="hide"/>
+                    <field name="response_id" optional="hide"/>
+                    <field name="direccion_mensaje" optional="show"/>
+                    <field name="create_date"/>
+                    <field name="create_uid"/>
+                    
+                </tree>
+            </field>
+        </record>
+        <!-- interfaces_whatsapp_api.message action window -->
+        <record id="interfaces_whatsapp_api.message_action_window" model="ir.actions.act_window">
+            <field name="name">Mensajes de WhatsApp</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">interfaces_whatsapp_api.message</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_mensajes" name="Mensajes de WhatsApp" parent="contacts.menu_contacts" action="interfaces_whatsapp_api.message_action_window" sequence="2"/>
+    </data>
+</odoo>

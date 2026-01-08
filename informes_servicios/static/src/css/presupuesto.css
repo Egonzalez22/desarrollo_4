@@ -1,0 +1,84 @@
+* {
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.clearfix {
+    clear: both;
+}
+
+#cabecera {
+    padding: 10px 0;
+}
+
+#asunto {
+    padding: 5px 0;
+}
+
+
+#detalles {
+    margin-bottom: 10px;
+}
+
+#totales {
+    padding: 5px 0;
+}
+
+#observacion {
+    padding: 5px 0;
+}
+
+#condiciones {
+    padding: 5px 0;
+}
+
+#firma {
+    padding: 5px 0;
+}
+
+#logo {
+    width: 220px;
+    float: left;
+}
+
+#fecha {
+    font-weight: bold;
+    margin-bottom: 10px;
+    float: right;
+}
+
+#referencia {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.paginas {
+    float: left;
+}
+
+#logo_footer {
+    float: right;
+}
+
+.logo_footer {
+    width: 140px;
+}
+
+#titulo_informe{
+    background-color: #e6e6e6;
+    border-bottom: 1px solid #333;
+    padding: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}

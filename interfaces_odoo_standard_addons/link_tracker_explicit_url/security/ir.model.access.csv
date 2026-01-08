@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_link_tracker_explicit_url_user,access_link_tracker_explicit_url_user,link_tracker_explicit_url.model_link_tracker_explicit_url,base.group_user,1,0,0,0
+access_link_tracker_explicit_url_admin,access_link_tracker_explicit_url_admin,link_tracker_explicit_url.model_link_tracker_explicit_url,base.group_system,1,1,1,1

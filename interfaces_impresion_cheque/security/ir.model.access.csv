@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_interfaces_impresion_cheque_interfaces_impresion_cheque,interfaces_impresion_cheque.interfaces_impresion_cheque,model_interfaces_impresion_cheque_interfaces_impresion_cheque,base.group_user,1,1,1,1

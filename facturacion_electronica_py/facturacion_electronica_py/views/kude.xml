@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+
+        <template id="facturacion_electronica_py.facturas_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <!-- se verifica si es documento electronico -->
+                        <t t-if="o.documento_electronico">
+                            <t t-set="version_factura" t-value="'ORIGINAL'" />
+                            <t t-if="o.state=='cancel'">
+                                <t t-set="mensaje_marca_agua" t-value="'FACTURA ANULADA'" />
+                            </t>
+                            <t t-elif="o.state=='draft'">
+                                <t t-set="mensaje_marca_agua"
+                                    t-value="'BORRADOR  - NO VALIDO COMO CREDITO FISCAL'" />
+                            </t>
+                            <t t-else="">
+                                <t t-set="mensaje_marca_agua" t-value="" />
+                            </t>
+
+                            <!-- Si es autofactura, incluimos el reporte de autofactura -->
+                            <t t-if="o.tipo_documento=='autofactura'">
+                                <t t-call="facturacion_electronica_py.autofactura" />
+                            </t>
+                            <t t-else="">
+                                <t t-call="facturacion_electronica_py.factura" />
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="page">
+                                <strong>No es un documento electrónico</strong>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="facturacion_electronica_py.paperformat_factura" model="report.paperformat">
+            <field name="name">Facturas Electrónicas</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">83</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">83</field>
+            <field name="disable_shrinking" eval="True" />
+            <field name="dpi">96</field>
+        </record>
+
+        <report
+            id="facturacion_electronica_py.factura_report_action" print_report_name="(object.name)"
+            model="account.move" string="KUDE" report_type="qweb-pdf"
+            paperformat="facturacion_electronica_py.paperformat_factura"
+            name="facturacion_electronica_py.facturas_template" />
+    </data>
+</odoo>

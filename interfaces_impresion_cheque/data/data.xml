@@ -1,0 +1,10 @@
+<odoo>
+    <data noupdate="0">
+        <record id="interfaces_impresion_cheque.grupo_reimprimir_comprobantes" model="res.groups">
+            <field name="name">Reimprimir Cheques</field>
+        </record>
+        <record id="interfaces_impresion_cheque.puede_imprimir_cheques" model="res.groups">
+            <field name="name">Puede Imprimir Cheques</field>
+        </record>
+    </data>
+</odoo>

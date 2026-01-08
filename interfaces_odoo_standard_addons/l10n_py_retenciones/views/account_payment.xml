@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- account.payment inherit form view -->
+        <record id="view_account_payment_form" model="ir.ui.view">
+            <field name="name">account.payment.inherit.view.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Genera archivo JSON" type="object" name="button_genera_json" attrs="{'invisible':[('payment_type','!=','outbound'),('payment_method_code','!=','retencion_emitida'),('json_file','!=',False)]}"/>
+                    <button string="Desbloquear descarga de JSON" type="object" name="desbloquear_json" attrs="{'invisible':[('payment_type','!=','outbound'),('payment_method_code','!=','retencion_emitida'),('json_file','=',False)]}"/>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <notebook attrs="{'invisible':[('payment_type','!=','outbound'),('payment_method_code','!=','retencion_emitida')]}">
+                        <page string="Retenciones">
+                            <field name="json_file" invisible="True"/>
+                            <group>
+                                <group string="Informado">
+                                    <field name="ret_situacion"/>
+                                    <field name="ret_ruc"/>
+                                    <field name="ret_dv"/>
+                                    <field name="ret_tipo_identificacion"/>
+                                    <field name="ret_nombre"/>
+                                    <field name="ret_domicilio"/>
+                                    <field name="ret_direccion"/>
+                                    <field name="ret_correo_electronico"/>
+                                    <field name="ret_pais"/>
+                                    <field name="ret_telefono"/>
+                                    <field name="ret_tiene_representante"/>
+                                    <field name="ret_tipo_ident_representante"/>
+                                    <field name="ret_identificacion_representante"/>
+                                    <field name="ret_nombre_representante"/>
+                                    <field name="ret_tiene_beneficiario"/>
+                                    <field name="ret_tipo_ident_beneficiario"/>
+                                    <field name="ret_identificacion_beneficiario"/>
+                                    <field name="ret_nombre_beneficiario"/>
+                                </group>
+                                <group string="Transacción">
+                                    <field name="ret_nro_comprobante"/>
+                                    <field name="ret_condicion_compra"/>
+                                    <field name="ret_cuotas"/>
+                                    <field name="ret_tipo_comprobante"/>
+                                    <field name="ret_fecha_comprobante"/>
+                                    <field name="ret_nro_timbrado"/>
+                                </group>
+                            </group>
+                            <group>
+
+                                <group string="Retención">
+                                    <field name="ret_retencion_iva"/>
+                                    <field name="ret_retencion_renta"/>
+                                    <field name="ret_moneda"/>
+                                    <field name="ret_fecha"/>
+                                    <field name="ret_concepto_renta"/>
+                                    <field name="ret_concepto_iva"/>
+                                    <field name="ret_iva_porcentaje5"/>
+                                    <field name="ret_iva_porcentaje10"/>
+                                    <field name="ret_renta_porcentaje"/>
+                                    <field name="ret_renta_cabezas_base"/>
+                                    <field name="ret_renta_cabezas_cantidad"/>
+                                    <field name="ret_renta_toneladas_base"/>
+                                    <field name="ret_renta_toneladas_cantidad"/>
+                                </group>
+                                <group string="Atributos">
+                                    <field name="ret_fecha_creacion"/>
+                                    <field name="ret_fecha_hora_creacion"/>
+                                </group>
+                            </group>
+                            <group string="Detalle">
+                                <field name="ret_line_ids">
+                                    <tree>
+                                        <field name="ret_descripcion"/>
+                                        <field name="ret_cantidad"/>
+                                        <field name="ret_precio_unitario"/>
+                                        <field name="ret_tasa_aplica"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- account.payment inherit tree view -->
+        <record id="view_account_payment_tree" model="ir.ui.view">
+            <field name="name">account.payment.inherit.view.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Genera archivo JSON" type="object" name="button_genera_json"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

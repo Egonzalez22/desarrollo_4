@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- product.template inherit form view -->
+        <record id="view_product_landed_cost_form" model="ir.ui.view">
+            <field name="name">view_product_landed_cost_form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_product_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='landed_cost_ok']" position="after">
+                    <field name="es_derecho_aduanero" attrs="{'invisible': ['|', ('landed_cost_ok', '=', False), ('type', '!=', 'service')]}"/>
+
+                </xpath>
+
+                <xpath expr="//div[@name='volume']" position="after">
+                    <label for="porcentaje_arancel">Arancel aduanero (%)</label>
+                    <div class="o_row" name="porcentaje_arancel">
+
+                        <field name="porcentaje_arancel" class="oe_inline"/>
+                        <span>%</span>
+                    </div>
+
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

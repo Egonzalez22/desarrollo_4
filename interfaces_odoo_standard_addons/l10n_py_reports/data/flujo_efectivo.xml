@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="l10n_py_reports.cashflow" model="account.report">
+        <field name="name">Estado de Flujo de Efectivo</field>
+        <field name="filter_unfold_all" eval="True"/>
+        <field name="filter_date_range" eval="True"/>
+        <field name="filter_journals" eval="True"/>
+        <field name="filter_period_comparison" eval="False"/>
+        <field name="filter_multi_company">selector</field>
+        <field name="custom_handler_model_id" ref="model_l10npy_reports_cashflow_report_handler"/>
+        <field name="column_ids">
+            <record id="cash_flow_report_balance" model="account.report.column">
+                <field name="name">Balance</field>
+                <field name="expression_label">balance</field>
+                <field name="figure_type">monetary</field>
+            </record>
+        </field>
+    </record>
+
+    <record id="l10n_py_reports.cashflow_action" model="ir.actions.client">
+        <field name="name">Estado de flujo de efectivo</field>
+        <field name="context" eval="{'model': 'account.report', 'report_id': ref('l10n_py_reports.cashflow')}"/>
+        <field name="tag">account_report</field>
+
+    </record>
+
+    <menuitem id="menu_flujo_efectivo" name="Estado de flujo de efectivo" parent="l10n_py.account_reports_py_statements_menu" action="l10n_py_reports.cashflow_action" sequence="4"/>
+
+</odoo>

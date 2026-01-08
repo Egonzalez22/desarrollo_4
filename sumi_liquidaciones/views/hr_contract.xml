@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_contract_inherit" model="ir.ui.view">
+        <field name="name">view.hr.contract.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='job_id']" position="after">
+                <field name="motivo_salida_id" readonly="True"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_cancel_contract_wizard"
+                    type="object"
+                    string="Dar de baja Contrato"
+                    class="btn btn-danger"
+                    attrs="{'invisible': [('state', 'in', ('cancel', 'close'))]}"/>
+            </xpath>
+           
+        </field>
+    </record>
+</odoo>

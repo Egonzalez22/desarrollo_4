@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <!-- Produccion -->
+        <record id="param_ws_recibe_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_recibe_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/sync/recibe.wsdl</field>
+        </record>
+        <record id="param_ws_recibe_lote_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_recibe_lote_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/async/recibe-lote.wsdl</field>
+        </record>
+        <record id="param_ws_evento_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_evento_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/eventos/evento.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_lote_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_lote_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/consultas/consulta-lote.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_ruc_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_ruc_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/consultas/consulta-ruc.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_prod" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_prod</field>
+            <field name="value">https://sifen.set.gov.py/de/ws/consultas/consulta.wsdl</field>
+        </record>
+
+        <record id="param_sifen_idcsc_prod" model="ir.config_parameter">
+            <field name="key">fe_idcsc_prod</field>
+            <field name="value">0001</field>
+        </record>
+        <record id="param_sifen_csc_prod" model="ir.config_parameter">
+            <field name="key">fe_csc_prod</field>
+            <field name="value">ABCD0000000000000000000000000000</field>
+        </record>
+        <record id="param_sifen_qrlink_prod" model="ir.config_parameter">
+            <field name="key">fe_qrlink_prod</field>
+            <field name="value">https://ekuatia.set.gov.py/consultas/qr?</field>
+        </record>
+
+        <!-- Test -->
+        <record id="param_ws_recibe_test" model="ir.config_parameter">
+            <field name="key">fe_ws_recibe_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/sync/recibe.wsdl</field>
+        </record>
+        <record id="param_ws_recibe_lote_test" model="ir.config_parameter">
+            <field name="key">fe_ws_recibe_lote_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/async/recibe-lote.wsdl</field>
+        </record>
+        <record id="param_ws_evento_test" model="ir.config_parameter">
+            <field name="key">fe_ws_evento_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/eventos/evento.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_lote_test" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_lote_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/consultas/consulta-lote.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_ruc_test" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_ruc_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/consultas/consulta-ruc.wsdl</field>
+        </record>
+        <record id="param_ws_consulta_test" model="ir.config_parameter">
+            <field name="key">fe_ws_consulta_test</field>
+            <field name="value">https://sifen-test.set.gov.py/de/ws/consultas/consulta.wsdl</field>
+        </record>
+
+        <record id="param_sifen_idcsc_test" model="ir.config_parameter">
+            <field name="key">fe_idcsc_test</field>
+            <field name="value">0001</field>
+        </record>
+        <record id="param_sifen_csc_test" model="ir.config_parameter">
+            <field name="key">fe_csc_test</field>
+            <field name="value">ABCD0000000000000000000000000000</field>
+        </record>
+        <record id="param_sifen_qrlink_test" model="ir.config_parameter">
+            <field name="key">fe_qrlink_test</field>
+            <field name="value">https://ekuatia.set.gov.py/consultas-test/qr?</field>
+        </record>
+
+        <!-- fecha hora -->
+        <record id="param_ntp_servers" model="ir.config_parameter">
+            <field name="key">fe_ntp_servers</field>
+            <field name="value">aravo1.set.gov.py,aravo2.set.gov.py,</field>
+        </record>
+
+        <!-- Fecha de version del documento electronico -->
+        <record id="param_sifen_version_formato" model="ir.config_parameter">
+            <field name="key">fe_version_formato</field>
+            <field name="value">150</field>
+        </record>
+
+        <!-- secuencias -->
+
+
+    </data>
+    <data noupdate="1">
+        <record id="sequence_identificador" model="ir.sequence">
+            <field name="name">Identificador de mensaje FE</field>
+            <field name="code">id_mensaje</field>
+            <field name="implementation">standard</field>
+            <field name="use_date_range">False</field>
+            <field name="prefix"></field>
+            <field name="padding">9</field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+        <record id="transportista_generico" model="res.partner">
+            <field name="name">Tranportista generico</field>
+            <field name="type">contact</field>
+            <field name="contribuyente">False</field>
+            <field name="tipo_documento">1</field>
+            <field name="nro_documento">111111</field>
+        </record>
+
+    </data>
+
+</odoo>

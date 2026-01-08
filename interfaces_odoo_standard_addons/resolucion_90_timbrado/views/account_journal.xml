@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- model.name inherit form view -->
+        <record id="view_account_journal_res_90_timbrado_form" model="ir.ui.view">
+            <field name="name">view_account_journal_res_90_timbrado_form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//field[@name='type']" position="after">
+                    <field name="timbrado_autofactura"/>
+               </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Timbrado" attrs="{'invisible':[('type','=','sale')]}">
+                        <field name="timbrados_ids" context="{ 'default_journal_id':id }" />
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

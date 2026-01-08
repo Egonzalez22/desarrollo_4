@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- tree view -->
+		<record id="sustancias_activas_tree_view" model="ir.ui.view">
+			<field name="name">sustancias_activas.tree.view</field>
+			<field name="model">sustancias_activas</field>
+			<field name="arch" type="xml">
+				<tree string="Sustancias Activas">
+					<field name="name" />
+					<field name="lod" />
+					<field name="intervalo_referencia" />
+					<field name="u_unidad_loq" />
+					<field name="u_loq" />
+					<field name="referencia" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- formulario -->
+		<record id="sustancias_activas_form_view" model="ir.ui.view">
+			<field name="name">sustancias_activas.form.view</field>
+			<field name="model">sustancias_activas</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="lod" />
+							<field name="intervalo_referencia" />
+							<field name="u_unidad_loq" />
+							<field name="u_loq" />
+							<field name="referencia" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- act window -->
+		<record id="sustancias_activas_action_window" model="ir.actions.act_window">
+			<field name="name">Sustancias Activas</field>
+			<field name="res_model">sustancias_activas</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Agregamos el menu en la parte superior, en el menu de productos configuracion -->
+		<menuitem
+			id="menu_sustancias_activas"
+			name="Sustancias Activas"
+			action="sustancias_activas_action_window"
+			parent="sale.menu_sale_config"
+			sequence="35" />
+
+	</data>
+</odoo>

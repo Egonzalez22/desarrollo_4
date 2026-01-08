@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- notas_remision_account.nota.remision inherit form view -->
+        <record id="notas_remision_form_view" model="ir.ui.view">
+            <field name="name">notas_remision_form_view</field>
+            <field name="model">notas_remision_account.nota.remision</field>
+            <field name="inherit_id" ref="notas_remision_account.notas_remision_form_view" />
+            <field name="arch" type="xml">
+
+                <!-- Ocultamos el boton de restablecer a borrador. Quitamos el grupo de sifen para poder utilizar el campo -->
+                <xpath expr="//button[@name='button_borrador']" position="after">
+                    <field name="estado_set" invisible="1" groups="!sifen.datos_sifen" />
+                </xpath>
+                <xpath expr="//button[@name='button_borrador']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('estado_set', 'not in', ['rechazado', 'borrador', 'pendiente'])]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='motivo_traslado']" position="replace">
+                    <field name="iMotEmiNR" attrs="{'readonly':[('state','!=','draft')], 'required':[('documento_electronico','=',True)]}" />
+                    <field name="iRespEmiNR" attrs="{'readonly':[('state','!=','draft')], 'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='kms_recorridos']" position="replace">
+                    <field name="kmr" attrs="{'readonly':[('state','!=','draft')]}" />
+                </xpath>
+                <xpath expr="//sheet/group/group[1]" position="inside">
+                    <field name="documento_electronico" invisible="1" />
+                    <field name="dFecEm" attrs="{'readonly':[('state','!=','draft')]}" />
+                </xpath>
+                <xpath expr="//field[@name='marca_vehiculo']" position="before">
+                    <field name="iTipTrans" attrs="{'readonly':[('state','!=','draft')]}" />
+                    <field name="iModTrans" attrs="{'readonly':[('state','!=','draft')]}" />
+                    <field name="iRespFlete" attrs="{'readonly':[('state','!=','draft')]}" />
+                </xpath>
+                <xpath expr="//field[@name='fecha_inicio_traslado']" position="replace">
+                    <field name="fecha_inicio_traslado" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='fecha_fin_traslado']" position="replace">
+                    <field name="fecha_fin_traslado" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='direccion_partida']" position="replace">
+                    <field name="direccion_partida" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='direccion_entrega']" position="replace">
+                    <field name="direccion_entrega" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='matricula']" position="replace">
+                    <field name="dTipIdenVeh" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                    <field name="dNroIDVeh" attrs="{'readonly':[('state','!=','draft')],'required':[('dTipIdenVeh','=','1')],'invisible':[('dTipIdenVeh','!=','1')]}" />
+                    <field name="matricula" attrs="{'readonly':[('state','!=','draft')],'required':[('dTipIdenVeh','=','2')],'invisible':[('dTipIdenVeh','!=','2')]}" />
+                    <field name="dNroVuelo" attrs="{'readonly':[('state','!=','draft')],'required':[('iModTrans','=','3')],'invisible':[('iModTrans','!=','3')]}" />
+                </xpath>
+                <xpath expr="//field[@name='transportista']" position="replace">
+                    <field name="transportista_id" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                    <!-- <field name="transportista_contribuyente"/>                     -->
+                </xpath>
+                <xpath expr="//field[@name='ruc_transportista']" position="replace">
+                    <field name="ruc_transportista" readonly="True" />
+                </xpath>
+                <xpath expr="//field[@name='chofer']" position="replace">
+                    <field name="chofer_id" attrs="{'readonly':[('state','!=','draft')],'required':[('documento_electronico','=',True)]}" />
+                </xpath>
+                <xpath expr="//field[@name='ruc_chofer']" position="replace">
+                    <field name="ruc_chofer" attrs="{'readonly':True}" />
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="SIFEN" groups="sifen.datos_sifen">
+
+                        <group string="Información sobre el estado en la SET">
+                            <field name="fe_valida" string="Documento Electrónico Válido" readonly="1" />
+                            <field name="estado_set" string="Estado SET" widget="badge" decoration-warning="estado_set == 'preparado'" decoration-info="estado_set in ['ingresado', 'lote_reenviando']" decoration-success="estado_set == 'aprobado'" decoration-danger="estado_set in ['rechazado', 'inutilizado', 'cancelado', 'error_sifen', 'lote_rechazado']" readonly="1" />
+                            <field name="cdc" readonly="1" />
+                            <field name="xml_file_name" invisible="1" />
+                            <field name="xml_file" filename="xml_file_name" readonly="1" string="Documento XML" />
+                            <field name="nro_transaccion_set" readonly="1" string="Nro. Trasacción SET" />
+                            <field name="mensaje_set" readonly="1" />
+                            <field name="mensaje_set_detalle" readonly="1" />
+                            <field name="fecha_procesamiento_set" readonly="1" />
+                            <field name="estado_anulacion" readonly="1" />
+                            <field name="mensaje_anulacion" readonly="1" />
+                            <field name="invoice_datetime" readonly="1" />
+                            <field name="fecha_hora_firma" readonly="1" />
+                            <field name="lote_nr_id" readonly="1" string="Nro Lote" />
+                            <field name="dcarQR" widget="url" readonly="1" string="QR Link" />
+                            <field name="validacion_esquema" readonly="1" string="Schema xsd" attrs="{'invisible': [('validacion_esquema', '=', None)]}" />
+                            <field name="error_generacion" readonly="1" string="Error XML" attrs="{'invisible': [('error_generacion', '=', None)]}" />
+                            <field name="tipo_documento"  attrs="{'readonly': [('estado_set', '!=', 'borrador')]}" />
+                            <field name="documento_enviado_mail" readonly="1" string="Mail Enviado" />
+                        </group>
+
+                        <group string="Acciones disponibles para este documento">
+                            <div>
+                                <button string="Generar Documento XML" name="preparar_documento_electronico" type="object" class="oe_highlight mr-4 rounded" attrs="{'invisible': [('estado_set', 'not in', ['borrador','pendiente', 'error_sifen','lote_rechazado','lote_reenviando','rechazado'])]}" />
+                                <button string="Preparar todos los Lotes" name="preparar_lote" type="object" class="oe_highlight mr-4 rounded" attrs="{'invisible': [('estado_set', '!=', 'pendiente')]}" />
+                                <button string="Enviar todos los Lotes" name="enviar_lote" type="object" class="oe_highlight mr-4 rounded" attrs="{'invisible': [('estado_set', '!=', 'preparado')]}" />
+                                <button string="Consultar todos los Lotes" name="consultar_lote" type="object" class="oe_highlight mr-4 rounded" attrs="{'invisible': [('estado_set', 'not in', ['ingresado', 'error_sifen', 'lote_reenviando'])]}" />
+                                <button string="Consultar por CDC" name="consultar_cdc_documento_electronico" type="object" class="oe_highlight mr-4 rounded" attrs="{'invisible': [('estado_set', 'not in', ['ingresado', 'error_sifen', 'lote_reenviando'])]}" />
+                                <button string="Inutilizar remisión" name="button_inutilizar_remision" type="object" class="oe_highlight mr-4 rounded btn-danger" attrs="{'invisible': [('estado_set', '!=', 'rechazado')]}" />
+                            </div>
+                        </group>
+
+                        <group string="Request realizados para el Documento Electrónico" groups="sifen.logs_requests">
+                            <field name="sifen_requests_nr" widget="one2many_list" readonly="1">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="accion" />
+                                    <field name="status_code" />
+                                    <field name="write_date" string="Fecha/Hora" />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- notas_remision_account inherit search view -->
+        <record id="view_notas_remision_account_filter" model="ir.ui.view">
+            <field name="name">view_notas_remision_account_filter</field>
+            <field name="model">notas_remision_account.nota.remision</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Filtro" filter_domain="['|', ('name', 'ilike', self), ('partner_id', 'ilike', self)]" />
+                    <filter name="filter_borrador" string="DE Borrador" domain="[('estado_set','=','borrador')]" />
+                    <filter name="filter_aprobado" string="DE Pendiente" domain="[('estado_set','=','pendiente')]" />
+                    <filter name="filter_aprobado" string="DE Asociado" domain="[('estado_set','=','preparado')]" />
+                    <filter name="filter_aprobado" string="DE Aprobado" domain="[('estado_set','=','aprobado')]" />
+                    <filter name="filter_rechazado" string="DE Rechazado" domain="[('estado_set','=','rechazado')]" />
+                    <filter name="filter_cancelado" string="DE Cancelado" domain="[('estado_set','=','cancelado')]" />
+                    <filter name="filter_inutilizado" string="DE Inutilizado" domain="[('estado_set','=','inutilizado')]" />
+                    <separator />
+                    <filter name="filter_ingresado" string="Lote ingresado" domain="[('estado_set','=','ingresado')]" />
+                    <filter name="filter_lote_rechazado" string="Lote rechazado" domain="[('estado_set','=','lote_rechazado')]" />
+                    <filter name="filter_reenviando" string="Lote intento de reenvío" domain="[('estado_set','=','lote_reenviando')]" />
+                    <filter name="filter_error" string="Error SIFEN" domain="[('estado_set','=','error_sifen')]" />
+                    <filter name="groupby_estado_set" string="Estado SET" context="{'group_by': 'estado_set'}" />
+                </search>
+            </field>
+        </record>
+
+
+        <!-- notas_remision_account.nota.remision inherit tree view -->
+        <record id="nota_remision_view_tree" model="ir.ui.view">
+            <field name="name">nota_remision_view_tree</field>
+            <field name="model">notas_remision_account.nota.remision</field>
+            <field name="inherit_id" ref="notas_remision_account.nota_remision_view_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <!-- Add your fields here -->
+
+                    <field name="estado_set" string="Estado SET" widget="badge" decoration-warning="estado_set == 'preparado'" decoration-info="estado_set in ['ingresado', 'lote_reenviando']" decoration-success="estado_set == 'aprobado'" decoration-danger="estado_set in ['rechazado', 'inutilizado', 'cancelado', 'error_sifen', 'lote_rechazado']" />
+                    <field name="mensaje_set_detalle" string="Mensaje SET" optional="hide" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Acciones de servidor -->
+        <record id="sifen.regenerar_remision_xml" model="ir.actions.server">
+            <field name="name">Regenerar XML</field>
+            <field name="binding_model_id" ref="notas_remision_account.model_notas_remision_account_nota_remision" />
+            <field name="model_id" ref="notas_remision_account.model_notas_remision_account_nota_remision" />
+            <field name="state">code</field>
+            <field name="code">records.accion_servidor_regenerar_xml()</field>
+        </record>
+        <record id="sifen.consultar_remision_cdc" model="ir.actions.server">
+            <field name="name">Consultar CDC Individual</field>
+            <field name="binding_model_id" ref="notas_remision_account.model_notas_remision_account_nota_remision" />
+            <field name="model_id" ref="notas_remision_account.model_notas_remision_account_nota_remision" />
+            <field name="state">code</field>
+            <field name="code">records.consultar_cdc_documento_electronico()</field>
+        </record>
+
+    </data>
+</odoo>

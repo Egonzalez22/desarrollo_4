@@ -1,0 +1,154 @@
+<odoo>
+    <data>
+        <template id="report_etiqueta_analitica">
+            <t t-call="web.basic_layout">
+                <style>
+                    .o_report_layout_standard {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    .container {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        max-width: none !important;
+                    }
+                    * {
+                        border: none !important;
+                        border-collapse: collapse !important;
+                    }
+                </style>
+                <div class="page">
+                    <t t-call="web.html_container">
+                        <t t-foreach="docs" t-as="o">
+                            <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.lot_id.name))" t-as="ml">
+                                <t t-set="cantidad" t-value="ml.cantidad_impresiones" />
+                                <t t-set="paginas" t-value="cantidad // 2 + (1 if cantidad % 2 != 0 else 0)" />
+
+                                <t t-foreach="range(0, paginas)" t-as="pagina">
+                                    <t t-if="(pagina * 2) &lt; cantidad">
+                                        <div style="float:left;width:50%;border-right:1px dashed gray !important;">
+                                            <div style="height:100%; width:100%;">
+                                                <div style="width:110px; margin:0 auto;">
+                                                    <img t-att-src="image_data_uri(o.company_id.logo)" style="width:100%" />
+                                                </div>
+                                                <div t-if="ml.product_id.barcode" style="text-align:center;">
+                                                    <t t-esc="ml.product_id.barcode" t-options="{'widget':'barcode', 'humanreadable':1, 'width':400, 'height':100, 'img_style':'width:80%; height:22px;'}" />
+                                                </div>
+                                                <table style="width:100%; font-size:7px; text-align:left; line-height:0.6;">
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Código: </strong>
+                                                            <span t-out="ml.codigo_muestra" />
+                                                        </td>
+                                                        <td>
+                                                            <strong>Lote: </strong>
+                                                            <span t-out="ml.nro_lote" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Cliente:</strong>
+                                                            <span t-out="o.partner_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <strong>Solicitud:</strong>
+                                                            <t t-if="ml.codigo_muestra">
+                                                                <t t-esc="ml.codigo_muestra[-5:]" />
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Fecha:</strong>
+                                                            <span t-field="o.date_done" t-options="{'widget': 'date'}"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <div t-if="ml.lot_id or ml.lot_name" style="text-align:center;">
+                                                    <t t-esc="ml.lot_id.name or ml.lot_name" t-options="{'widget':'barcode', 'humanreadable':1, 'width':400, 'height':200, 'img_style':'width:80%; height:22px;'}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="(pagina * 2 + 1) &lt; cantidad">
+                                        <div style="float:left;width:45%;margin-left: 18px;">
+                                            <div style="height:100%; width:100%;">
+                                                <div style="width:110px; margin:0 auto;">
+                                                    <img t-att-src="image_data_uri(o.company_id.logo)" style="width:100%" />
+                                                </div>
+                                                <div t-if="ml.product_id.barcode" style="text-align:center;">
+                                                    <t t-esc="ml.product_id.barcode" t-options="{'widget':'barcode', 'humanreadable':1, 'width':400, 'height':100, 'img_style':'width:80%; height:22px;'}" />
+                                                </div>
+                                                <table style="width:100%; font-size:7px; text-align:left; line-height:0.6;">
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Código: </strong>
+                                                            <span t-out="ml.codigo_muestra" />
+                                                        </td>
+                                                        <td>
+                                                            <strong>Lote: </strong>
+                                                            <span t-out="ml.nro_lote" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Cliente:</strong>
+                                                            <span t-out="o.partner_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <strong>Solicitud:</strong>
+                                                            <t t-if="ml.codigo_muestra">
+                                                                <t t-esc="ml.codigo_muestra[-5:]" />
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Fecha:</strong>
+                                                            <span t-field="o.date_done" t-options="{'widget': 'date'}"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <div t-if="ml.lot_id or ml.lot_name" style="text-align:center;">
+                                                    <t t-esc="ml.lot_id.name or ml.lot_name" t-options="{'widget':'barcode', 'humanreadable':1, 'width':400, 'height':200, 'img_style':'width:80%; height:22px;'}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <p style="page-break-before: always;" />
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </template>
+
+        <record id="etiqueta_analitica_formato" model="report.paperformat">
+            <field name="name">Formato etiqueta analitica</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">100</field>
+            <field name="page_width">30</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="disable_shrinking" eval="True" />
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="action_report_etiqueta_analitica" model="ir.actions.report">
+            <field name="name">Etiqueta Analitica</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">etiqueta_analitica.report_etiqueta_analitica</field>
+            <field name="report_file">etiqueta_analitica.report_etiqueta_analitica</field>
+            <field name="paperformat_id" ref="etiqueta_analitica.etiqueta_analitica_formato" />
+            <field name="print_report_name">'Etiqueta - %s' % (object.name)</field>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

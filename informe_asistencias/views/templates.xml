@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+
+        <report
+                id="reporte_xlsx_action"
+                model="informe_asistencias.informe_asistencias_wizard"
+                string="Exportar a xlsx"
+                report_type="xlsx"
+                name="informe_asistencias.reporte_xlsx"
+                file="Informe de asistencias"
+                attachment_use="False"
+        />
+
+    </data>
+</odoo>

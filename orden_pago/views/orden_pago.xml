@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- tree view -->
+        <record id="orden_pago_tree_view" model="ir.ui.view">
+            <field name="name">orden_pago.tree.view</field>
+            <field name="model">orden_pago.orden_pago</field>
+            <field name="arch" type="xml">
+                <tree string="Órden de Pagos">
+                    <!-- <header>
+                        <button name="button_reporte" string="Imprimir" type="object" class="btn btn-secondary" />
+                    </header> -->
+                    <field name="name" string="OP Nro" />
+                    <field name="partner_id" />
+                    <field name="importe_calculado" />
+                    <field name="importe_pagado" string="Importe Aprobado"/>
+                    <field name="currency_id" />
+                    <field name="fecha_aprobado" />
+                    <field name="aprobado_por" />
+                    <field name="invoice_ids" widget="many2many_tags" />
+                    <field
+                            name="state"
+                            string="Estado"
+                            widget="badge"
+                            decoration-warning="state == 'to_approve'"
+                            decoration-danger="state == 'rejected'"
+                            decoration-success="state == 'approved'"
+                    />
+                    <field name="company_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- formulario -->
+        <record id="orden_pago_form_view" model="ir.ui.view">
+            <field name="name">orden_pago.form.view</field>
+            <field name="model">orden_pago.orden_pago</field>
+            <field name="arch" type="xml">
+                <form string="Órden de Pagos">
+                    <header>
+                        <!-- Solicitar aprobacion -->
+                        <button
+                                name="button_solicitud_aprobacion"
+                                string="Solicitar Aprobación"
+                                type="object"
+                                class="btn btn-secondary"
+                                attrs="{'invisible': [('state','!=','draft')]}"
+                                groups="orden_pago.solicitar_aprobacion"
+                        />
+
+                        <!-- Aprobar -->
+                        <button
+                                name="button_aprobar"
+                                string="Aprobar"
+                                type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','to_approve')]}"
+                                groups="orden_pago.aprobar_orden"
+                        />
+
+                        <!-- Rechazar -->
+                        <button
+                                name="button_rechazar"
+                                string="Rechazar"
+                                type="object"
+                                class="btn btn-secondary"
+                                attrs="{'invisible': [('state','!=','to_approve')]}"
+                                groups="orden_pago.aprobar_orden"
+                        />
+
+                        <!-- Restablecer a borrador -->
+                        <button
+                                name="button_restablecer_borrador"
+                                string="Restablecer a borrador"
+                                type="object"
+                                class="btn btn-secondary"
+                                attrs="{'invisible': [('state','!=','to_approve')]}"
+                                groups="orden_pago.restablecer_orden"
+                        />
+
+                        <!-- Cancelar -->
+                        <button
+                                name="button_cancelar"
+                                string="Cancelar"
+                                type="object"
+                                class="btn btn-secondary"
+                                attrs="{'invisible': [('state','in',['approved','rejected','cancel'])]}"
+                                groups="orden_pago.cancelar_orden"
+                        />
+
+                        <field name="state" widget="statusbar" />
+                    </header>
+
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="action_view_payment_ids" icon="fa-money" string="Pagos"
+                                    context="{'default_partner_id': partner_id,
+                                    'default_payment_type': 'outbond',
+                                    'default_orden_pago_id': id,
+                                    'default_amount': importe_pagado,
+                                    'default_currency_id': currency_id,
+                                    'default_tipo_pago': tipo_pago}"/>
+                        </div>
+                        <group name="grupo1">
+                            <field name="partner_id" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="create_date" string="Fecha de creación" />
+                            <field name="fecha_aprobado" readonly="1" attrs="{'invisible': [('state','!=', 'approved' )]}" />
+                            <field name="aprobado_por" readonly="1" attrs="{'invisible': [('state','!=', 'approved' )]}" />
+
+                            <field attrs="{'readonly': [('state','not in',['to_approve','draft'])]}" force_save="1" name="importe_pagado"/>
+                            <field attrs="{'readonly': [('state','not in',['draft','to_approve'])]}" name="concepto" string="Concepto de Pago" />
+                            <field attrs="{'readonly': [('state','not in',['draft','to_approve'])]}" name="tipo_pago" />
+                            <field attrs="{'invisible': [('state','!=', 'rejected' )]}" name="motivo_rechazo" readonly="1"/>
+
+                            <field name="currency_id" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field attrs="{'readonly': [('state','!=','draft')]}" invisible="1" name="currency_id"/>
+                            <field force_save="1" name="importe_calculado" readonly="1"/>
+                            <field name="company_id"/>
+                        </group>
+
+                        <group>
+                            <!-- Solamente mostramos si hay partner seleccionado y es editable solo en draft -->
+                            <field attrs="{'readonly': [('state','!=','draft')], 'invisible': [('partner_id','=',False)]}" name="invoice_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="invoice_date_due" readonly="1" />
+                                    <field name="amount_total_signed" string="Monto Total" />
+                                    <field name="amount_total_in_currency_signed" string="Total en Divisa"/>
+                                    <field name="currency_id" readonly="1"/>
+                                    <field name="amount_residual_signed" string="Monto Pendiente" />
+                                    <field name="payment_state" />
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+
+                    <!-- chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- orden_pago_views inherit search view -->
+        <record id="view_orden_pago_orden_pago_filter" model="ir.ui.view">
+            <field name="name">view_orden_pago_orden_pago_filter</field>
+            <field name="model">orden_pago.orden_pago</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Filtro" filter_domain="['|', '|', ('name', 'ilike', self), ('partner_id', 'ilike', self),
+                    ('reporte_name', 'ilike', self)]" />
+                    <field name="partner_id" string="Proveedor" filter_domain="[('partner_id', 'ilike', self)]"/>
+                    <separator/>
+                    <filter name="borrador" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                    <filter name="para_aprobar" string="Para Aprobar" domain="[('state', '=', 'to_approve')]"/>
+                    <filter name="aprobado" string="Aprobado" domain="[('state', '=', 'approved')]"/>
+                    <filter name="rechazado" string="Rechazado" domain="[('state', '=', 'rejected')]"/>
+                    <filter name="cancelado" string="Cancelado" domain="[('state', '=', 'cancel')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- act window -->
+        <record id="orden_pago_action_window" model="ir.actions.act_window">
+            <field name="name">Órden de Pagos</field>
+            <field name="res_model">orden_pago.orden_pago</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Acciones de servidor -->
+        <record id="orden_pago.solicitar_aprobacion_server_action" model="ir.actions.server">
+            <field name="name">Solicitar Aprobación</field>
+            <field name="binding_model_id" ref="orden_pago.model_orden_pago_orden_pago" />
+            <field name="model_id" ref="orden_pago.model_orden_pago_orden_pago" />
+            <field name="state">code</field>
+            <field name="code">records.solicitar_aprobacion_masiva()</field>
+        </record>
+        <record id="orden_pago.aprobar_server_action" model="ir.actions.server">
+            <field name="name">Aprobar</field>
+            <field name="binding_model_id" ref="orden_pago.model_orden_pago_orden_pago" />
+            <field name="model_id" ref="orden_pago.model_orden_pago_orden_pago" />
+            <field name="state">code</field>
+            <field name="code">records.aprobacion_masiva()</field>
+        </record>
+
+        <!-- Agregamos el menu en la parte superior, en el menu de contabilidad -->
+        <menuitem
+                id="menu_orden_pago"
+                name="Orden de Pago"
+                parent="account.menu_finance_payables"
+                action="orden_pago_action_window"
+                sequence="20" />
+
+    </data>
+</odoo>

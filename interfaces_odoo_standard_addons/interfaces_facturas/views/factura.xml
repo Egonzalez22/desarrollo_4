@@ -1,0 +1,224 @@
+<odoo>
+    <data>
+        <template id="interfaces_facturas.factura_preimpresa">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.html_container">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style>
+                                td{
+                                border: 1px solid white;
+                                }
+
+                                #factura{
+                                line-height: 27px;
+                                padding-left:30px;
+                                font-size:13px;
+                                }
+
+                                #tablaDetalle{
+                                line-height: 15px;
+                                border-collapse: separate;
+                                border-spacing: 2px;
+                                font-size:13px;
+                                }
+
+                                #pieFactura{
+                                line-height: 25px;
+                                font-size:13px;
+                                }
+
+                                #detalleFactura{
+                                height: 50mm;
+                                font-size:13px;
+                                }
+
+                            </style>
+                            <div id="original">
+                                <div id="factura" style="height:25mm;margin-top:35mm;">
+                                    <table id="tablaCabecera">
+                                        <td id="fechaEmision" style="width:37mm"/>
+                                        <td id="fechaEmisionCampo" style="width:30mm;text-align:left">
+                                            <span t-field="o.invoice_date"/>
+                                        </td>
+                                        <td id="condicionVentaLabel">
+                                            <span style="margin-left: 102mm !important">
+                                            </span>
+                                        </td>
+                                        <t t-if="o.invoice_date==o.invoice_date_due">
+                                            <td id="contado" style="width:23mm;text-align:right">X</td>
+                                            <td id="credito" style="width:27mm;text-align:right"/>
+                                        </t>
+                                        <t t-if="not o.invoice_date==o.invoice_date_due">
+                                            <td id="contado" style="width:23mm;text-align:right"/>
+                                            <td id="credito" style="width:27mm;text-align:right">X</td>
+                                        </t>
+
+                                    </table>
+                                    <table>
+                                        <td id="razonSocialLabel" style="width:50mm;text-align:left"/>
+                                        <td id="razonSocialCampo" style="width:120mm;text-align:left">
+                                            <span t-field="o.partner_id.name"/>
+                                        </td>
+
+                                    </table>
+                                    <table>
+                                        <td id="rucLabel" style="width:30mm;"/>
+                                        <td id="rucCampo" style="width:30mm;text-align:left">
+                                            <span t-field="o.partner_id.vat"/>
+                                        </td>
+                                        <td id="remision" style="width:120mm;"/>
+                                        <td id="rucCampo" style="width:30mm;text-align:left">
+                                            <span/>
+                                        </td>
+                                    </table>
+                                    <table>
+                                        <td id="direccionLabel" style="width:30mm;text-align:left"/>
+                                        <td id="direccionCampo" style="width:120mm;text-align:left">
+                                            <span t-field="o.partner_id.street"/>
+                                        </td>
+                                        <td id="telefono label" style="width:30mm;text-align:left"/>
+                                        <td id="telefonocampo" style="width:30mm;text-align:left">
+                                            <t t-if="o.partner_id.phone">
+                                                <span t-field="o.partner_id.phone"/>
+                                            </t>
+                                        </td>
+                                    </table>
+                                </div>
+                                <t t-set="subtotalExentas" t-value="0"/>
+                                <t t-set="subtotalCinco" t-value="0"/>
+                                <t t-set="subtotalDiez" t-value="0"/>
+                                <div id="detalleFactura" style="height:190mm;margin-top:20mm">
+                                    <table id="tablaDetalle">
+                                        <t t-foreach="o.invoice_line_ids" t-as="l">
+                                            <tr>
+                                                <td id="cantidadCampo" style="width:25mm;text-align:right;margin-left:10mm">
+                                                    <t t-if="l.price_unit &gt; 0">
+                                                        <span t-esc="'{0:,.0f}'.format(int(l.quantity)).replace(',','.')"/>
+                                                    </t>
+                                                </td>
+                                                <td style="width:90mm;text-align:left;padding-left:10mm;">
+                                                    <span t-field="l.name"/>
+                                                </td>
+                                                <td id="precioUnitarioCampo" style="width:25mm;text-align:right">
+                                                    <span t-set="precioUnitario1" t-value="l.price_unit - (l.price_unit * (l.discount / 100))"/>
+                                                    <t t-if="l.price_unit &gt; 0">
+                                                        <span t-esc="o.format_monto(precioUnitario1)"/>
+                                                    </t>
+                                                    <t t-set="precioUnitario2" t-value="precioUnitario1"/>
+                                                </td>
+                                                <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount==0)">
+                                                    <td id="exentasCampo" style="width:25mm;text-align:right;padding-left:5mm;">
+                                                        <t t-set="subtotal1" t-value="l.price_unit * l.quantity"/>
+                                                        <span t-esc="o.format_monto(subtotal1)"/>
+                                                        <t t-set="subtotalExentas" t-value="subtotalExentas+subtotal1"/>
+                                                    </td>
+                                                    <td id="cincoCampo" style="width:20mm;text-align:right">
+                                                        <span/>
+                                                    </td>
+                                                    <td id="diezCampo" style="width:25mm;text-align:right">
+                                                        <span/>
+                                                    </td>
+                                                </t>
+                                                <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount==5)">
+                                                    <td id="exentasCampo" style="width:25mm;text-align:righ;padding-left:5mm;">
+                                                        <span/>
+                                                    </td>
+                                                    <td id="cincoCampo" style="width:25mm;text-align:right">
+                                                        <t t-set="subtotal1" t-value="l.price_unit * l.quantity"/>
+                                                        <span t-esc="o.format_monto(subtotal1)"/>
+                                                        <t t-set="subtotalCinco" t-value="subtotalCinco+subtotal1"/>
+                                                    </td>
+                                                    <td id="diezCampo" style="width:30mm;text-align:right">
+                                                        <span/>
+                                                    </td>
+                                                </t>
+                                                <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount==10)">
+                                                    <td id="exentasCampo" style="width:25mm;text-align:right;padding-left:5mm;">
+                                                        <span/>
+                                                    </td>
+                                                    <td id="cincoCampo" style="width:25mm;text-align:right">
+                                                        <span/>
+                                                    </td>
+                                                    <td id="diezCampo" style="width:30mm;text-align:right">
+                                                        <t t-set="subtotal1" t-value="(l.price_unit - (l.price_unit*l.discount/100)) * l.quantity"/>
+                                                        <span t-esc="o.format_monto(subtotal1)"/>
+                                                        <t t-set="subtotalDiez" t-value="subtotalDiez+subtotal1"/>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </table>
+                                </div>
+                                <div style="height:7mm"/>
+                                <div id="pieFactura" style="height:25mm;margin-top:15mm;">
+                                    <table>
+                                        <td style="width:120mm;text-align:right"/>
+                                        <td id="valorParcialExentas" style="width:35mm;text-align:right">
+                                            <span t-esc="o.format_monto(subtotalExentas)"/>
+                                        </td>
+                                        <td id="valorParcialCinco" style="width:35mm;text-align:right">
+                                            <span t-esc="o.format_monto(subtotalCinco)"/>
+                                        </td>
+                                        <td id="valorParcialDiez" style="width:35mm;text-align:right">
+                                            <span t-esc="o.format_monto(subtotalDiez)"/>
+                                        </td>
+                                    </table>
+                                    <table>
+                                        <t t-set="totalIVA" t-value="0"/>
+                                        <td id="totalPagarLetrasCampolabel" style="width:40mm;"/>
+                                        <td id="totalPagarLetrasCampo" style="width:100mm;">
+                                            <span t-esc="o.currency_id.currency_unit_label"/>
+                                            <span t-esc="o.amount_to_text(o.amount_total, o.currency_id)"/>
+                                        </td>
+                                        <td id="subtotalespacio" style="width:55mm;"/>
+                                        <td id="totalPagarNumerosCampo" style="width:30mm;text-align:right">
+                                            <t t-set="totalPagarNumeros" t-value="o.amount_total"/>
+                                            <span t-esc="o.format_monto(totalPagarNumeros)"/>
+                                        </td>
+                                    </table>
+                                    <table>
+                                        <td id="iva5" style="width:40mm;"/>
+                                        <td id="ivaCincoCampo" style="width:30mm;text-align:right">
+                                            <t t-set="ivaCinco" t-value="subtotalCinco/21"/>
+                                            <span t-esc="o.format_monto(ivaCinco)"/>
+                                            <t t-set="totalIVA" t-value="totalIVA+ivaCinco"/>
+                                        </td>
+                                        <td id="iva10" style="width:40mm;"/>
+                                        <td id="ivaDiezCampo" style="width:30mm;text-align:right">
+                                            <t t-set="ivaDiez" t-value="subtotalDiez/11"/>
+                                            <span t-esc="o.format_monto(ivaDiez)"/>
+                                            <t t-set="totalIVA" t-value="totalIVA+ivaDiez"/>
+                                        </td>
+                                        <td id="ivatotal" style="width:40mm;"/>
+                                        <td id="totalIVACampo" style="width:30mm;text-align:right">
+                                            <span t-esc="o.format_monto(totalIVA)"/>
+                                        </td>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <record id="paperformat_factura" model="report.paperformat">
+            <field name="name">Facturas</field>
+            <field name="format">custom</field>
+            <field name="page_height">300</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">45</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">00</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+        <report id="interfaces_facturas.fac_preimpresa" model="account.move" string="Factura Pre-Impresa"
+                report_type="qweb-pdf" name="interfaces_facturas.factura_preimpresa" paperformat="paperformat_factura"/>
+
+    </data>
+</odoo>

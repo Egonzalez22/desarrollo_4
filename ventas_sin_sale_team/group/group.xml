@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data/>
+        <record id="no_sale_team_needed" model="ir.module.category">
+            <field name="name">Acceso sin ser del Equipo de Venta</field>
+        </record>
+
+        <record id="ventas_sin_sale_team.puede_ver_modulo_ventas" model="res.groups">
+            <field name="name">Puede ver Ventas</field>
+            <field name="category_id" ref="ventas_sin_sale_team.no_sale_team_needed"/>
+        </record>
+
+        <record id="ventas_sin_sale_team.puede_listar_todos_los_presupuestos" model="res.groups">
+            <field name="name">Puede listar todos los presupuestos de ventas</field>
+            <field name="category_id" ref="ventas_sin_sale_team.no_sale_team_needed"/>
+        </record>
+    <data/>
+</odoo>

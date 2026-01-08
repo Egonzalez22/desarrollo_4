@@ -1,0 +1,301 @@
+<odoo>
+    <record id="view_certificados_laboratorio_tree" model="ir.ui.view">
+        <field name="name">certificados.laboratorio.tree</field>
+        <field name="model">certificados.laboratorio</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="grupo_id"/>
+                <field name="codigo_muestra"/>
+                <field name="muestra_lote"/>
+                <field name="state"/>
+                <field name="create_date" string="Fecha de Creación"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="certificados_laboratorio_search_view" model="ir.ui.view">
+        <field name="name">certificados_laboratorio_search_view</field>
+        <field name="model">certificados.laboratorio</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="grupo_id" filter_domain="[('grupo_id.name', 'ilike', self)]"/>
+                <field name="codigo_muestra" filter_domain="[('codigo_muestra.name', 'ilike', self)]"/>
+                <field name="muestra_lote" filter_domain="[('muestra_lote.name', 'ilike', self)]"/>
+                <field name="state"/>
+                <field name="create_date"/>
+                <filter name="group_by_group" string="Grupo" context="{'group_by': 'grupo_id'}"/>
+                <filter name="group_by_codigo_muestra" string="Código Muestra" context="{'group_by': 'codigo_muestra'}"/>
+                <filter name="group_by_muestra_lote" string="Muestra Lote" context="{'group_by': 'muestra_lote'}"/>
+                <filter name="group_by_state" string="Estado" context="{'group_by': 'state'}"/>
+                <filter name="group_by_create_date" string="Fecha de Creación" context="{'group_by': 'create_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_certificados_laboratorio_form" model="ir.ui.view">
+        <field name="name">certificados.laboratorio.form</field>
+        <field name="model">certificados.laboratorio</field>
+        <field name="arch" type="xml">
+            <form string="Emisión de Certificados">
+                <header>
+                    <button name="action_send_email" string="Enviar por Correo" type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'posted')]}"/>
+                    <button
+                            name="button_publicar"
+                            string="Publicar"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state','!=','draft')]}"
+
+                    />
+                    <!--button
+                            name="button_restablecer_borrador"
+                            string="Restablecer a borrador"
+                            type="object"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': [('state','=','draft')]}"
+                    /-->
+                    <button
+                            name="action_print_certificate"
+                            string="Imprimir Certificado"
+                            type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'posted')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,posted,impreso,enviado"/>
+                    <button name="action_send_to_reception" string="Enviar a Recepción" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'impreso')]}"/>
+                </header>
+                <sheet>
+                    <group string="Datos del Certificado" col="2">
+                        <group>
+                            <field name="grupo_id" required="1" options="{'no_create': True, 'no_edit': True}" force_save="1"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="tipo_grupo" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="codigo_muestra"
+                                   context="{'name': 'codigo_muestra'}"
+                                   options="{'no_create': True, 'no_edit': True}" force_save="1"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="muestra_lote" readonly="1" force_save="1" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}"/>
+                        </group>
+                    </group>
+                    <group string="Cabecera">
+                        <field name="certificado_analisis_nro" readonly="1" force_save="1"/>
+                        <field name="city_id" readonly="1" force_save="1" invisible="1"/>
+                        <field name="create_date" readonly="1"  string="Fecha de Creación" force_save="1"/>
+                        <field name="version_formato" readonly="1" force_save="1" invisible="1"/>
+                        <field name="ensayo_en" attrs="{'invisible':[('tipo_grupo','!=','alta_complejidad')]}"/>
+                    </group>
+                    <group string="Datos provistos por el Cliente" attrs="{'invisible':[('tipo_grupo','!=','alta_complejidad')]}">
+                        <field name="sale_line_id" invisible="1" force_save="1"/>
+                        <field name="matriz_id" readonly="1" force_save="1"/>
+                        <field name="nro_lote" readonly="1" force_save="1"/>
+                        <field name="procedencia" readonly="1" force_save="1"/>
+                    </group>
+                    <group string="Información de Muestra" attrs="{'invisible':[('tipo_grupo','!=','alta_complejidad')]}">
+                        <field name="nro_solicitud" readonly="1" force_save="1"/>
+                        <label for="peso"/>
+                        <div name="peso">
+                            <field name="peso" readonly="1" force_save="1" class="oe_inline"/>
+                            <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group string="Datos de la Muestra" attrs="{'invisible':[('tipo_grupo','!=','toxicologico')]}">
+                        <field name="paciente" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="codigo_muestra" readonly="1" force_save="1"/>
+                        <field name="muestra_lote" readonly="1" force_save="1"/>
+                        <field name="sexo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="edad" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="nro_orden" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="medico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="remitente_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="solicitante_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="codigo_remision" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="tipo_solicitud" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="almacenamiento" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </group>
+                    <group string="Datos proporcionados por el Cliente" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                        <field name="muestra_lote_code" string="Producto" readonly="1" force_save="1"/>
+                        <field name="principios_activos" readonly="1" widget="many2many_tags" force_save="1"/>
+                        <field name="concentracion" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="composicion" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="tipo_formulacion" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="tipo_solicitud" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="uso" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="importador" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="tipo_envase" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fecha_elaboracion" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fecha_vencimiento" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="lugar_muestreo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </group>
+                    <group string="Cliente/Contacto" attrs="{'invisible':[('tipo_grupo','not in',['alta_complejidad','agrotoxico'])]}">
+                        <field name="cliente_id" force_save="1"/>
+                        <field name="contacto" force_save="1"/>
+                    </group>
+                    <group string="Información de la Muestra" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                        <!--                       <field name="grupo_id" readonly="1"/>-->
+                        <field name="muestra_lote" readonly="1" force_save="1"/>
+                        <field name="order_id" invisible="0" force_save="1"/>
+                        <field name="stock_picking_id" force_save="1" invisible="0"/>
+                        <field name="stock_move_id" force_save="1" invisible="0"/>
+                        <field name="stock_move_line_id" force_save="1" invisible="0"/>
+                        <field name="nombre_comercial"
+                               options="{'no_create': True, 'no_edit': True}" force_save="1"/>
+                        <field name="principios_activos" readonly="1" widget="many2many_tags" force_save="1"/>
+                        <field name="forma_farma" readonly="1" force_save="1"/>
+                        <field name="nro_lote" related="stock_move_line_id.nro_lote" readonly="1" force_save="1"/>
+                        <field name="cantidad" related="stock_move_line_id.qty_done" readonly="1" force_save="1"/>
+                        <field name="acta_muestreo" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="descripcion_envase" readonly="1" force_save="1"/>
+                        <field name="fecha_vencimiento" related="stock_move_line_id.fecha_vencimiento_lote"
+                               readonly="1" force_save="1"/>
+                        <field name="condicion_almacenamiento" readonly="1" force_save="1"/>
+                    </group>
+                    <group col="2" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                        <group string="Cliente/Contacto">
+                            <field name="cliente_id" force_save="1"/>
+                            <field name="contacto" force_save="1"/>
+                            <field name="remitente_id" force_save="1"/>
+                            <field name="solicitante_id" force_save="1"/>
+                            <field name="analizado_por" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group string="Otros datos">
+                            <field name="metodologia_analisis_id" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="ph" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="densidad" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <group string="Fechas">
+                        <field name="fecha_recepcion" force_save="1"/>
+                        <field name="fecha_analisis" force_save="1"/>
+                        <field name="fecha_finalizacion" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Información del Estándar" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                            <field name="estandar_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="bottom">
+                                    <field name="certificado_id" force_save="1" readonly="1" invisible="1"/>
+                                    <field name="principio_activo_id" force_save="1" readonly="1"/>
+                                    <field name="lote"/>
+                                    <field name="vencimiento"/>
+                                    <field name="titulo"/>
+                                    <field name="conservacion"/>
+                                    <field name="humedad"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Análisis Solicitados/Equipos" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                            <group>
+                                <group>
+                                    <field name="metodos_ids" string="Análisis Solicitados" readonly="1" widget="many2many_tags" force_save="1"/>
+                                    <field name="equipos" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="many2many_tags" force_save="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Análisis Solicitados" attrs="{'invisible':[('tipo_grupo','!=','toxicologico')]}">
+                            <field name="metodos_ids" string="Análisis Solicitados" readonly="1" widget="many2many_tags" force_save="1"/>
+                        </page>
+                        <page string="Propiedades Físicas" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                            <field name="propiedades_fisicas_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="top">
+                                    <field name="certificado_id" force_save="1" readonly="1" invisible="1"/>
+                                    <field name="aspecto"/>
+                                    <field name="color"/>
+                                    <field name="densidad"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Resultados" attrs="{'invisible':[('tipo_grupo','!=','agroquimico')]}">
+                            <field name="resultado_agro_ids" readonly="1" force_save="1">
+                                <tree>
+                                    <field name="metodo_ensayo_id"/>
+                                    <field name="principio_activo_id"/>
+                                    <field name="resultado"/>
+                                    <field name="resultado_txt"/>
+                                    <field name="tolerancia"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Resultados" attrs="{'invisible':[('tipo_grupo','!=','toxicologico')]}">
+                            <field name="resultado_toxi_ids" readonly="1" force_save="1">
+                                <tree>
+                                    <field name="sustancia_activa_id"/>
+                                    <field name="resultado_txt"/>
+                                    <field name="intervalo_referencia"/>
+                                    <field name="metodo_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Análisis Solicitados/Referencia" attrs="{'invisible':[('tipo_grupo','!=','alta_complejidad')]}">
+                            <field name="analisis_referencia_ids" readonly="1" force_save="1">
+                                <tree>
+                                    <field name="metodo_id"/>
+                                    <field name="referencia_bibliografica"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Equipos" name="equipos" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                            <field name="equipos" widget="many2many_tags" options="{'no_create': True}" nolabel="1"
+                                   force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </page>
+                        <page string="Información Del Estandar" name="principios_activos" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                            <field name="detalle_pharma_line" widget="one2many_list" force_save="1"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="top" create="0">
+                                    <field name="principios_activos" force_save="1"/>
+                                    <field name="lote" force_save="1"/>
+                                    <field name="vencimiento" force_save="1"/>
+                                    <field name="titulo" force_save="1"/>
+                                    <field name="conservacion" force_save="1"/>
+                                    <field name="humedad" force_save="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Análisis Solicitados" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                            <field name="metodos_ids" widget="many2many_tags" readonly="1" force_save="1"/>
+                        </page>
+                         <page string="Resultados Obtenidos" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                            <field name="resultado_farma_ids" readonly="1" force_save="1">
+                                <tree>
+                                    <field name="principio_activo_id"/>
+                                    <field name="resultado"/>
+                                    <field name="especificacion"/>
+                                    <field name="limite_deteccion"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Observaciones" attrs="{'invisible':[('tipo_grupo','!=','farma')]}">
+                            <field name="conclusion" widget="textarea" placeholder="Ingrese la conclusión aquí" force_save="1"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </page>
+                        <page string="Resultados" attrs="{'invisible':[('tipo_grupo','!=','alta_complejidad')]}">
+                            <field name="resultado_alta_ids" readonly="1" force_save="1">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="resultado_alta_ids" widget="many2many_widget"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_certificados_laboratorio" model="ir.actions.act_window">
+        <field name="name">Emisión de Certificados</field>
+        <field name="res_model">certificados.laboratorio</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_certificados_laboratorio"
+              name="Emisión de Certificados"
+              action="action_certificados_laboratorio"
+              parent="mrp.menu_mrp_manufacturing"
+    />
+</odoo>

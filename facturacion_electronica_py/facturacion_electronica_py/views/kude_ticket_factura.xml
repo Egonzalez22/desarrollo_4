@@ -1,0 +1,380 @@
+<odoo>
+    <data>
+        <template id="facturacion_electronica_py.factura_ticket">
+            <link rel='stylesheet'
+                href="/facturacion_electronica_py/static/src/css/style_kude_ticket.css" />
+            <style>
+            </style>
+
+            <div class="page">
+
+                <div id="seccion_membrete" class="seccion">
+                    <!-- tipo de documento -->
+                    <div id="tipo_documento_titulo">
+                        <div class="text-center">
+                            <span class="text-center fs-12" id="tipo_documento_titulo">
+                                <t t-if="o.tipo_documento=='out_invoice'">
+                                    KuDE de Factura Electrónica
+                                </t>
+                                <t t-elif="o.tipo_documento=='out_refund'">
+                                    KuDE de Nota de Crédito Electrónica
+                                </t>
+                                <t t-elif="o.tipo_documento=='nota_debito'">
+                                    KuDE de Nota de Débito Electrónica
+                                </t>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- logo de la empresa -->
+                    <!-- <div id="logo">
+                        <div style="max-width:125px;max-height:125px;margin:5px">
+                            <img t-att-src='image_data_uri(o.company_id.logo)' style="width: 100%" />
+                        </div>
+                    </div> -->
+                </div>
+
+                <div id="seccion_emisor" class="seccion">
+                    <div class="text-center">
+                        <!-- Nombre Empresa -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.name" />
+                            </span>
+                        </div>
+                        <!-- ruc -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.vat" />
+                            </span>
+                        </div>
+                        <!-- rubro -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.des_actividad_economica" />
+                            </span>
+                        </div>
+                        <!-- dirección -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.street" />
+                            </span>
+                        </div>
+                        <!-- ciudad -->
+                        <div class="linea">
+                            <span class="value"><span t-field="o.company_id.city" /> - <span
+                                    t-field="o.company_id.country_id" /></span>
+                        </div>
+                        <!-- telefono -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.phone" />
+                            </span>
+                        </div>
+                        <!-- email -->
+                        <div class="linea">
+                            <span class="value">
+                                <span t-field="o.company_id.email" />
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <!-- Guardamos el timbrado en una variable -->
+                    <t t-set="timbrado"
+                        t-value="o.journal_id.timbrados_ids.filtered(lambda x:x.tipo_documento==o.tipo_documento)" />
+                    <t t-if="timbrado">
+                        <t t-set="timbrado" t-value="timbrado[0]" />
+                    </t>
+
+                    <!-- timbrado -->
+                    <div class="linea" t-if="timbrado">
+                        <span class="label">Timbrado:</span>
+                        <span class="value">
+                            <span t-esc="timbrado.name" />
+                        </span>
+                    </div>
+                    <!-- inicio vigencia -->
+                    <div class="linea" t-if="timbrado">
+                        <span class="label">Inicio de Vigencia:</span>
+                        <span class="value">
+                            <span t-esc="timbrado.inicio_vigencia.strftime('%d/%m/%Y')" />
+                        </span>
+                    </div>
+                    <!-- nro factura -->
+                    <div class="linea">
+                        <t t-if="o.tipo_documento=='out_invoice'">
+                            <p class="bold">FACTURA N°:</p>
+                        </t>
+                        <t t-elif="o.tipo_documento=='out_refund'">
+                            <p class="bold">NOTA DE CREDITO N°:</p>
+                        </t>
+                        <t t-elif="o.tipo_documento=='nota_debito'">
+                            <p class="bold">NOTA DE DEBITO N°:</p>
+                        </t>
+                        <span t-field="o.name" />
+                    </div>
+
+                </div>
+
+                <div id="seccion_factura" class="seccion">
+                    <!-- fecha emision -->
+                    <div class="linea">
+                        <span class="label">Fecha y hora de emisión:</span>
+                        <span class="value">
+                            <span t-esc="o.invoice_datetime" />
+                        </span>
+                    </div>
+                    <!-- condicion -->
+                    <div class="linea">
+                        <span class="label">Cond. de venta:</span>
+                        <span class="value">
+                            <t t-if="o.invoice_date==o.invoice_date_due">
+                                Contado
+                            </t>
+                            <t t-if="o.invoice_date!=o.invoice_date_due">
+                                Crédito
+                            </t>
+                        </span>
+                    </div>
+                    <!-- plazo -->
+                    <div class="linea" t-if="o.invoice_date!=o.invoice_date_due">
+                        <span class="label">Plazo:</span>
+                        <span class="value">
+                            <span t-esc="o.invoice_payment_term_id.name" />
+                        </span>
+                    </div>
+                    <!-- moneda -->
+                    <div class="linea">
+                        <span class="label">Moneda:</span>
+                        <span class="value">
+                            <span t-field="o.currency_id" />
+                        </span>
+                    </div>
+                    <!-- cambio -->
+                    <div class="linea" t-if="o.currency_id.name != 'PYG'">
+                        <span class="label">Moneda:</span>
+                        <span class="value">
+                            <span t-esc="o.obtener_cotizacion()" />
+                        </span>
+                    </div>
+                    <!-- tipo operacion -->
+                    <div class="linea">
+                        <span class="label">Tipo de operación:</span>
+                        <span class="value">
+                            <span t-field="o.iTipTra" />
+                        </span>
+                    </div>
+                    <!-- Si es NC -->
+                    <div class="linea" t-if="o.move_type=='out_refund'">
+                        <span class="label">Tipo de documento asociado:</span>
+                        <span class="value">
+                            <t t-if="o.nro_factura_asociada.fe_valida">
+                                FE
+                            </t>
+                            <t t-else="">
+                                Impreso
+                            </t>
+                        </span>
+                    </div>
+                    <!-- Si es NC -->
+                    <div class="linea" t-if="o.move_type=='out_refund'">
+                        <span class="label">Documento asociado:</span>
+                        <span class="value">
+                            <t t-if="o.nro_factura_asociada.fe_valida">
+                                <span t-field="o.nro_factura_asociada.cdc" />
+                            </t>
+                            <t t-else="">
+                                <span t-field="o.nro_factura_asociada.name" />
+                            </t>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="seccion_receptor" class="seccion">
+                    <!-- ruc -->
+                    <div class="linea">
+                        <span class="label">RUC/documento de identidad:</span>
+                        <span class="value">
+                            <t t-if="o.partner_id.contribuyente">
+                                <span t-field="o.partner_id.vat" />
+                            </t>
+                            <t t-if="not o.partner_id.contribuyente">
+                                <span t-field="o.partner_id.nro_documento" />
+                            </t>
+                        </span>
+                    </div>
+                    <!-- razon social -->
+                    <div class="linea">
+                        <span class="label">Nombre o razón social:</span>
+                        <span class="value">
+                            <span t-field="o.partner_id" />
+                        </span>
+                    </div>
+                    <!-- direccion -->
+                    <div class="linea" t-if="o.partner_id.street">
+                        <span class="label">Dirección:</span>
+                        <span class="value">
+                            <span t-field="o.partner_id.street" />
+                        </span>
+                    </div>
+                    <!-- telefono -->
+                    <div class="linea" t-if="o.partner_id.phone">
+                        <span class="label">Teléfono:</span>
+                        <span class="value">
+                            <span t-field="o.partner_id.phone" />
+                        </span>
+                    </div>
+                    <!-- email -->
+                    <div class="linea" t-if="o.partner_id.email">
+                        <span class="label">Email:</span>
+                        <span class="value">
+                            <span t-field="o.partner_id.email" />
+                        </span>
+                    </div>
+                </div>
+
+                <div id="seccion_productos" class="seccion">
+                    <div id="productos_cabecera">
+                        <div class="columna bold" style="width: 28%">Cód.</div>
+                        <div class="columna bold" style="width: 12%">Cant.</div>
+                        <div class="columna bold" style="width: 25%">P. Unit</div>
+                        <div class="columna bold" style="width: 10%">IVA</div>
+                        <div class="columna bold" style="width: 25%">Total</div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div id="productos_detalle">
+                        <t t-foreach="o.get_lineas_facturables()" t-as="detail">
+                            <t t-set="subtotalExentas" t-value="0" />
+                            <t t-set="subtotalCinco" t-value="0" />
+                            <t t-set="subtotalDiez" t-value="0" />
+
+                            <div class="linea_productos">
+                                <div>
+                                    <t t-esc="detail.name" />
+                                </div>
+                                <div class="text-center">
+                                    <div class="columna" style="width: 28%">
+                                        <t t-if="detail.product_id and detail.product_id.default_code">
+                                            <span t-field="detail.product_id.default_code" />
+                                        </t>
+                                        <t t-else="">
+                                            <span></span>
+                                        </t>
+                                    </div>
+                                    <div class="columna" style="width: 12%">
+                                        <span t-esc="detail.quantity" />
+                                    </div>
+                                    <div class="columna" style="width: 25%">
+                                        <span t-esc="o.format_monto_kude(detail.price_unit)" />
+                                    </div>
+                                    <div class="columna" style="width: 10%">
+                                        <t t-if="detail.tax_ids.amount==0.0000">Exc.</t>
+                                        <t t-if="detail.tax_ids.amount==5.0000">5%</t>
+                                        <t t-if="detail.tax_ids.amount==10.0000">10%</t>
+                                    </div>
+                                    <div class="columna" style="width: 25%">
+                                        <span t-esc="o.format_monto_kude(detail.getdTotOpeItem())" />
+                                    </div>
+    
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <div id="seccion_totales" class="seccion">
+                    <div class="linea_total">
+                        <span class="label">Cantidad articulos:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="len(o.invoice_line_ids)" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">Total a pagar:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="o.format_monto_kude(o.get_amount_total())" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">
+                            SON: 
+                        </span>
+                        <span class="value_total">
+                            <span t-esc="o.amount_to_text_fe(o.get_amount_total(), o.currency_id)" />
+                        </span>
+                    </div>
+                    <br />
+
+                    <div class="linea_total">
+                        <span class="label">Grav. 5%:</span>
+                        <span class="value_total">
+                            <span class="text-right"
+                                t-esc="o.format_monto_kude(o.getdSub5() - o.getdIVA5())" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">Grav. 10%:</span>
+                        <span class="value_total">
+                            <span class="text-right"
+                                t-esc="o.format_monto_kude(o.getdSub10() - o.getdIVA10())" />
+                        </span>
+                    </div>
+                    <br />
+
+                    <div class="linea_total">
+                        <span class="label">Exentas:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="o.format_monto_kude(o.getdSubExe())" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">IVA 5%:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="o.format_monto_kude(o.getdIVA5())" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">IVA 10%:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="o.format_monto_kude(o.getdIVA10())" />
+                        </span>
+                    </div>
+                    <div class="linea_total">
+                        <span class="label">TOTAL IVA:</span>
+                        <span class="value_total">
+                            <span class="text-right" t-esc="o.format_monto_kude(o.getdTotIVA())" />
+                        </span>
+                    </div>
+                </div>
+
+                <div id="seccion_qr_kude" class="seccion">
+                    <!-- QR code -->
+                    <div style="max-width:120px; max-height:120px; margin: 0 auto;">
+                        <img t-att-src="image_data_uri(o.fe_qr_code)" style="width:100%" />
+                    </div>
+
+                    <div class="text-center"> Consulte la validez de esta Factura Electrónica con el
+                        número de CDC impreso abajo en: <br /> https://ekuatia.set.gov.py/consultas/ <p
+                            style="margin: 5px 0px">
+                            <span class="bold">
+                                <span t-esc="o.separar_cdc(o.cdc)" />
+                            </span>
+                        </p>
+                        <span
+                            class="bold">
+                            ESTE DOCUMENTO ES UNA REPRESENTACIÓN GRÁFICA DE UN DOCUMENTO ELECTRÓNICO
+                        (XML)
+                        </span>
+                        <br />
+                        Si su documento electrónico presenta algún error puede solicitar la
+                        modificación dentro de las 72 horas siguientes a la emisión de este
+                        comprobante </div>
+                </div>
+
+            </div>
+        </template>
+    </data>
+</odoo>

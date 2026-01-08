@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="sumi_nota_credito.group_nc_editar" model="res.groups">
+            <field name="name">Editar Fecha Nota Crédito</field>
+        </record>
+        <record id="permission_edit_date" model="ir.model.access">
+            <field name="name">Editar Fecha Nota Crédito</field>
+            <field name="model_id" ref="model_account_move_reversal"/>
+            <field name="group_id" ref="sumi_nota_credito.group_nc_editar"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<!-- <widget name="web_ribbon" title="In Payment" attrs="{'invisible': ['|', ('payment_state', '!=', 'in_payment'), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/> -->
+<odoo>
+    <data>
+        <record id="group_account_view_move_form_inherit" model="ir.ui.view">
+            <field name="name">group.account.view.move.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//widget[2]" position="after">
+                    <widget name="web_ribbon" title="In Payment test" />
+                </xpath> -->
+				<xpath expr="//field[@name='id']" position="after">
+          			<field name="origin_grupo_count" invisible="1"/>
+				</xpath>
+                <xpath expr="//button[@name='open_reconcile_view']" position="after">
+                    <button name="action_view_group_payments" class="oe_stat_button" icon="fa-bars" type="object" 
+                        attrs="{'invisible': [('origin_grupo_count', '=', False)]}" string="Ver Pagos">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

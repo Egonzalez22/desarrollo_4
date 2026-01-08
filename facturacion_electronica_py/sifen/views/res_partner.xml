@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">base.view_partner_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/sheet/group/group/field[@name='email']" position="after">
+                    <field name="recibe_de" />
+                </xpath>
+                <xpath expr="//field[@name='email' and @widget='email']/.." position="after">
+                    <field name="recibe_de" />
+                </xpath>
+
+                <!-- debajo del vat ponemos la fecha de validación del RUC -->
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="fecha_verificacion_sifen" string="Fecha validación RUC" readonly="1" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Acciones de servidor -->
+        <record id="sifen.validar_ruc" model="ir.actions.server">
+            <field name="name">Validar RUC</field>
+            <field name="binding_model_id" ref="base.model_res_partner" />
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="state">code</field>
+            <field name="code">records.action_validar_ruc_sifen()</field>
+        </record>
+
+    </data>
+</odoo>

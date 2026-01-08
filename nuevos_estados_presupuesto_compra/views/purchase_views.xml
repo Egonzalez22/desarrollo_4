@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="nuevos_estados_presupuesto_compra.purchase_order_kpis_tree" model="ir.ui.view">
+            <field name="name">nuevos_estados_presupuesto_compra.purchase.order.inherit.purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="nuevo_estado"
+                           optional="show"
+                           widget="badge"
+                           decoration-danger="nuevo_estado == 'finalizado'"
+                           decoration-success="nuevo_estado == 'purchase' or nuevo_estado == 'done' or nuevo_estado == 'recepcion_incompleta' or nuevo_estado == 'facturacion_incompleta'"
+                           decoration-warning="nuevo_estado == 'to approve' or nuevo_estado == 'draft' or nuevo_estado == 'sent' "
+                           decoration-info="nuevo_estado == 'recepcionado'"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

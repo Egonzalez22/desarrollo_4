@@ -1,0 +1,527 @@
+<odoo>
+    <data>
+        <template id="grupo_account_payment.template_orden_pago">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                    <style>
+                        hr{
+                        border-top:1px solid black;
+                        }
+                        th,tr,td{
+                        padding:3px;
+                        }
+                        th{
+                        text-align:center;
+                        }
+                        .numero{
+                        text-align:right;
+                        }
+                        .izquierda{
+                        text-align:left;
+                        }
+
+
+                    </style>
+                    <t t-foreach="range(1)" t-as="l">
+                        <div class="page" id="original">
+                            <table width="100%">
+                                <tr>
+                                    <td style="width:20mm;">
+                                        <span></span>
+                                        <img src='/web/binary/company_logo' style="width:100%"/>
+                                    </td>
+                                    <td colspan="3" style="width:100mm;">
+                                        <h2>
+                                            <t t-esc="o.company_id.name"/>
+                                        </h2>
+                                        <h4 style="text-center">
+                                            <t t-esc="o.company_id.street + ', ' + o.company_id.city"/>
+                                             
+                                        </h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <h3 style="text-align:center">Orden de pago</h3>
+                                <table style="width:100%;border:2px solid;border-radius:12px">
+                                    <td class="izquierda" style="width:50%">
+                                        <strong>Número:</strong>
+                                        <span t-field="o.name"/>
+                                        <br/>
+                                        <strong>Fecha:</strong>
+                                        <span t-field="o.fecha"/>
+                                        <br/>
+                                        <strong>Proveedor:</strong>
+                                        <span t-field="o.partner_id.name"/>
+                                        <br/>
+                                        <strong>RUC:</strong>
+                                        <span t-field="o.partner_id.vat"/>
+                                        <br/>
+                                    </td>
+                                    <td style="width:50%">
+                                        <strong>Monto a pagar:</strong>
+                                        <span t-field="o.amount_total"/>
+                                        <br/>
+                                        <strong>Usuario:</strong>
+                                        <span t-field="o.user_id"/>
+                                        <br/>
+                                        <strong>Referencia:</strong>
+                                        <span t-field="o.memo"/>
+                                        <br/>
+                                    </td>
+                                </table>
+                            </div>
+                            <br/>
+                            <br/>
+                            <table style="width:60%;margin-right:100%;">
+                                <tr>
+                                    <td colspan="4" style="text-align:center">
+                                        <strong>Facturas</strong>
+                                    </td>
+                                </tr>
+                                <tr style="border:1px solid black;border-radius:12px">
+                                    <th>Fecha</th>
+                                    <th>Proveedor</th>
+                                    <th>Nro. Factura</th>
+                                    <th>Monto</th>
+                                </tr>
+
+                                <t t-foreach="o.invoice_ids" t-as="i">
+                                    <tr>
+                                        <td>
+                                            <span t-field="i.invoice_date"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.partner_id.name"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <span t-field="i.ref"/>
+                                        </td>
+                                        <td class="numero">
+                                            <span t-field="i.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                            <br/>
+                            <br/>
+
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="6" style="text-align:center">
+                                        <strong>Líneas de pago</strong>
+                                    </td>
+                                </tr>
+                                <tr style="border:1px solid black;border-radius:12px;text-align:center;">
+                                    <th>Tipo</th>
+                                    <th>Banco</th>
+                                    <th>Nro. cheque</th>
+                                    <th>Nro. documento</th>
+                                    <th>Monto</th>
+                                </tr>
+
+                                <t t-foreach="o.payment_ids" t-as="l">
+                                    <tr>
+                                        <td style="text-align:center">
+                                            <span t-field="l.tipo_pago"/>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <span t-field="l.bank_id"/>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <t t-if="l.nro_cheque">
+                                                <span t-field="l.nro_cheque"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <t t-if="l.nro_documento">
+                                                <span t-field="l.nro_documento"/>
+                                            </t>
+                                        </td>
+                                        <td class="numero" style="text-align:right">
+                                            <span t-esc="'{0:,.0f}'.format(int(l.amount)).replace(',','.')"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div>
+                                <table style="width:100%">
+                                    <td style="width:50%;text-align:left; border: 1px solid black; padding: 10px; min-height: 50px;">
+                                        Confeccionado Por <t t-esc="o.user_id.name"/>
+                                    </td>
+                                    <td style="width:50%;text-align:left; border: 1px solid black; padding: 10px; min-height: 50px;">
+                                        Autorizado Por
+                                    </td>
+          
+                                </table>
+                            </div>
+                            <div style="width:100%;text-align:left">
+                                Recibi Conforme
+
+                            </div>
+                            <div>
+                                <table style="width:100%">
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 30px; min-height: 50px; vertical-align: top;">
+                                        
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 30px; min-height: 50px; vertical-align: top;">
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 30px; min-height: 50px; vertical-align: top;">
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 30px; min-height: 50px; vertical-align: top;">
+                                    </td>
+                                </table>
+                                <table style="width:100%">
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 8px; min-height: 50px; vertical-align: top;">
+                                        Firma
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 8px; min-height: 50px; vertical-align: top;">
+                                        Aclaración
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 8px; min-height: 50px; vertical-align: top;">
+                                        C.I.Nº
+                                    </td>
+                                    <td style="width:25%;text-align:center; border: 1px solid black; padding: 8px; min-height: 50px; vertical-align: top;">
+                                        Fecha
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <template id="grupo_account_payment.template_recibo">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                    <style type="text/css">
+                        .filas{
+                        height:33%;
+                        max-height:150mm;
+                        font-size:12px;
+                        }
+
+
+                        .detalleFacturas {
+                        float: left;
+                        width: 30%;
+                        padding: 5px;
+                        }
+
+                        .detallePago {
+                        float: left;
+                        width: 70%;
+                        padding: 5px;
+                        }
+
+                        .row::after {
+                        content: "";
+                        clear: both;
+                        display: table;
+                        }
+
+                        h2{
+                        font-size:18px;
+                        font-weight: bold;
+                        text-align:center;
+                        }
+
+                        h4{
+                        font-size:14px;
+                        font-weight: bold;
+                        text-align:center;
+                        }
+
+                        .t-titulo{
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        }
+
+                        .t-titulo tr td{
+                        border: 1px solid black;
+                        }
+
+                        .t-detalle {
+                        border: 1px solid black;
+                        height: 50mm;
+                        border-collapse: collapse;
+                        }
+                        .t-detalle td {
+                        border: 1px solid black;
+                        }
+                        .t-detalle tr {
+                        border: 1px solid black;
+                        }
+                        .t-detalle td:empty {
+                        border: 1px solid black;
+                        }
+                        .lineaDetalle{
+                        font-size:12px;
+                        line-height: 5mm;
+                        height: 5mm;
+                        }
+
+                        hr{
+                        border: 1px solid black;
+                        }
+                        .pie{
+                        margin-left:70%;
+                        }
+                        p{
+                        height:2mm;
+                        line-height:2mm;
+                        }
+
+
+                    </style>
+                    <div class="page">
+
+                        <t t-foreach="range(1,(o.cantRecibos+1))" t-as="n">
+                            <t t-set="tope_max" t-value="10*n"/>
+                            <t t-set="tope_min" t-value="tope_max-10"/>
+                            <t t-foreach="range(0,3)" t-as="t">
+                                <div class="filas" id="original">
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="width:20mm;">
+                                                <span></span>
+                                                <img src='/web/binary/company_logo' style="width:100%"/>
+                                            </td>
+                                            <td colspan="3" style="width:100mm;">
+                                                <h2>
+                                                    <t t-esc="o.company_id.name"/>
+                                                </h2>
+                                                <h4 style="text-center">
+                                                    <t t-esc="o.company_id.street + ', ' + o.company_id.city"/>
+                    
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table width="100%">
+                                        <tr>
+                                            <td rowspan="2" style="width:20%;padding-left:15px">
+
+                                            </td>
+                                            <td style="width:30%;">
+                                                <h4 style="font-weight:bold">
+                                                    RECIBO DE DINERO
+                                                </h4>
+                                                <span style="font-weight:bold;text-align:center;">RUC:
+                                                    <t t-esc="o.company_id.vat"/>
+                                                </span>
+                                            </td>
+                                            <td style="text-align:center;width:45%;font-weight:bold">
+                                                <h4>N°
+                                                    <span t-field="o.name"/>
+                                                    /
+                                                    <span t-esc="n"/>
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:10px;text-align:right;font-weight:bold">
+                                                <span t-field="o.fecha"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:50%">
+                                                <table class="t-titulo">
+                                                    <tr>
+                                                        <td colspan="4" style="text-align:center;font-weight:bold;">
+                                                            DETALLE
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;font-weight:bold;width:20mm">
+                                                            Fecha
+                                                        </td>
+                                                        <td style="text-align:center;font-weight:bold;width:40mm">
+                                                            Factura
+                                                        </td>
+                                                        <td style="text-align:center;font-weight:bold;width:20mm">
+                                                            Importe
+                                                        </td>
+                                                        <td style="text-align:center;font-weight:bold;width:20mm">
+                                                            Saldo
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table class="t-detalle">
+                                                    <t t-foreach="range(0,len(o.invoice_ids))" t-as="i">
+                                                        <t t-if="i &gt;= tope_min and i &lt; tope_max">
+                                                            <t t-set="factura_actual" t-value="o.invoice_ids[i]"/>
+                                                            <tr>
+                                                                <td class="lineaDetalle" style="width:20mm">
+                                                                    <span t-field="factura_actual.invoice_date"/>
+                                                                </td>
+                                                                <td class="lineaDetalle" style="width:40mm">
+                                                                    <span t-field="factura_actual.name"/>
+                                                                </td>
+                                                                <td class="lineaDetalle" style="width:20mm;text-align:right">
+                                                                    <span t-esc="'{0:,.0f}'.format(int(factura_actual.amount_total)).replace(',','.')"/>
+                                                                </td>
+                                                                <td class="lineaDetalle" style="width:20mm;text-align:right">
+                                                                    <span t-esc="'{0:,.0f}'.format(int(factura_actual.amount_residual)).replace(',','.')"/>
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </t>
+
+                                                    <tr>
+                                                        <td style="width:20mm">
+                                                            <span></span>
+                                                        </td>
+                                                        <td style="width:40mm">
+                                                            <span></span>
+                                                        </td>
+                                                        <td style="width:20mm">
+                                                            <span></span>
+                                                        </td>
+                                                        <td style="width:20mm">
+                                                            <span></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td colspan="2" style=" padding-left:5px;border: 1px solid black">
+                                                <p style="font-weight:bold;text-align:right;">
+                                                    GS.
+                                                    <span t-esc="'{0:,.0f}'.format(int(o.amount_total)).replace(',','.')"/>
+                                                </p>
+                                                <p>
+                                                    <span style="font-weight:bold;">Recibí de</span>
+                                                    <span t-field="o.partner_id.name"/>
+                                                </p>
+                                                <p>
+                                                    <span style="font-weight:bold;">la suma de Gs.</span>
+                                                    <span style="line-height:16px;" t-esc="o.amount_to_text_esp(o.amount_total)"/>
+                                                </p>
+                                                <br></br>
+                                                <p>
+                                                    <span style="font-weight:bold;">en concepto de pago de factura
+                                                        crédito según detalle
+                                                    </span>
+                                                </p>
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td colspan="6" style="text-align:center">
+                                                            <strong>Líneas de pago</strong>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border:1px solid black;border-radius:12px;text-align:center;">
+                                                        <th>Tipo</th>
+                                                        <th>Banco</th>
+                                                        <th>Nro. cheque</th>
+                                                        <th>Nro. documento</th>
+                                                        <th>Monto</th>
+                                                    </tr>
+
+                                                    <t t-foreach="o.payment_ids" t-as="l">
+                                                        <tr>
+                                                            <td style="text-align:center">
+                                                                <span t-field="l.tipo_pago"/>
+                                                            </td>
+                                                            <td style="text-align:center">
+                                                                <span t-field="l.bank_id"/>
+                                                            </td>
+                                                            <td style="text-align:center">
+                                                                <t t-if="l.nro_cheque">
+                                                                    <span t-field="l.nro_cheque"/>
+                                                                </t>
+                                                            </td>
+                                                            <td style="text-align:center">
+                                                                <t t-if="l.nro_documento">
+                                                                    <span t-field="l.nro_documento"/>
+                                                                </t>
+                                                            </td>
+                                                            <td class="numero" style="text-align:right">
+                                                                <span t-esc="'{0:,.0f}'.format(int(l.amount)).replace(',','.')"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <p style="font-size:12px;">
+                                        <t t-if="t==0">
+                                            Original
+                                        </t>
+                                        <t t-if="t==1">
+                                            Duplicado
+                                        </t>
+                                        <t t-if="t==2">
+                                            Triplicado
+                                        </t>
+                                    </p>
+                                    <div class="pie" style="text-align:right">
+                                        <br></br>
+                                        <hr></hr>
+                                        <span style="font-size:10px;text-align:right;font-weight:bold">FIRMA
+                                            AUTORIZADA
+                                        </span>
+                                    </div>
+                                    <t t-if="t==0">
+                                        <br></br>
+                                    </t>
+                                    <t t-if="t==1">
+                                        <br></br>
+                                        <br></br>
+                                    </t>
+                                </div>
+
+                            </t>
+                            <t t-if="n &lt; (o.cantRecibos)">
+                                <p style="page-break-before:always;"></p>
+                            </t>
+
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+        <template id="grupo_account_payment.template_pagos">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.payment_type == 'outbound'" t-call="grupo_account_payment.template_orden_pago" t-lang="o.partner_id.lang"/>
+                <t t-if="o.payment_type == 'inbound'" t-call="grupo_account_payment.template_recibo" t-lang="o.partner_id.lang"/>
+            </t>
+        </template>
+
+        <record id="grupo_account_payment.papel_pago" model="report.paperformat">
+            <field name="name">Papel Orden de Pago</field>
+            <field name="format">custom</field>
+            <field name="page_height">340</field>
+            <field name="page_width">216</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+        
+        <report id="grupo_account_payment.reporte_pagos" model="grupo_account_payment.payment.group" string="Pago" report_type="qweb-pdf" name="grupo_account_payment.template_pagos" paperformat="grupo_account_payment.papel_pago"/>
+
+    </data>
+</odoo>

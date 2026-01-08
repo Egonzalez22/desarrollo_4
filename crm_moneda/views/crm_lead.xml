@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm_lead_view_form_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//h2" position="before">
+                    <h2 class="o_row no-gutters align-items-end">
+                        <div class="col">
+                            <label for="oportunidad_monto" class="oe_edit_only"/>
+                            <div class="o_row">
+                                <field name="oportunidad_monto" widget="monetary"/>
+                                <span class="oe_grey p-2">-</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="oportunidad_moneda" class="oe_edit_only"/>
+                            <div class="o_row">
+                                <field name="oportunidad_moneda" domain="[('active', '=', True)]" widget="selection"
+                                       class="pr-2"
+                                       options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                            </div>
+                        </div>
+                    </h2>
+                    <br/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_lead_kanban_lead_inherit" model="ir.ui.view">
+            <field name="name">crm_lead_kanban_lead_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@class='o_kanban_record_subtitle']" position="before">
+                    <div class='o_kanban_record_subtitle'>
+                        <t t-if="record.oportunidad_monto.raw_value">
+                            <field name="oportunidad_monto"/>
+                            <field name="oportunidad_moneda"/>
+                        </t>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="crm_lead_tree_opportunity_inherit" model="ir.ui.view">
+            <field name="name">crm_lead_tree_opportunity_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='expected_revenue']" position="after">
+                    <field name="oportunidad_monto"/>
+                    <field name="oportunidad_moneda"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

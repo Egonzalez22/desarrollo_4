@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <!-- model.name inherit form view -->
+        <record id="cuota_form_view" model="ir.ui.view">
+            <field name="name">cuota_form_view</field>
+            <field name="model">cuotas.cuota</field>
+            <field name="inherit_id" ref="cuotas.cuota_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fecha_pago']" position="after">
+                    <field name="tipo_facturacion" attrs="{'invisible':[('tipo_cuota','!=','sale')]}"/>
+                    <field name="facturable"/>
+                </xpath>
+                <xpath expr="//button[@name='button_facturar']" position="after">
+                    <field name="facturable" invisible="True"/>
+                </xpath>
+                <xpath expr="//button[@name='button_facturar']" position="attributes">
+                    <attribute name="attrs">{'invisible':
+                        [
+                        '|',
+                        '&amp;',
+                        ('tipo_cuota','=','sale'),
+                        '|',
+                        '|',
+                        ('totalmente_facturado','=',True),
+                        ('state','!=','confirmado'),
+                        ('facturable','=',False),
+                        '&amp;',
+                        ('tipo_cuota','=','purchase'),
+                        '|',
+                        '|',
+                        ('totalmente_facturado','=',True),
+                        ('state','!=','confirmado'),
+                        ('vencida','=',False),
+                        ]
+                        }
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="order_id" attrs="{'readonly':[('state','!=','draft')],'invisible':[('tipo_cuota','!=','sale')]}"/>
+                    <field name="project_id" attrs="{'readonly':[('state','!=','draft')],'invisible':[('tipo_cuota','!=','sale')]}"/>
+                    <field name="milestone_id"
+                           attrs="{'readonly':[('state','!=','draft')],'required':[('tipo_facturacion','=','hito')],'invisible':[('tipo_cuota','!=','sale')]}"
+                           domain="[('project_id','=',project_id)]"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="cuota_tree_view" model="ir.ui.view">
+            <field name="name">cuota_tree_view</field>
+            <field name="model">cuotas.cuota</field>
+            <field name="inherit_id" ref="cuotas.cuota_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="project_id" optional="hide"/>
+                    <field name="milestone_id" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- cuotas.cuota inherit search view -->
+        <record id="cuota_search_view" model="ir.ui.view">
+            <field name="name">cuotas.cuota.inherit.view.search</field>
+            <field name="model">cuotas.cuota</field>
+            <field name="inherit_id" ref="cuotas.cuota_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='groupby_fecha_vencimiento']" position="after">
+                    <filter name="groupby_project" string="Proyecto" context="{'group_by': 'project_id'}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+
+
+</odoo>

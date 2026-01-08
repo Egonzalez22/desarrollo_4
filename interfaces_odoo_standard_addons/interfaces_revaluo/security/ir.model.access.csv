@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_interfaces_revaluo_interfaces_revaluo,interfaces_revaluo.interfaces_revaluo,model_interfaces_revaluo_interfaces_revaluo,base.group_user,1,1,1,1

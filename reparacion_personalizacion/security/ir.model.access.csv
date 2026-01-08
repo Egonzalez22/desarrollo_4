@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reparacion_personalizacion_reparacion_personalizacion,reparacion_personalizacion.reparacion_personalizacion,model_reparacion_personalizacion_reparacion_personalizacion,base.group_user,1,1,1,1

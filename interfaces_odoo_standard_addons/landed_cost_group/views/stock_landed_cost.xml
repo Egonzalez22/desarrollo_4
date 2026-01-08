@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- model.name inherit form view -->
+        <record id="view_stock_landed_cost_form" model="ir.ui.view">
+            <field name="name">view_stock_landed_cost_form</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vendor_bill_id']" position="after">
+                    <field name="vendor_bill_ids" widget="many2many_tags" attrs="{'invisible':[('vendor_bill_ids','=',False)],'readonly':True}"/>
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

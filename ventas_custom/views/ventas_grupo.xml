@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- tree view -->
+		<record id="grupo_tree_view" model="ir.ui.view">
+			<field name="name">grupo.tree.view</field>
+			<field name="model">ventas.grupo</field>
+			<field name="arch" type="xml">
+				<tree string="Grupo">
+					<field name="name" />
+					<field name="usa_sustancias" />
+					<field name="es_acreditado" />
+					<field name="description" />
+					<field name="tipo_grupo" />
+					<field name="observacion" />
+					<field name="company_id" />
+					<field name="tipo_documento" />
+					<field name="nombre_iso" />
+					<field name="fecha_desde" />
+					<field name="fecha_hasta" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- formulario -->
+		<record id="grupo_form_view" model="ir.ui.view">
+			<field name="name">grupo.form.view</field>
+			<field name="model">ventas.grupo</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="usa_sustancias" />
+							<field name="es_acreditado" />
+							<field name="description" />
+							<field name="tipo_grupo" />
+							<field name="observacion" />
+							<field name="company_id" />
+							<field name="tipo_documento" />
+							<field name="nombre_iso" />
+							<field name="gerencia_tecnica" />
+							<field name="regente" />
+							<field name="fecha_desde" />
+							<field name="fecha_hasta" />
+							<field name="notas" />
+							<field name="abreviaturas" />
+							<field name="equipos" />
+							<field name="plazo_entrega" />
+							<field name="mantenimiento_oferta" />
+							<field name="entrega_resultado" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- act window -->
+		<record id="grupo_action_window" model="ir.actions.act_window">
+			<field name="name">Grupo</field>
+			<field name="res_model">ventas.grupo</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Agregamos el menu en la parte superior, en el menu de ventas configuracion -->
+		<menuitem
+			id="menu_grupo"
+			name="Grupo"
+			action="grupo_action_window"
+			parent="ventas_custom_menu_content"
+			sequence="1" />
+
+	</data>
+</odoo>

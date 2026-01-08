@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fe_py_pos_fe_py_pos,fe_py_pos.fe_py_pos,model_fe_py_pos_fe_py_pos,base.group_user,1,1,1,1

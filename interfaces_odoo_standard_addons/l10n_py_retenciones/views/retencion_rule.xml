@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- retencion.rule tree view -->
+        <record id="retencion_rule_view_tree" model="ir.ui.view">
+            <field name="name">retencion.rule.view.tree</field>
+            <field name="model">retencion.rule</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="tax_id" required="True"/>
+                    <field name="tipo_agente" required="True"/>
+                    <field name="tipo_retencion" required="True"/>
+                    <field name="porcentaje" required="True"/>
+                    <field name="fecha_inicio" required="True"/>
+                    <field name="fecha_fin" required="True"/>
+                    <field name="company_id" required="True"/>
+                </tree>
+            </field>
+        </record>
+        <!-- retencion.rule action window -->
+        <record id="l10n_py_retenciones.retencion_rule_action" model="ir.actions.act_window">
+            <field name="name">Reglas de retención</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">retencion.rule</field>
+            <field name="view_mode">list</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_retencion_rule_root" name="Retenciones" parent="account.menu_finance_configuration" sequence="200"/>
+        <menuitem id="menu_retencion_rule" name="Reglas de retención" parent="menu_retencion_rule_root" action="l10n_py_retenciones.retencion_rule_action" sequence="1"/>
+    </data>
+</odoo>

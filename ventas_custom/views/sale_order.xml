@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="sale_order_inherit_ventas_custom" model="ir.ui.view">
+            <field name="name">sale.order.inherit.ventas.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header" position="inside">
+                    <field name="stock_picking_id" invisible="1"/>
+
+                    <button name="action_imprimir_presupuesto"
+                            type="object"
+                            string="Imprimir"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', 'not in', ('sale'))]}"
+                    />
+
+                    <button name="action_crear_picking"
+                            type="object"
+                            string="Crear Recepción"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', 'not in', ('sale')), ('stock_picking_id', '!=', False)]}"
+                    />
+
+                    <button name="action_cargar_lineas"
+                            type="object"
+                            string="GENERAR LINEAS DE PEDIDO"
+                            class="oe_highlight"
+                    />
+                </xpath>
+
+                <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                    <!-- Campos ocultos necesarios para condiciones -->
+                    <field name="grupo_acreditado" invisible="1"/>
+                    <field name="mostrar_campos_extras" invisible="1"/>
+                    <field name="grupo_tipo_grupo" invisible="1"/>
+
+                    <!-- Campos extras -->
+                    <field name="referencia" readonly="1"/>
+                    <field name="version" readonly="1"/>
+                    <field name="sale_order_id" attrs="{'invisible': [('sale_order_id', '==', False)]}" readonly="1"/>
+                    <field name="grupo_id" domain="[('tipo_documento','=','Presupuesto')]" attrs="{'invisible': [('mostrar_campos_extras','=',False)]}"/>
+                    <field name="acreditado" attrs="{'invisible': [('grupo_acreditado', '=', False)]}"/>
+                    <field name="metodologia_analisis" attrs="{'invisible': [('mostrar_campos_extras','=',False)]}"/>
+                    <field name="motivo_id" attrs="{'invisible': [('mostrar_campos_extras','=',False)]}"/>
+                    <field name="matriz_id" domain="[('grupo_id','=',grupo_id)]" attrs="{'invisible': [('mostrar_campos_extras','=',False)]}"/>
+                </xpath>
+
+
+                <!-- se agrega un smartbutton para ver el picking -->
+                <xpath expr="//button[@name='action_preview_sale_order']" position="before">
+                    <button name="action_ver_picking_recepcion"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-solid fa-download"
+                            attrs="{'invisible': [('stock_picking_count', '=', 0)]}"
+                    >
+                        <field name="stock_picking_count" widget="statinfo" string="Recepción"/>
+                    </button>
+                </xpath>
+
+                <!-- Agregamos otra pestaña para el detalle del presupuesto -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Detalles Farma" attrs="{'invisible': [('mostrar_campos_extras', '=', False)]}">
+                        <group>
+                            <field name="equipos"/>
+                            <field name="condicion_pharma"/>
+                            <!-- <field name="condicion_pharma" attrs="{'invisible': [('tipo_presupuesto', '!=', 'pharma')]}"/> -->
+                        </group>
+                    </page>
+                </xpath>
+
+
+                <xpath expr="//field[@name='order_line']/tree/field[2]" position="after">
+                    <field
+                            name="matriz_id"
+                            domain="[('grupo_id','=', parent.grupo_id)]"
+                            attrs="{'column_invisible': True}"/>
+
+                    <field name="muestra_id" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=',False)]}" />
+
+                    <field
+                            name="metodologia_id"
+                            domain="[('matriz_ids','in', matriz_id)]"
+                            attrs="{'column_invisible': [('parent.mostrar_campos_extras','=',False)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='product_template_id']" position="attributes">
+                    <attribute name="string">Producto/Método</attribute>
+                </xpath>
+
+                <xpath expr="//tree/field[@name='price_subtotal']" position="replace">
+                    <field name="price_subtotal_with_tax" string="Sub-Total" widget="monetary"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[5]" position="after">
+                    <field name="product_template_id" position="move"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_template_id']" position="attributes">
+                    <attribute
+                            name="domain">["|", ('metodologia_ids','in',metodologia_id),('metodologia_ids', '=', False)]
+                    </attribute>
+
+                    <!-- <attribute
+                        name="domain">[('id','in', productos_filtrados)]
+                    </attribute> -->
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='order_line']/tree" position="inside">
+                    <field name="muestra_id" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False)]}"/>
+                    <field name="cantidad_muestra" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False)]}"/>
+                    <field name="presentacion_muestra" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False)]}"/>
+                    <field name="reactivos" attrs="{'column_invisible': ['&amp;', ('parent.mostrar_campos_extras','=', False), ('parent.grupo_tipo_grupo', 'in', ['farma']) ]}"/>
+                    <field name="estandard" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False) ]}"/>
+                    <field name="referencia" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False) ]}"/>
+                    <field name="observacion" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False) ]}"/>
+                    <field name="motivo" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False) ]}"/>
+                </xpath> -->
+
+                <!-- <xpath expr="//field[@name='order_line']/tree" position="after">
+                    <field name="muestras_ids" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=', False)]}"/>
+                </xpath> -->
+
+                <xpath expr="//notebook//page[@name='order_lines']" position="before">
+                    <page name="muestras" string="Muestras" attrs="{'invisible': [('mostrar_campos_extras', '=', False)]}">
+                        <group>
+
+                            <field name="muestras_ids" >
+                                <tree string="Presupuestos" editable="bottom">
+
+                                    <field name="muestra_id"/>
+                                    <field name="metodologia_ids" widget="many2many_tags"/>
+
+                                    <field name="metodos_disponibles_ids" invisible="1"/>
+                                    <field name="metodos_ids" widget="many2many_tags" domain="[('metodologia_ids', 'in', metodologia_ids)]"/>
+          
+
+
+                                    <field name="cantidad"/>
+                                    <field name="presentacion_id"/>
+
+                                    <field name="lote_cantidad"/>
+                                    <field name="lote_unidad_medida"/>
+
+                                    <field name="principios_activos_ids" widget="many2many_tags"/>
+                                    <field name="estandard"/>
+                                    <field name="reactivos"/>
+                                    <field name="referencia"/>
+                                    <field name="metodologia"/>
+                                    <field name="observacion"/>
+                                    <!--<field name="motivo_id"/>-->
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

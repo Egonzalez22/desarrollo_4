@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- interfaces_timbrado.timbrado inherit form view -->
+        <record id="timbrado_form_view" model="ir.ui.view">
+            <field name="name">timbrado_form_view</field>
+            <field name="model">interfaces_timbrado.timbrado</field>
+            <field name="inherit_id" ref="interfaces_timbrado.timbrado_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fin_vigencia']" position="after">
+                    <field name="idcsc" />
+                    <field name="csc" />
+                </xpath>
+
+                <xpath expr="//field[@name='rango_final']" position="after">
+                    <field name="serie" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="timbrado_tree_view" model="ir.ui.view">
+            <field name="name">timbrado_tree_view</field>
+            <field name="model">interfaces_timbrado.timbrado</field>
+            <field name="inherit_id" ref="interfaces_timbrado.timbrado_tree_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rango_final']" position="after">
+                    <field name="serie" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

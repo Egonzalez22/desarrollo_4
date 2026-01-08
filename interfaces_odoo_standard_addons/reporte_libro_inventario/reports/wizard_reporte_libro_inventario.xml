@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="reporte_libro_inventario_report" model="ir.actions.report">
+            <field name="name">reporte_libro_inventario_report</field>
+            <field name="model">wizard.reporte_libro_inventario</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">reporte_libro_inventario.reporte_libro_inventario_t</field>
+            <field name="report_file">reporte_libro_inventario.reporte_libro_inventario_t</field>
+            <field name="print_report_name">'Libro Inventario - %s %s' % (object.company_id.name,object.year)</field>
+            <field name="binding_model_id" ref="reporte_libro_inventario.model_wizard_reporte_libro_inventario"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

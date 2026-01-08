@@ -1,0 +1,93 @@
+<odoo>
+    <data>
+        <record id="paperformat_informe_asistencias" model="report.paperformat">
+            <field name="name">Informe de asistencias</field>
+            <!--field name="default" eval="True"/-->
+            <field name="format">custom</field>
+            <field name="orientation">Landscape</field>
+            <field name="page_height">330</field>
+            <field name="page_width">216</field>
+            <field name="margin_top">25</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="informe_asistencias.reporte_informe_asistencias" string="Informe de entrada y salida de empleados"
+                model="informe_asistencias.informe_asistencias_wizard"
+                report_type="qweb-pdf" name="informe_asistencias.informe_asistencias_report"
+                paperformat="paperformat_informe_asistencias"/>
+
+        <template id="informe_asistencias_report">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="row">
+                            <style>
+                                table, tr {
+                                width: 100% !important;
+                                }
+                            </style>
+                            <!--                            <t t-foreach="docs" t-as="s">-->
+                            <div class="header">
+                                <table style="border:1px solid white !important; width:380mm !important;">
+                                    <tr style="width:100%;">
+                                        <td>
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            ENTRADA Y SALIDA DE EMPLEADOS DEL MES DE <span t-esc="MESES[mes - 1][1].upper()"/>
+                                        </td>
+                                        <td>
+                                            Pagina: <span class="page"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="border:1px solid white !important; width:380mm !important; margin-top:10px !important;">
+                                    <tr style="border-bottom:1px solid black; font-weight: bold; width:100%">
+                                        <td>Cod.</td>
+                                        <td style="width:40mm;" >Nombre</td>
+                                        <t t-foreach="dias_mes" t-as="dia">
+                                            <td style="font-size:x-small;">
+                                                <span t-esc="dia"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="padding-top:5px !important;">
+                              <t t-foreach="departamentos" t-as="depa">
+                                <strong>Departamento: </strong> <span t-esc="depa.name"/><br/>
+                                <t t-foreach="lineas" t-as="line">
+                                    <table style="width:380mm !important;">
+                                      <t t-if="str(depa.id) == str(line[2][0])">
+                                        <tr style="width:100% !important;">
+                                          <td style="width:10mm;">
+                                              <span style="font-weight:none !important; font-size:x-small;" t-esc="line[0][0]"/>
+                                          </td>
+                                          <td style="width:40mm;">
+                                              <span style="font-weight:none !important; font-size:x-small;" t-esc="line[1][0]"/>
+                                          </td>
+                                          <t t-foreach="line[3]" t-as="hora_dia">
+                                            <td style="width:10mm !important; text-align:center !important; padding-left:0px !important; padding-right:1mm !important;">
+                                              <t t-foreach="hora_dia" t-as="tiempo">
+                                                  <span style="font-weight:none !important; font-size:xx-small;" t-esc="tiempo"/><br/>
+                                              </t>
+                                            </td>
+                                          </t>
+                                        </tr>
+                                      </t>
+                                    </table>
+                                </t>
+                              </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

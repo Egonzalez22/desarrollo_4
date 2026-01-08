@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="link_tracker_form_inherit">
+            <field name="name">link_tracker_form_inherit</field>
+            <field name="model">link.tracker</field>
+            <field name="inherit_id" ref="link_tracker.link_tracker_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='short_url']" position="before">
+                    <field name="explicit_url_id" domain="[('company_id','!=',False)]" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

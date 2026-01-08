@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="limite_credito" model="ir.module.category">
+            <field name="name">Límite de Crédito</field>
+        </record>
+
+        <record id="limite_credito.check_limite_credito" model="res.groups">
+            <field name="name">Puede cambiar check de límite de crédito</field>
+            <field name="category_id" ref="limite_credito.limite_credito" />
+        </record>
+
+        <record id="limite_credito.check_bloqueo_partner" model="res.groups">
+            <field name="name">Puede cambiar check de bloqueo</field>
+            <field name="category_id" ref="limite_credito.limite_credito" />
+        </record>
+
+        <record id="limite_credito.ver_limite_credito" model="res.groups">
+            <field name="name">Puede ver limite de crédito</field>
+            <field name="category_id" ref="limite_credito.limite_credito" />
+        </record>
+
+    </data>
+</odoo>

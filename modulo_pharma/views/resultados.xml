@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ALTA COMPLEJIDAD -->
+        <record id="res_alta_complejidad_tree_view" model="ir.ui.view">
+            <field name="name">alta_complejidad.tree.view</field>
+            <field name="model">resultado.alta</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="workorder_id" invisible="1"/>
+                    <field name="sustancia_activa_id"/>
+                    <field name="resultado"/>
+                    <field name="resultado_txt"/>
+                    <field name="lod"/>
+                    <field name="intervalo_referencia"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_alta_complejidad_form_view" model="ir.ui.view">
+            <field name="name">alta_complejidad.form.view</field>
+            <field name="model">resultado.alta</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="workorder_id" invisible="1"/>
+                            <field name="sustancia_activa_id"/>
+                            <field name="resultado"/>
+                            <field name="resultado_txt"/>
+                            <field name="lod"/>
+                            <field name="intervalo_referencia"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_alta_complejidad_form_tablet" model="ir.ui.view">
+            <field name="name">res.alta.complejidad.form.tablet</field>
+            <field name="model">resultado.alta</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <form class="o_workorder_tablet_form">
+                    <field name="workorder_id" invisible="1"/>
+                    <div class="o_workorder_bar">
+                        <div class="o_workorder_bar_content">
+                            <field name="sustancia_activa_id" />
+                            <field name="resultado" />
+                            <field name="resultado_txt"/>
+                            <field name="lod" class="col-md-2" />
+                            <field name="intervalo_referencia"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- TOXICOLOGICO -->
+        <record id="res_toxicologico_tree_view" model="ir.ui.view">
+            <field name="name">toxi.tree.view</field>
+            <field name="model">resultado.toxi</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="workorder_id" invisible="1"/>
+                    <field name="sustancia_activa_id"/>
+                    <field name="resultado"/>
+                    <field name="resultado_txt"/>
+                    <field name="intervalo_referencia"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_toxicologico_form_view" model="ir.ui.view">
+            <field name="name">toxi.form.view</field>
+            <field name="model">resultado.toxi</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="workorder_id" invisible="1"/>
+                            <field name="sustancia_activa_id"/>
+                            <field name="resultado"/>
+                            <field name="resultado_txt"/>
+                            <field name="intervalo_referencia"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_toxicologico_form_tablet" model="ir.ui.view">
+            <field name="name">res.toxi.form.tablet</field>
+            <field name="model">resultado.toxi</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <form class="o_workorder_tablet_form">
+                    <field name="workorder_id" invisible="1"/>
+                    <div class="o_workorder_bar">
+                        <div class="o_workorder_bar_content">
+                            <field name="sustancia_activa_id"/>
+                            <field name="resultado"/>
+                            <field name="resultado_txt"/>
+                            <field name="intervalo_referencia"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- FARMA -->
+        <record id="res_farma_tree_view" model="ir.ui.view">
+            <field name="name">farma.tree.view</field>
+            <field name="model">resultado.farma</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="workorder_id" invisible="1"/>
+                    <field name="principio_activo_id"/>
+                    <field name="resultado"/>
+                    <field name="especificacion"/>
+                    <field name="limite_deteccion"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_farma_form_view" model="ir.ui.view">
+            <field name="name">farma.form.view</field>
+            <field name="model">resultado.farma</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="workorder_id" invisible="1"/>
+                            <field name="principio_activo_id"/>
+                            <field name="resultado"/>
+                            <field name="especificacion"/>
+                            <field name="limite_deteccion"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_farma_form_tablet" model="ir.ui.view">
+            <field name="name">res.farma.form.tablet</field>
+            <field name="model">resultado.farma</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <form class="o_workorder_tablet_form">
+                    <field name="workorder_id" invisible="1"/>
+                    <div class="o_workorder_bar">
+                        <div class="o_workorder_bar_content">
+                            <field name="principio_activo_id"/>
+                            <field name="resultado"/>
+                            <field name="especificacion"/>
+                            <field name="limite_deteccion"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- AGRO -->
+        <record id="res_agroquimico_tree_view" model="ir.ui.view">
+            <field name="name">farma.tree.view</field>
+            <field name="model">resultado.agro</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="workorder_id" invisible="1"/>
+                    <field name="principio_activo_id"/>
+                    <field name="resultado"/>
+                    <field name="resultado_txt"/>
+                    <field name="tolerancia"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_agroquimico_form_view" model="ir.ui.view">
+            <field name="name">farma.form.view</field>
+            <field name="model">resultado.agro</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="workorder_id" invisible="1"/>
+                            <field name="principio_activo_id"/>
+                            <field name="resultado"/>
+                            <field name="resultado_txt"/>
+                            <field name="tolerancia"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_agroquimico_form_tablet" model="ir.ui.view">
+            <field name="name">res.agroquimico.form.tablet</field>
+            <field name="model">resultado.agro</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <form class="o_workorder_tablet_form">
+                    <field name="workorder_id" invisible="1"/>
+                    <div class="o_workorder_bar">
+                        <div class="o_workorder_bar_content">
+                            <field name="principio_activo_id"/>
+                            <field name="resultado"/>
+                            <field name="resultado_txt"/>
+                            <field name="tolerancia"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

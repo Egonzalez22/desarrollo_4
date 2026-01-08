@@ -1,0 +1,327 @@
+<odoo>
+    <data>
+        <template id="modulo_pharma.reporte_certificado_toxicologico">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style>
+                                table{
+                                width:100%;
+                                border: solid white 1px !important;
+                                border-collapse: collapse;
+                                }
+                                tr, td{
+                                border: solid white 1px !important;
+                                }
+                                .bold{
+                                font-weight: bold;
+                                }
+                                td{
+                                padding:5px;
+                                }
+                                .contenido{
+                                font-size:9px;
+                                }
+
+                            </style>
+
+                            <div class="header">
+                                <link rel='stylesheet' href="/modulo_pharma/static/src/css/informes.css" />
+                                <div class="">
+                                    <div class="col-25 p-6">
+                                        <div id="logo">
+                                            <img t-att-src="'/modulo_pharma/static/src/logo.png'" style="text-align: center; width:195%" />
+                                        </div>
+                                    </div>
+                                    <div class="" style="padding-top:20px; font-size:9px !important;">
+                                        <div id="fecha">
+                                            <div>CERTIFICADO DE ANÁLISIS CLINICO TOXICOLÓGICO N°:  <span t-field="o.certificado_analisis_nro"/></div>
+                                            <div>LAMBARÉ, <t t-esc="o.get_current_date()" /></div>
+                                            <div style="padding: 2px 0">
+                                                <strong t-field="o.grupo_id.nombre_iso"/>  <br/>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    Página <span class="page"/> de <span class="topage"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr></hr>
+                            <div class="contenido">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">DATOS DE LA MUESTRA</span>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Paciente:
+                                            </span>
+                                            <span t-field="o.paciente"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Remitido por:
+                                            </span>
+                                            <span t-field="o.remitente_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Código de muestra:
+                                            </span>
+                                            <span t-field="o.codigo_muestra"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Solicitante:
+                                            </span>
+                                            <span t-field="o.solicitante_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Tipo de Muestra:
+                                            </span>
+                                            <span t-field="o.muestra_lote"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Código de Remisión:
+                                            </span>
+                                            <span t-field="o.codigo_remision"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Sexo:
+                                            </span>
+                                            <t t-if="o.sexo">
+                                                Masculino
+                                            </t>
+                                            <t t-else="">
+                                                Femenino
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Fecha de Recepción:
+                                            </span>
+                                            <t t-if="o.fecha_recepcion">
+                                                <span t-esc="o.fecha_recepcion.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Edad:
+                                            </span>
+                                            <span t-field="o.edad"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Número de Ingreso:
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Número de Orden:
+                                            </span>
+                                            <span t-field="o.nro_orden"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Tipo de Solicitud:
+                                            </span>
+                                            <span t-field="o.tipo_solicitud"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">
+                                                Médico:
+                                            </span>
+                                            <span t-field="o.medico"/>
+                                        </td>
+                                        <td>
+                                            <span class="bold">
+                                                Almacenamiento:
+                                            </span>
+                                            <span t-field="o.almacenamiento"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">ANÁLISIS SOLICITADO</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <t t-foreach="o.metodos_ids" t-as="analisis">
+                                                <span t-esc="analisis.display_name"/><br/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td style="border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                                            <span class="bold">
+                                                Fecha de Recepción:
+                                            </span>
+                                            <t t-if="o.fecha_recepcion">
+                                                <span t-esc="o.fecha_recepcion.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                        <td style="border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                                            <span class="bold">
+                                                Fecha de Análisis:
+                                            </span>
+                                            <t t-if="o.fecha_analisis">
+                                                <span t-esc="o.fecha_analisis.strftime('%d/%m/%Y') "/>
+                                            </t>
+                                        </td>
+                                        <td style="border-top:1px solid black !important;border-bottom:1px solid black !important;">
+                                            <span class="bold">
+                                                Fecha de Finalización:
+                                            </span>
+                                            <t t-if="o.fecha_finalizacion">
+                                                <span t-esc="o.fecha_finalizacion.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span class="bold">RESULTADOS</span>
+                                        </td>
+                                        <td colspan="3"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom:1px solid black !important;">
+                                            <span class="bold text-center">
+                                                Análisis
+                                            </span>
+                                        </td>
+                                        <td style="border-bottom:1px solid black !important;">
+                                            <span class="bold text-center">
+                                                Resultado
+                                            </span>
+                                        </td>
+                                        <td style="border-bottom:1px solid black !important;">
+                                            <span class="bold text-center">
+                                                Intervalo de Referencia
+                                            </span>
+                                        </td>
+                                        <td style="border-bottom:1px solid black !important;">
+                                            <span class="bold text-center">
+                                                Método
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="o.resultado_toxi_ids" t-as="rt">
+                                        <td>
+                                            <span class="text-center" t-field="rt.sustancia_activa_id"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="rt.resultado == 0.0">
+                                                <span t-esc="rt.resultado_txt"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="rt.resultado"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <span class="text-center" t-field="rt.intervalo_referencia"/>
+                                        </td>
+                                        <td>
+                                            <span class="text-center" t-field="rt.metodo_id"/>
+                                        </td>
+                                    </t>
+                                </table>
+                                <table  class="table" style="margin-bottom: 10px; border: 0;border-collapse: collapse;font-size: 10px; ">
+                                    <tr>
+                                        <td  style=" border:1px solid white; text-align: center;">
+                                            ___________________________________________
+                                            <br/> <br/>
+                                            Bioq. Maria Teresa Melgarejo
+                                            <br/> <br/>
+                                            Reg. Prof. Nº: 3579
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <br/>
+                                <t t-raw="o.grupo_id.notas"/>
+                            </div>
+                            <div class="footer">
+                                <link rel='stylesheet' href="/modulo_pharma/static/src/css/informes.css" />
+                                <div>
+                                    <div class="col-25">
+                                        ANALITICA S. A. <br />
+                                        Pedro Gill 935 c/ Ytororó <br />
+                                        Lambaré - Paraguay <br />
+                                    </div>
+                                    <div class="col-25">
+                                        Telefono: 595 (21) 908555 <br />
+                                        info@analitica.com.py<br />
+                                        www.analitica.com.py
+                                    </div>
+                                    <t t-if="'-' in o.certificado_analisis_nro">
+                                        <p>ESTE CERTIFICADO REEMPLAZA AL : <t t-esc="o.certificado_analisis_nro.split('-')[0]"/></p>
+                                    </t>
+                                    <t t-if="o.grupo_id.es_acreditado and o.company_id.logo_acreditado">
+                                        <div class="col-25">
+                                            <img t-att-src='image_data_uri(o.company_id.logo_acreditado)'
+                                                 style="width:30mm;height:auto"/>
+                                        </div>
+                                    </t>
+                                    <div class="col-25">
+                                        <span style="font-size:7.5px !important">Escanee el QR para descargar en PDF.</span>
+                                        <img t-att-src="image_data_uri(o.qr_code)" style="width: 80px; height: 80px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+        <record model="ir.actions.report" id="reporte_certificado_toxicologico_action">
+            <field name="name">Certificado de Análisis Clínico Toxicológico</field>
+            <field name="model">certificados.laboratorio</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="paperformat_id" ref="modulo_pharma.formato"/>
+            <field name="report_name">modulo_pharma.reporte_certificado_toxicologico</field>
+            <field name="print_report_name">'Certificado de Análisis Clínico Toxicológico  %s' % (object.certificado_analisis_nro or '')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    </data>
+</odoo>

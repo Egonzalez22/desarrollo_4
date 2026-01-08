@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mrp_workorder.Tablet" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_tablet_instructions_content')]" position="inside">
+            <t t-if="data['tipo_grupo']">
+            <button
+                    class="btn btn-primary"
+                    t-on-click="openResultadosTree"
+                    style="width: 150px;margin: 10px;margin-left: auto;"
+            >
+            Ver Resultados
+        </button>
+                <t t-if="data['tipo_grupo'] == 'alta_complejidad'">
+                <div class="row" style="width:100%">
+                    <div style="text-align:center;font-weight:bold;width:20% !important">
+                        <span>Sustancia Activa</span>
+                    </div>
+                    <div style="text-align:center;font-weight:bold;width:20% !important">
+                        <span>Resultado</span>
+                    </div>
+                    <div style="text-align:center;font-weight:bold;width:20% !important">
+                        <span>Resultado (comentario)</span>
+                    </div>
+                    <div style="text-align:center;font-weight:bold;width:20% !important">
+                        <span>LOD</span>
+                    </div>
+                    <div style="text-align:center;font-weight:bold;width:20% !important">
+                        <span>Intervalo de Referencia</span>
+                    </div>
+                </div>
+            </t>
+                <t t-if="data['tipo_grupo'] == 'farma'">
+                    <div class="row" style="width:80%">
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Principio Activo</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Resultado</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Especificación</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Límite de Detección</span>
+                        </div>
+                    </div>
+                </t>
+                <t t-if="data['tipo_grupo'] == 'toxicologico'">
+                    <div class="row" style="width:80%">
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Sustancia Activa</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Resultado</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Resultado (comentario)</span>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;font-weight:bold">
+                            <span>Intervalo de Referencia</span>
+                        </div>
+                    </div>
+                </t>
+                <t t-if="data['tipo_grupo'] == 'agroquimico'">
+                <div class="row" style="width:80%">
+                    <div class="col-md-3" style="text-align:center;font-weight:bold">
+                        <span>Principio Activo</span>
+                    </div>
+                    <div class="col-md-3" style="text-align:center;font-weight:bold">
+                        <span>Resultado</span>
+                    </div>
+                    <div class="col-md-3" style="text-align:center;font-weight:bold">
+                        <span>Resultado (comentario)</span>
+                    </div>
+                    <div class="col-md-3" style="text-align:center;font-weight:bold">
+                        <span>Tolerancia</span>
+                    </div>
+                </div>
+            </t>
+                <t t-foreach="views['custom']" t-as="view" t-key="view.resId">
+                <div class="custom-view">
+                    <View
+                            type="view.type"
+                            mode="view.mode"
+                            resModel="view.resModel"
+                            viewId="view.viewId"
+                            resId="view.resId"
+                            display="view.display"
+                            context="view.context"
+                            workorderBus="view.workorderBus"
+                            onRecordChanged="view.onRecordChanged"
+                    />
+                </div>
+            </t>
+            </t>
+        </xpath>
+    </t>
+</templates>

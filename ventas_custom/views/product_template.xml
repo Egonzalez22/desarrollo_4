@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+
+        <record id="product_template_only_form_view_inherit_ventas" model="ir.ui.view">
+            <field name="name">product.template.only.form.view.inherit.ventas</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+
+                <!-- Agregamos un notebook para agregar campos adicionales -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Campos Analítica">
+                        <group>
+                            <field name="es_muestra" />
+                            <field name="es_principio_activo" />
+                            <field name="es_metodo" />
+
+                            <field name="acreditado" attrs="{'invisible': [('es_metodo', '=', False)]}" />
+                            <field name="referencia_bibliografica" attrs="{'invisible': [('es_metodo', '=', False)]}" />
+                            <field name="metodologia_ids" widget="many2many_tags" string="Metodologías" attrs="{'invisible': [('es_metodo', '=', False), ('es_muestra', '=', False)]}" />
+                            <field name="equipos" widget="many2many_tags" attrs="{'invisible': [('es_metodo', '=', False)]}" />
+                            
+                            <field name="principios_activos_ids" widget="many2many_tags" attrs="{'invisible': [('es_muestra', '=', False)]}" />
+                            <field name="metodos" widget="many2many_tags" attrs="{'invisible': [('es_muestra', '=', False)]}" domain="[('metodologia_ids', 'in', metodologia_ids)]" />
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sumi_purchase_aprobacion_sumi_purchase_aprobacion,sumi_purchase_aprobacion.sumi_purchase_aprobacion,model_sumi_purchase_aprobacion_sumi_purchase_aprobacion,base.group_user,1,1,1,1

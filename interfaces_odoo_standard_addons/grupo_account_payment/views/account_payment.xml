@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="account_payment_form_view_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_post']" position="before">
+                    <field name="payment_group_id" invisible="True"/>
+                </xpath>
+                <xpath expr="//button[@name='action_post']" position="attributes">
+                    <attribute name='attrs'>{'invisible': ['|',('payment_group_id','!=',False),('state', '!=', 'draft')]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="replace">
+                    <button name="action_draft" string="Convertir a borrador" type="object" class="btn btn-secondary" attrs="{'invisible': [('is_internal_transfer', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='button_open_statement_lines']" position="after">
+                    <button name="action_get_payment_group_invo" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('payment_group_invo_count','=', 0)]}">
+                        <div class="o_form_field o_stat_info">
+                            <field name="payment_group_invo_count"/>
+                            <span>  Facturas</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                    <button name="payment_group_invo_count" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

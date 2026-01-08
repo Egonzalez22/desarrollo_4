@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- Add you code here -->
+            <!-- stock.landed.cost inherit form view -->
+            <record id="view_stock_landed_cost_form" model="ir.ui.view">
+                <field name="name">view_stock_landed_cost_form</field>
+                <field name="model">stock.landed.cost</field>
+                <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//notebook/page[@name='valuation_adjustments']/field[@name='valuation_adjustment_lines']/tree/field[@name='quantity']" position="after">
+                        <field name="porcentaje_arancel"/>
+                    </xpath>
+		    <!-- Ya no es necesario mostrar estos campos
+			 xpath expr="//field[@name='picking_ids']" position="after">
+                        <field name="freight_cost" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="insurance_cost" attrs="{'readonly':[('state','!=','draft')]}"
+                        
+                    </xpath-->
+                </field>
+            </record>
+            
+        </data>
+</odoo>

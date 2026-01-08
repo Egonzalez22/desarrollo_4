@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.report" id="rrhh_payroll_bancos_continental.hr_payslip_run_bancos_continental_report">
+            <field name="name">Generar archivo TXT para pago de salarios CONTINENTAL</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">rrhh_payroll_bancos_continental.hr_payslip_run_bancos_continental_report_t</field>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'TRANSFER'</field>
+        </record>
+        <!--
+        El siguiente template no debe de tener saltos de linea para funcionar correctamente
+        -->
+        <template id="rrhh_payroll_bancos_continental.hr_payslip_run_bancos_continental_report_t">
+            <t t-set="lines" t-value="docs.get_values_for_report_bancos_continental()"/>
+            <t t-set="count_lines" t-value="0"/>
+            <t t-foreach="lines" t-as="line">
+                <t t-set="count_lines" t-value="count_lines+1"/>
+                <t t-set="count_line_columns" t-value="0"/>
+                <t t-foreach="line" t-as="line_column">
+                    <t t-set="count_line_columns" t-value="count_line_columns+1"/>"<t t-esc="line_column"/>"<t t-if="count_line_columns &lt; len(line)">,</t>
+                </t>
+
+            </t>
+        </template>
+    </data>
+</odoo>

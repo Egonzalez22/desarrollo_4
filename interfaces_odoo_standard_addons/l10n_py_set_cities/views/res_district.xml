@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_district_tree" model="ir.ui.view">
+            <field name="model">res.district</field>
+            <field name="arch" type="xml">
+                <tree string="Distrito" editable="top">
+                    <field name="name"/>
+                    <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="state_id" context="{'default_country_id': country_id}"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_district_filter" model="ir.ui.view">
+            <field name="model">res.district</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Distrito">
+                    <field name="name" filter_domain="[('name','ilike', self)]"
+                           string="Distrito"/>
+                    <separator/>
+                    <field name="country_id"/>
+                    <field name="state_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_res_district_tree" model="ir.actions.act_window">
+            <field name="name">Distritos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.district</field>
+            <field name="view_mode">tree</field>
+            <field name="help">
+                Ver todos los distritos
+            </field>
+        </record>
+
+        <menuitem id="menu_districts" name="Distritos"
+                  parent="contacts.menu_localisation" action="action_res_district_tree"
+                  sequence="2"/>
+    </data>
+</odoo>

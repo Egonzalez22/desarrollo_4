@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">view_partner_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="nombre_fantasia"/>
+                    <field name="contribuyente" required="1"/>
+                    <field name="tipo_documento" attrs="{'required':[('contribuyente','=',False)],'invisible':[('contribuyente','=',True)]}"/>
+                    <field name="nro_documento" attrs="{'required':[('contribuyente','=',False)],'invisible':[('contribuyente','=',True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="replace">
+                    <field name="vat" attrs="{'required':[('contribuyente','=',True)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

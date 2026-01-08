@@ -1,0 +1,73 @@
+<odoo>
+    <data noupdate="1">
+        <record id="cron_enviar_mail_limite_registros" model="ir.config_parameter">
+            <field name="key">cron_enviar_mail_limite_registros</field>
+            <field name="value">100</field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="cron_preparar_lote" model="ir.cron">
+            <field name="name">SIFEN 1 - Preparar Lote</field>
+            <field name="model_id" ref="model_fe_de"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="False"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="state">code</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.preparar_lote()</field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="cron_enviar_lote" model="ir.cron">
+            <field name="name">SIFEN 2 - Enviar Lote</field>
+            <field name="model_id" ref="model_fe_de"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="False"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="state">code</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.enviar_lote()</field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="cron_consultar_lote" model="ir.cron">
+            <field name="name">SIFEN 3 - Consultar Lote</field>
+            <field name="model_id" ref="model_fe_de"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="False"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="state">code</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.consultar_lote()</field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="cron_consultar_cdc" model="ir.cron">
+            <field name="name">SIFEN 4 - Consultar por CDC</field>
+            <field name="model_id" ref="model_fe_de"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="False"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="state">code</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.consultar_cdc()</field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="cron_enviar_mails_sifen" model="ir.cron">
+            <field name="name">SIFEN - Enviar mails</field>
+            <field name="model_id" ref="model_fe_de"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="False"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="state">code</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.enviar_mails()</field>
+        </record>
+    </data>
+</odoo>

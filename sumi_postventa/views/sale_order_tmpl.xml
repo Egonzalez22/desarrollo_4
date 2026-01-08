@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_order_template_inherit" model="ir.ui.view">
+            <field name="name">sale.order.template.form</field>
+            <field name="model">sale.order.template</field>
+            <field name="inherit_id" ref="sale_management.sale_order_template_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="acreditado"/>
+                    <field name="acreditado_codigo_vigencia"/>
+                    <field name="acreditado_fecha"/>
+                </xpath>
+                <xpath expr="//page[@name='terms_and_conditions']" position="after">
+                    <page string="Referencia" name="reference">
+                        <field name="referencia" nolabel="1" />
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

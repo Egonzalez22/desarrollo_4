@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id="facturacion_electronica_py.kude_remision_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.documento_electronico">
+
+                    <t t-if="o.state=='cancel'">
+                        <t t-set="mensaje_marca_agua" t-value="'REMISION ANULADA'" />
+                    </t>
+                    <t t-elif="o.state=='draft'">
+                        <t t-set="mensaje_marca_agua"
+                            t-value="'BORRADOR  - NO VALIDO COMO CREDITO FISCAL'" />
+                    </t>
+                    <t t-else="">
+                        <t t-set="mensaje_marca_agua" t-value="" />
+                    </t>
+                    <t t-call="facturacion_electronica_py.kude_remision" />
+                </t>
+                <t t-else="">
+                    <div class="page">
+                        <strong>No es un documento electrónico</strong>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="facturacion_electronica_py.kude_remision">
+        <!-- <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_kude.css"
+        /> -->
+        <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_remision.css" />
+        <div class="page">
+            <style>
+            </style>
+
+            <div class="header" style="height: 50mm !important; padding-top:2px;">
+                <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_remision.css" />
+
+                <div class="row" style="margin: 4px">
+                    <div class="text-center full-width">
+                        KuDE de Nota de remisión electrónica
+                    </div>
+                </div>
+
+                <!-- cabecera -->
+                <table id="table_emisor" class="border full-width">
+                    <tr>
+                        <!-- Si se carga cabecera -->
+                        <td t-if="o.journal_id.encabezado_kude_img"
+                            style="vertical-align:middle; border-style:none !important; width:65%; text-align:center;overflow:hidden;padding-top:2px;">
+                            
+                            <img t-att-src="image_data_uri(o.journal_id.encabezado_kude_img)" alt="Logo" style="width: 100%" />
+                        </td>
+
+                        <!-- Si no se carga cabecera -->
+                        <td t-if="not o.journal_id.encabezado_kude_img"
+                            style="vertical-align:middle; border-style:none !important; width:15%; text-align:center">
+                            <div style="max-width:125px;max-height:125px;margin:5px">
+                                <img t-att-src='image_data_uri(o.company_id.logo)' style="width: 100%" />
+                            </div>
+                        </td>
+                        <td t-if="not o.journal_id.encabezado_kude_img" style="padding:5px 10px; width:50%">
+                            <span t-field="o.company_id" style="font-size:16px;font-weight: bold;" />
+                            <br />
+                            <!-- Si el diario tiene actividades economicas se toma de ahi -->
+                            <t t-if="o.journal_id.actividad_economica_ids">
+                                <!-- iteramos -->
+                                <t t-foreach="o.journal_id.actividad_economica_ids" t-as="act">
+                                    <span t-field="act.name" />
+                                    <br />
+                                </t>
+                            </t>
+                            <div t-if="not o.journal_id.actividad_economica_ids">
+                                <span t-field="o.company_id.des_actividad_economica" />
+                            </div>
+
+                            <br />
+                            <span t-field="o.company_id.street" />
+
+                            <br />
+                            <t t-if="o.company_id.city">
+                                <span t-field="o.company_id.city" />
+                            </t>
+
+                            <t t-if="o.company_id.country_id">
+                                <span> - </span>
+                                <span t-field="o.company_id.country_id" />
+                            </t>
+                            <br />
+                            <strong>Tel: </strong>
+                            <span t-field="o.company_id.phone" />
+                            <br />
+                            <strong>Email: </strong>
+                            <span t-field="o.company_id.email" />
+                        </td>
+                        <td style="padding:10px;width:25%;">
+                            <div>
+                                <span class="bold">RUC: </span>
+                                <span t-field="o.company_id.vat" />
+                            </div>
+
+                            <div>
+                                <span class="bold">Timbrado N°:</span>
+                                <t t-foreach="o.timbrado_id" t-as="timb">
+                                    <t t-if="timb.active == 1 ">
+                                        <span t-field="timb.name" />
+                                    </t>
+                                </t>
+                            </div>
+
+                            <div>
+                                <t t-foreach="o.timbrado_id" t-as="timb">
+                                    <span class="bold">Inicio de vigencia: </span>
+                                    <span>
+                                        <t t-if="timb.active == 1 ">
+                                            <span t-esc="timb.inicio_vigencia.strftime('%d/%m/%Y')" />
+                                        </t>
+                                    </span>
+                                </t>
+                            </div>
+
+                            <div>
+                                <span class="bold">NOTA DE REMISION</span> <br />
+                                <span class="bold">N°: </span>
+                                <span t-field="o.name" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+
+                <!-- Marca de Agua -->
+                <div
+                    style="position:absolute;opacity:0.20;z-index:1000;transform:rotate(310deg);-webkit-transform:rotate(310deg);width:50%;margin-left:150px;margin-top:300px">
+                    <p id="marca_agua" style="font-size:40px">
+                        <t t-esc="mensaje_marca_agua" />
+                    </p>
+                </div>
+
+                <!-- documento asociado -->
+                <table id="documento_asociado" class="border-table full-width font-small"
+                    t-if="o.invoice_id">
+                    <tr>
+                        <td>
+                            <div>
+                                <t>
+                                    <t t-if="o.invoice_id.es_documento_electronico">
+                                        <div>
+                                            <span class="bold">Documento asociado CDC:</span>
+                                            <span t-field="o.invoice_id.cdc" />
+                                        </div>
+                                        <div>
+                                            <span class="bold">Tipo de documento asociado:</span> FE </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div>
+                                            <span class="bold">Documento asociado:</span>
+                                            <span t-field="o.invoice_id.name" />
+                                        </div>
+                                        <div>
+                                            <span class="bold">Tipo de documento asociado:</span>
+                                            Impreso </div>
+                                    </t>
+                                </t>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- fecha y datos -->
+                <table id="table_receptor" class="border full-width font-small">
+                    <tr>
+                        <td class="table-title" colspan="2">
+                            <span class="bold">DESTINATARIO DE LA MERCADERÍA</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="bold">Fecha y hora de emisión: </span>
+                            <span>
+                                <span t-field="o.invoice_datetime" />
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <span class="bold">Nombre o razón social: </span>
+                            <span>
+                                <span t-field="o.partner_id" />
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bold">RUC/Documento de Identidad N°: </span>
+                            <t t-if="o.partner_id.contribuyente">
+                                <span t-field="o.partner_id.vat" />
+                            </t>
+                            <t t-if="not o.partner_id.contribuyente">
+                                <span t-field="o.partner_id.nro_documento" />
+                            </t>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- datos de traslado -->
+                <table id="table_motivo_traslado" class="border-table full-width font-small">
+                    <tr>
+                        <td class="table-title" colspan="2">
+                            <span class="bold">DATOS DEL TRASLADO</span>
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td>
+                            <span class="bold">Motivo de la emisión: </span>
+                            <span>
+                                <t t-esc="o.getdDesMotEmiNR()" />
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bold">Responsable de la emisión: </span>
+                            <span>
+                                <t t-esc="o.getdDesRespEmiNR()" />
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td>
+                            <span class="bold">Fecha de inicio de traslado: </span>
+                            <span>
+                                <t t-esc="o.getdIniTras(True)" />
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bold">Fecha estimada de fin de traslado: </span>
+                            <span>
+                                <t t-esc="o.getdFinTras(True)" />
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td>
+                            <span class="bold">Dirección del punto de partida: </span>
+                            <span t-field="o.direccion_partida" />
+                        </td>
+                        <td>
+                            <span class="bold">Dirección del punto de entrega:</span>
+                            <span t-field="o.direccion_entrega" />
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td>
+                            <span class="bold">Ciudad del punto de partida: </span>
+                            <span t-field="o.ciudad_partida" />
+                        </td>
+                        <td>
+                            <span class="bold">Ciudad del punto de entrega:</span>
+                            <span t-field="o.ciudad_entrega" />
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td>
+                            <span class="bold">Departamento del punto de partida: </span>
+                            <span t-field="o.departamento_partida" />
+                        </td>
+                        <td>
+                            <span class="bold">Departamento del punto de entrega:</span>
+                            <span t-field="o.departamento_entrega" />
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td style="width:100%" colspan="2">
+                            <span>Kilómetros estimados del recorrido: </span>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%" colspan="2">
+                            <span>Nro. de casa de salida: </span>
+                            <span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%" colspan="2">
+                            <span>Nro. de casa de la entrega: </span>
+                            <span></span>
+                        </td>
+                    </tr> -->
+
+                </table>
+
+                <!-- datos del vehiculo -->
+                <table id="table_datos_vehiculo" class="border-table full-width font-small">
+                    <tr>
+                        <td class="table-title" colspan="3">
+                            <span class="bold">DATOS DEL VEHICULO DE TRANSPORTE</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bold">Tipo de transporte:</span>
+                            <t t-if="o.iTipTrans">
+                                <span t-esc="o.get_valor_seleccionado('iTipTrans')" />
+                            </t>
+                        </td>
+                        <td colspan="2">
+                            <span class="bold">Modalidad de transporte:</span>
+                            <t t-if="o.iModTrans">
+                                <span t-esc="o.get_valor_seleccionado('iModTrans')" />
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bold">Responsable del costo del flete:</span>
+                            <t t-if="o.iRespFlete">
+                                <span t-esc="o.get_valor_seleccionado('iRespFlete')" />
+                            </t>
+                        </td>
+                        <td>
+                            <span class="bold">Nro. matrícula del vehículo:</span>
+                            <span t-field="o.matricula" />
+                        </td>
+                        <td>
+                            <span class="bold">Marca del vehículo:</span>
+                            <span t-esc="o.marca_vehiculo" />
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- datos del conductor -->
+                <table id="table_datos_conductor" class="border-table full-width font-small">
+                    <tr>
+                        <td class="table-title" colspan="2">
+                            <span class="bold">
+                                DATOS DEL CONDUCTOR DEL VEHICULO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="bold">Nombre y apellido: </span>
+                            <span t-field="o.chofer_id" />
+                        </td>
+
+                        <td>
+                            <span class="bold">RUC/CI: </span>
+                            <t t-if="o.chofer_id.vat">
+                                <span t-field="o.chofer_id.vat" />
+
+                            </t>
+                            <t t-elif="o.chofer_id.nro_documento">
+                                <span t-field="o.chofer_id.nro_documento" />
+
+                            </t>
+                            <t t-else="">
+                                <span>
+                                </span>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr class="w50">
+                        <td style="width:100%" colspan="2">
+                            <span class="bold">Dirección: </span>
+                            <t t-if="o.chofer_id.street">
+                                <span t-field="o.chofer_id.street" />
+
+                            </t>
+                            <t t-else="">
+                                <span>
+                                </span>
+                            </t>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- datos de la mercaderia -->
+                <div class="table-title border-mercaderias">
+                    <span class="bold">
+                        DATOS DE LA MERCADERÍA
+                    </span>
+                </div>
+                <table id="table_datos_mercaderias" class="full-width font-small">
+                    <thead class="table-title">
+                        <tr>
+                            <th class="text-left ">
+                                Cód.
+                            </th>
+                            <th class="text-left ">
+                                Cant.
+                            </th>
+                            <th class="text-left ">
+                                Descripción
+                            </th>
+                            <th class="text-left ">
+                                Lote/Serie
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="lineas_mercaderias">
+                        <t t-foreach="o.line_ids" t-as="line">
+                            <tr style="line-height: 14px;height: 14px;">
+                                <td class="lineaDetalleIzquierda">
+                                    <t t-if="line.product_id and line.product_id.default_code">
+                                        <span t-field="line.product_id.default_code" />
+                                    </t>
+                                    <t t-else="">
+                                        <span></span>
+                                    </t>
+                                </td>
+
+                                <td class="lineaDetalleIzquierda">
+                                    <span t-field="line.qty" />
+                                </td>
+
+                                <td class="lineaDetalleIzquierda">
+                                    <span t-field="line.name" />
+                                </td>
+
+                                <td class="lineaDetalleIzquierda">
+                                    <span t-field="line.nro_lote_serie" />
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- footer, se repite en todas las paginas. El alto debe coincidir o ser similar al
+            margin bottom del paperformat  -->
+            <div class="footer">
+                <!-- <link rel='stylesheet'
+                    href="/facturacion_electronica_py/static/src/css/style_kude.css" /> -->
+                <link rel='stylesheet'
+                    href="/facturacion_electronica_py/static/src/css/style_remision.css" />
+
+                <!-- información del código QR -->
+                <table id="table_qr_informacion" class="border-table fs-9 full-width">
+                    <tr>
+                        <td>
+                            <div>
+                                <div style="width: 18%; float:left;">
+                                    <div style="max-width:75px; max-height:75px; margin: 0 auto; padding-top:2px">
+                                        <img t-att-src="image_data_uri(o.fe_qr_code)"
+                                            style="width:100%" />
+                                    </div>
+                                </div>
+                                <div style="width: 82%; float:left; margin-top:5px">
+                                    <!-- QR y aclaracion  -->
+                                    <div> Consulte la validez de esta Nota de Remisión Electrónica
+                                        con el número de CDC impreso abajo en: <br />
+                                        https://ekuatia.set.gov.py/consultas/ <p
+                                            style="margin: 5px 0px">
+                                            <span>CDC: </span>
+                                            <span class="cdc-content">
+                                                <span t-esc="o.separar_cdc(o.cdc)" />
+                                            </span>
+                                        </p>
+                                        <span
+                                            class="bold">
+                                            ESTE DOCUMENTO ES UNA REPRESENTACIÓN GRÁFICA DE UN
+                                        DOCUMENTO ELECTRÓNICO (XML)
+                                        </span>
+                                        <br />
+                                        Si su documento electrónico presenta algún error puede
+                                        solicitar la modificación dentro de las 72 horas siguientes
+                                        a la emisión de este comprobante </div>
+
+                                    <!-- página del kude -->
+                                    <div class="col-xs-12 pull-right">
+                                        <span>Página </span>
+                                        <span class="page" />/<span
+                                            class="topage" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+
+
+    </template>
+
+    <record id="facturacion_electronica_py.paperformat_remision" model="report.paperformat">
+        <field name="name">Notas de remisión electrónicas</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">34</field>
+        <field name="margin_bottom">27</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">34</field>
+        <field name="disable_shrinking" eval="True" />
+        <field name="dpi">96</field>
+    </record>
+
+    <report id="facturacion_electronica_py.remision_report_action" print_report_name="(object.name)"
+        model="notas_remision_account.nota.remision" string="KUDE NR" report_type="qweb-pdf"
+        paperformat="facturacion_electronica_py.paperformat_remision"
+        name="facturacion_electronica_py.kude_remision_template" />
+</odoo>

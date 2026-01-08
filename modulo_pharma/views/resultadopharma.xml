@@ -1,0 +1,140 @@
+<odoo>
+    <record id="view_resultado_pharma_form" model="ir.ui.view">
+        <field name="name">resultado.pharma.form</field>
+        <field name="model">resultados.pharma</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                            name="button_publicar"
+                            string="Publicar"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state','=','posted')]}"
+
+                    />
+                    <button
+                            name="button_restablecer_borrador"
+                            string="Restablecer a borrador"
+                            type="object"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': [('state','=','draft')]}"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="presupuesto" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="muestra_lote" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="muestra_lote_line" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="lote" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="acta_muestreo" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="analizado_por" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="fecha_vencimiento_lote" style="width: 100%;" invisible="1" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="cantidad_lote" style="width: 100%;" invisible="1" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="descripcion" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}" />
+
+                        </group>
+                        <group>
+                            <field name="metodologia" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="ph" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="densidad" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="periodo_desde" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="periodo_hasta" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="forma_farma" style="width: 100%;" invisible="1" attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="principios_activos_descripcion" style="width: 100%;" invisible="1" attrs="{'readonly': [('state','!=','draft')]}" />
+
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Equipos" name="equipos">
+                            <field name="equipos" col="12" attrs="{'readonly': [('state','!=','draft')]}">
+                                <tree editable="bottom">
+                                    <field name="name" readonly="1"/>
+                                    <field name="category_id" readonly="1"/>
+                                    <field name="serial_no" readonly="1"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Información Del Estandar" name="principios_activos">
+                            <field name="detalle_pharma_line" widget="one2many_list"  attrs="{'readonly': [('state','!=','draft')]}">
+                                <tree editable="top">
+                                    <field name="principios_activos"/>
+                                    <field name="lote"/>
+                                    <field name="vencimiento"/>
+                                    <field name="titulo"/>
+                                    <field name="conservacion"/>
+                                    <field name="humedad"/>
+
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Resultados Obtenidos" name="resultados">
+                            <field name="detalle_pharma_order" widget="one2many_list"  attrs="{'readonly': [('state','!=','draft')]}">
+                                <!-- <tree editable="top" delete="0"> -->
+                                <tree editable="top">
+                                    <field name="ensayo_muestra_line"/>
+                                    <field name="principio_activo"/>
+                                    <!-- <field name="lote" />
+                                    <field name="vencimiento"/> -->
+                                    <field name="limite_aceptacion"/>
+                                    <field name="limite_deteccion"/>
+                                    <!-- <field name="conservacion"/>
+                                    <field name="humedad"/> -->
+                                    <field name="resultado"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Observaciones" name="observaciones">
+                            <field name="observacion" style="width: 100%;" attrs="{'readonly': [('state','!=','draft')]}" />
+
+                        </page>
+
+
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_resultado_pharma_tree" model="ir.ui.view">
+        <field name="name">view.resultado.pharma.tree</field>
+        <field name="model">resultados.pharma</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="descripcion"/>
+                <field name="numero_certificado"/>
+                <field name="presupuesto"/>
+                <field name="muestra_lote_line"/>
+                <field name="acta_muestreo"/>
+                <field name="analizado_por"/>
+                <field name="periodo_desde"/>
+                <field name="periodo_hasta"/>
+
+                <field
+                        name="state"
+                        string="Estado"
+                        widget="badge"
+                        decoration-warning="state == 'draft'"
+                        decoration-success="state == 'posted'"
+                />
+
+            </tree>
+        </field>
+    </record>
+    <record id="action_resultado_pharma" model="ir.actions.act_window">
+        <field name="name">Resultados PHARMA</field>
+        <field name="res_model">resultados.pharma</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_resultado_pharma"
+              name="Resultados Pharma"
+              action="action_resultado_pharma"
+              parent="mrp.menu_mrp_manufacturing"
+    />
+
+
+</odoo>

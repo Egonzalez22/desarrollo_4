@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_motivo_salida,access_motivo_salida,model_sumi_liquidaciones_motivo_salida,base.group_user,1,1,1,1
+access_hr_contract_cancel_wizard,access_hr_contract_cancel_wizard,model_hr_contract_cancel_wizard,base.group_user,1,1,1,1

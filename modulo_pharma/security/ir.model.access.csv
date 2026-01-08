@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_modulo_pharma,modulo_pharma.resultados_pharma,modulo_pharma.model_resultados_pharma,base.group_user,1,1,1,1
+access_modulo_pharma_detalle,modulo_pharma.resultados_pharma_detalle,modulo_pharma.model_resultados_pharma_detalle,base.group_user,1,1,1,1
+access_modulo_pharma_sale,modulo_pharma.resultados_pharma_sale,modulo_pharma.model_resultados_pharma_sale,base.group_user,1,1,1,1
+access_certificados_laboratorio,certificados.laboratorio,modulo_pharma.model_certificados_laboratorio,base.group_user,1,1,1,1
+access_certificados_resultados_obtenidos,certificados.resultados_obtenidos,modulo_pharma.model_certificados_resultados_obtenidos,base.group_user,1,1,1,1
+access_certificados_analisis_referencias,certificados.analisis_referencias,modulo_pharma.model_certificados_analisis_referencias,base.group_user,1,1,1,1
+access_certificados_estandar_agro,certificados.estandar_agro,modulo_pharma.model_certificados_estandar_agro,base.group_user,1,1,1,1
+access_certificados_propiedades_fisicas,certificados.propiedades_fisicas,modulo_pharma.model_certificados_propiedades_fisicas,base.group_user,1,1,1,1
+access_resultado_alta,access_resultado_alta,modulo_pharma.model_resultado_alta,base.group_user,1,1,1,1
+access_resultado_farma,access_resultado_farma,modulo_pharma.model_resultado_farma,base.group_user,1,1,1,1
+access_resultado_agro,access_resultado_agro,modulo_pharma.model_resultado_agro,base.group_user,1,1,1,1
+access_resultado_toxi,access_resultado_toxi,modulo_pharma.model_resultado_toxi,base.group_user,1,1,1,1

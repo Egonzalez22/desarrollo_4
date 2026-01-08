@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.inherit.view.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='account']" position="inside">
+                    <h2>Retenciones emitidas</h2>
+                    <div class="row mt16 o_settings_container" name="main_retenciones_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="main_retenciones_setting">
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div>
+                                        <label for="ret_monto_minimo" string="Monto mínimo"/>
+                                    </div>
+                                    <div>
+                                        <field name="ret_monto_minimo"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

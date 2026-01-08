@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record model="ir.actions.server" id="landed_cost_group.landed_action">
+            <field name="name">Crear costos en destino</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">
+records.button_create_landed_costs()
+            </field>
+        </record>
+
+    </data>
+</odoo>

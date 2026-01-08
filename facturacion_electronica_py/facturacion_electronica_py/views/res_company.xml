@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_company_form" model="ir.ui.view">
+            <field name="name">view_company_form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Información Contable">
+                        <group>
+                            <field name="facturador_electronico" />
+                            <field name="nombre_contribuyente"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="nombre_fantasia"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="sucursal"
+                                attrs="{'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="ruc_contribuyente"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="tipo_contribuyente"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="tipo_regimen"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="cod_actividad_economica"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                            <field name="des_actividad_economica"
+                                attrs="{'required':[('facturador_electronico','=',True)],
+                                   'invisible':[('facturador_electronico','=',False)]}" />
+                        </group>
+                    </page>
+                    <page name="fe_page" string="Factura electrónica">
+                        <group>
+                            <group>
+                                <field name="fe_ambiente" />
+                                <field name="digital_signature_file" />
+                                <field name="digital_signature_password" password="True" />
+                                <field name="cert" readonly="True" />
+                                <field name="private_key" readonly="True" />
+                                <field name="public_key" readonly="True" />
+                                <field name="fe_intento_reenvio" />
+                                <field name="fe_validar_schema" />
+                                <field name="fe_send_email" />
+                            </group>
+                        </group>
+                        <button string="Generar archivos de firma electrónica" type="object" name="generar_certificados" class="oe_highlight" />
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

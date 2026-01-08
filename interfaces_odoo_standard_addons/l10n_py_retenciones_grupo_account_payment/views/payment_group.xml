@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="payment_group_form_view_inherit" model="ir.ui.view">
+            <field name="name">payment_group_form_view_inherit</field>
+            <field name="model">grupo_account_payment.payment.group</field>
+            <field name="inherit_id" ref="grupo_account_payment.account_payment_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="show_emitir_retencion" invisible="True"/>
+                    <button string="Emitir retenciones" class="btn-warning" type="object" name="action_emitir_retencion" attrs="{'invisible':[('show_emitir_retencion','=',False)]}"/>
+                </xpath>
+                <xpath expr="//header" position="after">
+                    <div class="alert alert-warning mb-0" role="alert" attrs="{'invisible':[('show_emitir_retencion','=',False)]}">
+No olvide crear todas las retenciones necesarias para las facturas asociadas antes de procesar los pagos
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

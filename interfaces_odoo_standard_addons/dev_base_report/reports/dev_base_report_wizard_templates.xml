@@ -1,0 +1,270 @@
+<odoo>
+    <data>
+        <template id="dev_base_report.dev_base_report_pdf_t">
+            <t t-call="web.html_container">
+                <t t-foreach="wizard.company_ids" t-as="company_id">
+                    <t t-call="web.internal_layout">
+                        <div class="page">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        Desde:
+                                        <t t-esc="wizard.date_from"/>
+                                    </td>
+                                    <td>
+                                        Hasta:
+                                        <t t-esc="wizard.date_to"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Cantidad de Items:
+                                        <t t-esc="wizard.item_qty"/>
+                                    </td>
+                                    <td>
+                                        Tipo de reporte:
+                                        <t t-esc="{'compact':'Compacto','detailed':'Detallado'}.get(wizard.report_type)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        Secciones:
+                                        <t t-esc="{True:'Si',False:'No'}.get(wizard.sections)"/>
+                                    </td>
+                                    <td>
+                                        Páginas:
+                                        <t t-esc="{True:'Si',False:'No'}.get(wizard.pages)"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Ciudad</th>
+                                        <th>Identificación</th>
+                                        <th>Monto</th>
+                                        <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                            <th t-esc="report_extra_column"/>
+                                        </t>
+                                    </tr>
+                                </thead>
+
+                                <t t-set="line_count" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-set="report_extra_columns_totals" t-value="{}"/>
+                                <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                    <t t-if="report_extra_columns[report_extra_column] == int">
+                                        <t t-set="aux" t-value="report_extra_columns_totals.update({report_extra_column: 0})"/>
+                                    </t>
+                                </t>
+
+                                <tbody>
+                                    <tr t-foreach="filter(lambda x:x['company_id'] == company_id, report_lines)" t-as="report_line">
+                                        <t t-set="line_count" t-value="line_count+1"/>
+                                        <td>
+                                            <span t-esc="line_count"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="report_line['name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="report_line['city']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="report_line['identification_id']"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <t t-set="total_amount" t-value="total_amount+report_line['amount']"/>
+                                            <span t-esc="report_line['amount']" t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+
+                                        </td>
+                                        <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                            <t t-if="report_extra_columns[report_extra_column] == int">
+                                                <td style="text-align:right;">
+                                                    <t t-set="aux"
+                                                       t-value="report_extra_columns_totals.update({report_extra_column: report_extra_columns_totals[report_extra_column] + report_line[report_extra_column]})"/>
+                                                    <span t-esc="report_line[report_extra_column]"
+                                                          t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+
+                                                </td>
+                                            </t>
+                                            <t t-if="report_extra_columns[report_extra_column] == str">
+                                                <td style="text-align:left;">
+                                                    <span style="text-align:left;" t-esc="report_line[report_extra_column]"/>
+                                                </td>
+                                            </t>
+                                        </t>
+                                    </tr>
+
+                                    <tr style="font-weight:bold;">
+                                        <td colspan="4">Total</td>
+                                        <td style="text-align:right;">
+                                            <span t-esc="total_amount" t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+                                        </td>
+                                        <t t-set="column_width" t-value="1"/>
+                                        <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                            <t t-if="report_extra_columns[report_extra_column] == int">
+                                                <td t-att-colspan="column_width" style="text-align:right;">
+                                                    <span t-esc="report_extra_columns_totals[report_extra_column]"
+                                                          t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+                                                </td>
+                                                <t t-set="column_width" t-value="1"/>
+                                            </t>
+                                            <t t-if="report_extra_columns[report_extra_column] == str">
+                                                <t t-set="column_width" t-value="column_width+1"/>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <t t-if="wizard.sections">
+                            <div class="page" style="page-break-before: always;">
+                                <t t-foreach="available_cities" t-as="available_city">
+                                    <t t-set="report_lines_company_city"
+                                       t-value="filter(lambda x:x['company_id'] == company_id and x['city'] == available_city, report_lines)"/>
+                                    <t t-if="report_lines_company_city">
+                                        <h3 style="text-align:center;" t-esc="available_city"/>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nombre</th>
+                                                    <th>Identificación</th>
+                                                    <th>Monto</th>
+                                                    <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                                        <th t-esc="report_extra_column"/>
+                                                    </t>
+                                                </tr>
+                                            </thead>
+
+                                            <t t-set="line_count" t-value="0"/>
+                                            <t t-set="total_amount" t-value="0"/>
+                                            <t t-set="report_extra_columns_totals" t-value="{}"/>
+                                            <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                                <t t-if="report_extra_columns[report_extra_column] == int">
+                                                    <t t-set="aux" t-value="report_extra_columns_totals.update({report_extra_column: 0})"/>
+                                                </t>
+                                            </t>
+
+                                            <tbody>
+                                                <tr t-foreach="report_lines_company_city" t-as="report_line">
+                                                    <t t-set="line_count" t-value="line_count+1"/>
+                                                    <td>
+                                                        <span t-esc="line_count"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="report_line['name']"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="report_line['identification_id']"/>
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <t t-set="total_amount" t-value="total_amount+report_line['amount']"/>
+                                                        <span t-esc="report_line['amount']"
+                                                              t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+
+                                                    </td>
+                                                    <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                                        <t t-if="report_extra_columns[report_extra_column] == int">
+                                                            <td style="text-align:right;">
+                                                                <t t-set="aux"
+                                                                   t-value="report_extra_columns_totals.update({report_extra_column: report_extra_columns_totals[report_extra_column] + report_line[report_extra_column]})"/>
+                                                                <span t-esc="report_line[report_extra_column]"
+                                                                      t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+
+                                                            </td>
+                                                        </t>
+                                                        <t t-if="report_extra_columns[report_extra_column] == str">
+                                                            <td style="text-align:left;">
+                                                                <span style="text-align:left;" t-esc="report_line[report_extra_column]"/>
+                                                            </td>
+                                                        </t>
+                                                    </t>
+                                                </tr>
+
+                                                <tr style="font-weight:bold;">
+                                                    <td colspan="3">Total</td>
+                                                    <td style="text-align:right;">
+                                                        <span t-esc="total_amount"
+                                                              t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+                                                    </td>
+                                                    <t t-set="column_width" t-value="1"/>
+                                                    <t t-foreach="report_extra_columns" t-as="report_extra_column">
+                                                        <t t-if="report_extra_columns[report_extra_column] == int">
+                                                            <td t-att-colspan="column_width" style="text-align:right;">
+                                                                <span t-esc="report_extra_columns_totals[report_extra_column]"
+                                                                      t-options="{'widget': 'monetary', 'display_currency': company_id.currency_id}"/>
+                                                            </td>
+                                                            <t t-set="column_width" t-value="1"/>
+                                                        </t>
+                                                        <t t-if="report_extra_columns[report_extra_column] == str">
+                                                            <t t-set="column_width" t-value="column_width+1"/>
+                                                        </t>
+                                                    </t>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div t-if="wizard.pages" class="page" style="page-break-before: always;"/>
+                                    </t>
+                                </t>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="dev_base_report.dev_base_report_pdf_compact">
+            <t t-call="dev_base_report.dev_base_report_pdf_t">
+                <t t-set="wizard" t-value="wizard"/>
+                <t t-set="available_cities" t-value="available_cities"/>
+                <t t-set="report_extra_columns" t-value="report_extra_columns"/>
+                <t t-set="report_lines" t-value="report_lines"/>
+            </t>
+        </template>
+        <template id="dev_base_report.dev_base_report_pdf_detailed">
+            <t t-call="dev_base_report.dev_base_report_pdf_t">
+                <t t-set="wizard" t-value="wizard"/>
+                <t t-set="available_cities" t-value="available_cities"/>
+                <t t-set="report_extra_columns" t-value="report_extra_columns"/>
+                <t t-set="report_lines" t-value="report_lines"/>
+            </t>
+        </template>
+
+        <record model="ir.actions.report" id="dev_base_report.dev_base_report_compact_pdf">
+            <field name="name">Base Report PDF Compact</field>
+            <field name="model">dev.base.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dev_base_report.dev_base_report_pdf_compact</field>
+            <field name="print_report_name">'Reporte base (%s)' ','.join(company.name for company in object.company_ids)</field>
+            <field name="paperformat_id" ref="dev_base_report.base_paperformat_portrait"/>
+            <!--            <field name="binding_model_id" ref="dev_base_report.model_dev_base_report_wizard"/>-->
+            <!--            <field name="binding_type">report</field>-->
+        </record>
+        <record model="ir.actions.report" id="dev_base_report.dev_base_report_detailed_pdf">
+            <field name="name">Base Report PDF Detailed</field>
+            <field name="model">dev.base.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dev_base_report.dev_base_report_pdf_detailed</field>
+            <field name="print_report_name">'Reporte base (%s)' ','.join(company.name for company in object.company_ids)</field>
+            <field name="paperformat_id" ref="dev_base_report.base_paperformat_landscape"/>
+            <!--            <field name="binding_model_id" ref="dev_base_report.model_dev_base_report_wizard"/>-->
+            <!--            <field name="binding_type">report</field>-->
+        </record>
+        <record model="ir.actions.report" id="dev_base_report.dev_base_report_xlsx">
+            <field name="name">Base Report XLSX</field>
+            <field name="model">dev.base.report.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">dev_base_report.dev_base_report_xlsx_t</field>
+            <!--            <field name="binding_model_id" ref="dev_base_report.model_dev_base_report_wizard"/>-->
+            <!--            <field name="binding_type">report</field>-->
+        </record>
+
+    </data>
+</odoo>

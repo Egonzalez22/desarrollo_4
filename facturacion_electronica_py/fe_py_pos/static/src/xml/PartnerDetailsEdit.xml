@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension" owl="1">
+        <!-- agregamos los nuevos campos -->
+        <xpath
+            expr="//div[@class='partner-detail'][input/@name='barcode']/following-sibling::div[1]"
+            position="before">
+
+            <!-- Tipo de Documento -->
+            <div class='partner-detail'>
+                <span class='label'>Tipo Documento </span>
+                <select class='detail tipo_documento' name='tipo_documento'
+                    t-on-change="captureChange" t-model="changes.tipo_documento">
+                    <option value="0" selected="selected">RUC</option>
+                    <option value="1">Cédula Paraguaya</option>
+                    <option value="2">Pasaporte</option>
+                    <option value="3">Cédula Extranjera</option>
+                    <option value="4">Carnet de Residencia</option>
+                    <option value="5">Innominado</option>
+                    <option value="6">Tarjeta Diplomática de exoneración fiscal</option>
+                    <option value="9">Otro</option>
+                </select>
+            </div>
+
+            <!-- Tipo de Contribuyente -->
+            <div class='partner-detail'>
+                <span class='label'>Tipo Contribuyente </span>
+                <select class='detail company_type' name='company_type' t-on-change="captureChange" t-model="changes.company_type">
+                    <option value="person" selected="selected">Física</option>
+                    <option value="company">Jurídica</option>
+                </select>
+            </div>
+
+            <!-- Nro de documento -->
+            <div class="partner-detail form-control" t-att-class="{ 'oe_hidden': !showNroDocumentoField }">
+                <span class="label">Documento Número </span>
+                <input class="detail nro_documento" name="nro_documento" t-on-change="captureChange"
+                    t-model="changes.nro_documento" />
+            </div>
+
+        </xpath>
+
+        <!-- Eliminamos ciudad -->
+        <xpath expr="//div[contains(@class, 'partner-detail')]/input[@name='city']/.." position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+
+        <!-- movemos el estado despues del pais -->
+        <xpath expr="//div[contains(@class, 'partner-detail')]/select[@name='country_id']/.." position="after">
+            <xpath expr="//div[@class='partner-detail'][select/@name='state_id']" position="move"/>
+        </xpath>
+
+        <!-- agregamos ciudad -->
+        <xpath expr="//div[contains(@class, 'partner-detail')]/select[@name='state_id']/.." position="after">
+            <div class="partner-detail">
+                <span class="label">Ciudad</span>
+                <select class="detail" name="city_id" t-model="changes.city_id" t-on-change="captureChange">
+                    <option value="">None</option>
+                    <t t-foreach="cities" t-as="city" t-key="city.id">
+                        <option t-att-value="city.id">
+                            <t t-esc="city.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+
+        <!-- reemplazamos el vat -->
+        <xpath expr="//div[contains(@class, 'partner-detail')]/input[@name='vat']/.." position="replace">
+            <div class="partner-detail" t-att-class="{ 'oe_hidden': !showVatField }">
+                <span class="label">RUC: </span>
+                <input class="detail vat" name="vat" t-model="changes.vat" t-on-change="captureChange" />
+            </div>
+        </xpath>
+
+        <!-- Cambiamos el nombre de estado por departamento -->
+        <xpath expr="//div[contains(@class, 'partner-detail')]/select[@name='state_id']/preceding-sibling::span" position="replace">
+            <span class="label">Dpto.</span>
+        </xpath>
+    </t>
+</templates>

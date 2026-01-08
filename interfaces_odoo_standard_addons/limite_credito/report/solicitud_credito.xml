@@ -1,0 +1,413 @@
+<odoo>
+	<data>
+		<template id="limite_credito.solicitud">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.basic_layout">
+
+						<style>
+							* {
+							font-size: 12;
+							font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+							font-weight: normal;
+							}
+
+							#contenedor {
+							width: 95%;
+							margin: 0 auto;
+							margin-top: 90px;
+							}
+
+							#header_details {
+							padding: 10px 0;
+							}
+
+							.fecha {
+							text-align: right;
+							}
+
+							.tabla {
+							border: 1px solid #333;
+							margin-bottom: 5px;
+							overflow: hidden;
+							}
+
+							.tabla_titulo {
+							background: #C4D7EF;
+							font-weight: bold;
+							text-align: center;
+							padding: 5px
+							}
+
+							.tabla_fila {
+							height: 22px;
+							}
+
+							.border_bottom {
+							border-bottom: 1px solid #333;
+							overflow: hidden;
+							}
+							.border_right {
+							border-right: 1px solid #333;
+							overflow: hidden;
+							}
+
+							.table_item {
+							font-weight: bold;
+							background: #F2F2F2;
+							margin-right: 5px;
+							height: 22px;
+							float: left;
+							}
+
+							#firma {
+							background: red;
+							}
+
+							#firma_content {
+							float: right;
+							}
+							.recuadro_firma{
+							padding: 5px;
+							}
+							.center{
+							text-align: center;
+							}
+
+							.clearfix {
+							clear: both;
+							}
+
+							.logo_contenedor{
+							background: orange;
+							height: 90px;
+							}
+							.logo_seccion{
+							width: 50%;
+							float: left;
+							text-align: center;
+							border: 1px solid #333;
+							padding: 10px;
+							height: 90px;
+							}
+							.logo_titulo{
+							font-size: 24px;
+							font-weight: bold;
+							}
+							.break_page{
+							page-break-before: always;
+							}
+
+						</style>
+
+
+						<div class="header">
+							<div style="padding-top:40px;">
+								<div class="logo_contenedor" style="eight: 80px;width: 95%;margin: 0 auto;">
+									<div class="logo_seccion" style="width: 50%;float: left;text-align: center;border: 1px solid #333;padding: 10px;height: 80px;">
+										<!-- usamos el logo de la compañia -->
+										<!-- <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 50px;"/> -->
+	
+									</div>
+									<div class="logo_seccion" style="width: 50%;float: left;text-align: center;border: 1px solid #333;padding: 10px;height: 80px;">
+										<div class="logo_titulo" style="font-size: 24px;font-weight: bold;"> CATASTRO DE CLIENTE Y <br /> AUTORIZACIÓN DE CRÉDITO </div>
+									</div>
+									<div class="clearfix" style="clear: both;"></div>
+								</div>
+							</div>
+						</div>
+
+						<div style="height:20px"></div>
+
+						<div id="contenedor">
+							<div id="header_details">
+								<!-- fecha -->
+									<div class="fecha"> Lambaré, <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d de %B de %Y')" /></div>
+
+								<!-- saludo --> Señores, <br />
+									<span class="fw-bold">ANALITICA S.A.</span> <br /><br /> Presente <br /> De mi mayor consideración,<br /> Por la presente solicito el catastro como Cliente y la conseción de un crédito en la provisión de los servicios que ofrecen, comprometiéndome al pago de los servicios en los términos indicados por su empresa. </div>
+
+							<!-- Datos del solicitante -->
+							<div class="tabla">
+								<div class="tabla_titulo">DATOS DEL SOLICITANTE</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="table_item">RAZÓN SOCIAL: </div>
+									<t t-esc="o.name" />
+								</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-6">
+											<div class="table_item">DIRECCIÓN: </div>
+											<t t-esc="o.street" />
+										</div>
+										<div class="col-6">
+											<div class="table_item">NÚMERO: </div>
+											<t t-esc="o.street_number" />
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-6">
+											<div class="table_item">CIUDAD: </div>
+											<t t-esc="o.city" />
+										</div>
+										<div class="col-6">
+											<div class="table_item">DEPARTAMENTO: </div>
+											<t t-esc="o.state_id.name" />
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-6">
+											<div class="table_item">SUCURSAL: </div>
+										</div>
+										<div class="col-6">
+											<div class="table_item">PAIS: </div>
+											<t t-esc="o.country_id.name" />
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila">
+									<div class="table_item">RUC: </div>
+									<t t-esc="o.vat" />
+								</div>
+							</div>
+
+							<!-- DATOS DE LOS REPRESENTANTES LEGALES -->
+							<div class="tabla">
+								<div class="tabla_titulo">DATOS DE LOS REPRESENTANTES LEGALES</div>
+								<!-- obtenemos los partners relacionados, del tipo contacto -->
+								<t t-set="contactos" t-value="o.child_ids.filtered(lambda r: r.type == 'contact')" />
+								<!-- agregamos un contador -->
+								<t t-set="contador" t-value="0" />
+
+								<!-- iteramos por los contactos filtrados -->
+								<t t-foreach="contactos" t-as="contacto">
+									<t t-set="contador" t-value="contador + 1" />
+
+									<div class="tabla_fila border_bottom">
+										<div class="row">
+											<div class="col-6">
+												<div class="table_item"> (<t t-esc="contador" />) NOMBRE: </div>
+												<t t-esc="contacto.name" />
+											</div>
+											<div class="col-6">
+												<div class="table_item">TEL: </div>
+												<t t-esc="contacto.phone" />
+											</div>
+										</div>
+									</div>
+
+									<div class="tabla_fila border_bottom">
+										<div class="table_item">DOMICILIO: </div>
+										<t t-esc="contacto.street" />
+									</div>
+
+									<div class="tabla_fila border_bottom">
+										<div class="row">
+											<div class="col-6">
+												<div class="table_item">E-MAIL: </div>
+												<t t-esc="contacto.email" />
+											</div>
+											<div class="col-6">
+												<div class="table_item">CARGO: </div>
+												<t t-esc="contacto.function" />
+											</div>
+										</div>
+									</div>
+								</t>
+							</div>
+
+							<!-- Referencia Bancaria -->
+							<div class="tabla">
+								<div class="tabla_titulo">REFERENCIA BANCARIA</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="table_item">BANCO: </div>
+									<t t-esc="o.ref_banc_banco" />
+								</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-6">
+											<div class="table_item">AGENCIA: </div>
+											<t t-esc="o.ref_banc_agencia" />
+										</div>
+										<div class="col-6">
+											<div class="table_item">AGENTE BANCARIO: </div>
+											<t t-esc="o.ref_banc_agente" />
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila">
+									<div class="table_item">TELEFONO: </div>
+									<t t-esc="o.ref_banc_telefono" />
+								</div>
+							</div>
+
+							<!-- Referencia Comercial -->
+							<div class="tabla">
+								<div class="tabla_titulo">REFERENCIA COMERCIAL</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="table_item">RAZÓN SOCIAL O NOMBRE: </div>
+									<t t-esc="o.ref_com_nombre" />
+								</div>
+
+								<div class="tabla_fila">
+									<div class="table_item">TELÉFONO: </div>
+									<t t-esc="o.ref_com_telefono" />
+								</div>
+							</div>
+
+							<p>
+								Declaro que la información proporcionada más arriba, así como la contenida en los documentos adjuntos, es
+								verdadera y autorizo su verificación. En caso de producirse cambios en la información, me comprometo a comunicarlo
+								por escrito, en un plazo no mayor a 7 días de haberse producido el cambio.
+							</p>
+
+							<div id="firma">
+								<div id="firma_content"> ________________________________________ <br /> Firma del Titular o Representante Legal <br /><br /> Aclaración: ______________________________ <br /><br /> C.I.N°: ____________________________________ <br />
+								</div>
+							</div>
+
+							<div class="clearfix"></div>
+
+							<div id="documentacion">
+								<span class="fw-bold">Documentación requerida:</span>
+								<br />
+								<ul>
+									<li>Fotocopia de C.I. de titular o Representante Legal</li>
+									<li>Balance General y Estado de Resultados más recientes</li>
+									<li>Fotocopia de Patente Comercial</li>
+									<li>D.D.J.J. de IVA de los 3 últimos meses</li>
+									<li>Copia de Poder, en caso de ser Apoderado</li>
+									<li>Fotocopia de los Estatuto Sociales, última Acta de Asamblea o documento legal que respalde las atribuciones del firmante</li>
+								</ul>
+							</div>
+
+							<div class="break_page"></div>
+							<div style="height:120px"></div>
+
+							<!-- Uso interno -->
+							<div class="tabla">
+								<div class="tabla_titulo">PARA USO INTERNO DE ANALÍTICA S.A.</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-3 tabla_item_interno">CRÉDITO APROBADO: </div>
+										<div class="col-9">
+											<!-- si credto_aprobado mostramos si -->
+											<t t-if="o.credito_aprobado">
+												SI
+											</t>
+											<t t-else="">
+												NO
+											</t>
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila border_bottom">
+									<div class="row">
+										<div class="col-3 tabla_item_interno">CONDICIONES DE PAGO: </div>
+										<div class="col-9">
+											<t t-esc="o.property_payment_term_id.name" />
+										</div>
+									</div>
+								</div>
+
+								<div class="tabla_fila">
+									<div class="row">
+										<div class="col-3 tabla_item_interno">LINEA DE CRÉDITO: </div>
+										<div class="col-9">
+											<t t-esc="'{:,.0f}'.format(o.credit_limit).replace(',','.')" />
+											<t t-esc="o.currency_id.name" />
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<br />
+							<br />
+							<br />
+
+
+							<!-- firmas finales -->
+							<div class="tabla">
+								<div class="row border_bottom">
+									<div class="col-3 border_right recuadro_firma center">
+										<span class="fw-bold">VERIFICADO</span><br /> Gerente Adm. y Fin. </div>
+									<div class="col-3 border_right recuadro_firma center">
+										<span class="fw-bold">APROBADO</span><br /> Directorio </div>
+									<div class="col-6 recuadro_firma center">
+										<span class="fw-bold">NOTIFICADO A</span>
+									</div>
+								</div>
+
+								<div class="row border_bottom">
+									<div class="col-3 border_right recuadro_firma">Fecha:</div>
+									<div class="col-3 border_right recuadro_firma">Fecha:</div>
+									<div class="col-2 border_right recuadro_firma center">
+										<span class="fw-bold">CLIENTE</span>
+									</div>
+									<div class="col-2 border_right recuadro_firma center">
+										<span class="fw-bold">Ventas Analitica</span>
+									</div>
+									<div class="col-2 recuadro_firma center">
+										<span class="fw-bold">ADM Y FIN</span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-3 border_right recuadro_firma">Firma: <br /><br /><br /><br /><br /></div>
+									<div class="col-3 border_right recuadro_firma">Firma: <br /><br /><br /><br /><br /></div>
+									<div class="col-2 border_right recuadro_firma">Fecha: <br /><br /><br /><br /><br /></div>
+									<div class="col-2 border_right recuadro_firma">Fecha: <br /><br /><br /><br /><br /></div>
+									<div class="col-2 recuadro_firma">Fecha: <br /><br /><br /><br /><br /></div>
+								</div>
+							</div>
+
+						</div>
+
+					</t>
+				</t>
+			</t>
+		</template>
+
+		<record id="limite_credito_solicitud_paper" model="report.paperformat">
+			<field name="name">Formato Impresión Solicitud Crédito</field>
+			<field name="default" eval="False" />
+			<field name="format">custom</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">5</field>
+			<field name="margin_bottom">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_right">5</field>
+			<!-- <field name="header_line" eval="False" /> -->
+			<!-- <field name="header_spacing">5</field> -->
+			<field name="dpi">96</field>
+		</record>
+
+		<record model="ir.actions.report" id="limite_credito_solicitud_action">
+			<field name="name">Solicitud Crédito</field>
+			<field name="model">res.partner</field>
+			<field name="report_type">qweb-pdf</field>
+			<!-- <field name="paperformat_id" ref="limite_credito_solicitud_paper" /> -->
+			<field name="report_name">limite_credito.solicitud</field>
+			<field name="print_report_name">'Solicitud %s' % (object.name or '')</field>
+			<field name="binding_model_id" ref="base.model_res_partner" />
+			<field name="binding_type">report</field>
+		</record>
+
+	</data>
+</odoo>

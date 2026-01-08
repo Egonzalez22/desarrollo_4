@@ -1,0 +1,325 @@
+<odoo>
+    <data>    
+        <template id="informes_servicios.reporte_servicios">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <style>
+                        .page {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            line-height: 1.3;
+                        }
+                        
+                        .table {
+                            width: 100%;
+                            margin-bottom: 1rem;
+                            border-collapse: collapse;
+                            color: black;
+                        }
+                        
+                        .table td, .table th {
+                            border: 1px solid #000;
+                            background-color: transparent !important;
+                            padding: 4px 8px;
+                            vertical-align: middle;
+                            color: black !important;
+                        }
+
+                        .report-number {
+                            font-size: 16px;
+                            font-weight: bold;
+                            padding: 4px 8px;
+                            display: inline-block;
+                        }
+                        
+                        .text-area {
+                            border: 1px solid #000;
+                            min-height: 80px;
+                            padding: 4px;
+                            margin-top: 4px;
+                            width: 100%;
+                        }
+                        
+                        .trabajo-realizado {
+                            min-height: 150px;
+                        }
+                        
+                        .materiales {
+                            min-height: 100px;
+                        }
+                        
+                        .checkbox-container {
+                            margin: 4px 0;
+                        }
+                        
+                        .checkbox-container input[type="checkbox"] {
+                            margin-right: 5px;
+                        }
+                        
+                        .firma-container {
+                            height: 100px;
+                            border: 1px solid #000;
+                        }
+                        
+                        .firma-label {
+                            text-align: center;
+                            border: 1px solid #000;
+                            padding: 4px;
+                            margin-top: 0;
+                        }
+                        
+                        .label {
+                            font-weight: bold;
+                        }
+
+                        .service-container {
+                            width: 100%;
+                            text-align: center;
+                            font-family: Arial, sans-serif;
+                        }
+                        .service-title {
+                            font-weight: bold;
+                            font-size: 14px;
+                            margin-bottom: 10px;
+                        }
+                        .service-options {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 20px;
+                            justify-content: center;
+                            padding: 5px;
+                        }
+                        .service-options label {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-size: 12px;
+                            padding: 5px;
+                            white-space: nowrap;
+                        }
+                        .service-options input {
+                            vertical-align: middle;
+                            transform: scale(1.2); /* Aumenta ligeramente el tamaño del checkbox */
+                        }
+                    </style>
+
+                    <div class="page">
+                        <div class="row mb-4">
+                            <div class="col-12 text-right">
+                                <span class="report-number">N° <t t-esc="str(doc.id).zfill(7)"/></span>
+                                <h4>Reporte de Servicio</h4>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <tr>
+                                <td width="33%" class="label">Fecha de Servicio</td>
+                                <td width="33%" class="label">Equipo</td>
+                                <td width="33%" class="label">Marca</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <t t-if="doc.timesheet_ids">
+                                        <span t-field="doc.timesheet_ids[0].date"/>
+                                    </t>
+                                </td>
+                                <td><span t-field="doc.helpdesk_ticket_id.product_id"/></td>
+                                <td>
+                                    <span t-field="doc.helpdesk_ticket_id.x_studio_marca" />
+                                    <!-- <span t-field="doc.helpdesk_ticket_id.x_studio_related_field_gJ8nu" /> -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cliente</td>
+                                <td class="label">Modelo</td>
+                                <td class="label">N° Serie</td>
+                            </tr>
+                            <tr>
+                                <td><span t-esc="doc.helpdesk_ticket_id.partner_id.display_name"/></td>
+                                <td>
+                                    <span t-field="doc.helpdesk_ticket_id.x_studio_related_field_PioGN" />
+                                    <!-- <span t-field="doc.helpdesk_ticket_id.x_studio_cdigo_cliente" /> -->
+                                </td>
+                                <td><span t-esc="str(doc.helpdesk_ticket_id.lot_id.name or '') + ' / ID Cliente: ' + str(doc.helpdesk_ticket_id.x_studio_cdigo_cliente_1 or '')"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">N° Contrato:</td>
+                                <td colspan="2" class="label">Descripción de falla</td>
+                            </tr>
+                                <td><span t-field="doc.helpdesk_ticket_id.nro_contrato"/>.</td>
+                                <td colspan="2" rowspan="4"><span t-field="doc.descripcion_falla"/>.</td>
+                            <tr>
+                            </tr>
+                            <tr>
+                                <td class="label">Persona de contacto:</td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="doc.helpdesk_ticket_id.atencion_de"/>.</td>
+                            </tr>
+                        </table>
+
+                        <div class="service-container">
+                            <div class="service-title">Tipo de Servicio</div>
+                            <div class="service-options">
+                                <t t-foreach="tags" t-as="tag">
+                                    <t t-if="tag in doc.helpdesk_ticket_id.tag_ids">
+                                        <label>
+                                            <input type="checkbox" t-att-checked="True"/> 
+                                            <t t-esc="tag.name"/> 
+                                        </label>
+                                    </t>
+                                    <t t-elif="tag not in doc.helpdesk_ticket_id.tag_ids">
+                                        <label>
+                                            <input type="checkbox" t-att-checked="False"/> 
+                                            <t t-esc="tag.name"/> 
+                                        </label>
+                                    </t>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="label">Descripción del Trabajo Realizado</span>
+                            <div class="text-area trabajo-realizado">
+                                <span t-field="doc.descripcion_trabajo"/>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 mb-3">
+                            <span class="label">Materiales Reemplazados</span>
+                            <div class="text-area materiales">
+                                <span t-field="doc.materiales_reemplazado"/>
+                            </div>
+                        </div>
+
+                        <t t-if="doc.worksheet_count and doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)">
+                            <div class="mt-3 mb-3">
+                                <span class="label">Hoja de trabajo</span>
+                                <div class="text-area materiales">
+                                    <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
+                                    <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-elif="doc.comment">$0</t>
+
+                        <div name="worksheet_task_timesheet">
+                            <t t-set='is_uom_day' t-value='doc.timesheet_ids._is_timesheet_encode_uom_day()'/>
+                            <t t-if="doc.allow_timesheets and doc.timesheet_ids">
+                                <span class="label">Parte de horas</span>
+                                <div t-attf-class="#{'table-responsive-sm' if report_type != 'pdf' else ''}">
+                                <table class="table table-sm o_main_table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-start">Fecha</th>
+                                            <th class="text-start">Trabajador</th>
+                                            <th class="text-start">Descripcion</th>
+                                            <th class="text-start">Hora de inicio</th>
+                                            <th class="text-start">Hora de fin</th>
+                                            <th t-if="is_uom_day" class="text-end">Dias dedicados</th>
+                                            <th t-else="" class="text-end">Horas dedicadas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <t t-foreach="doc.timesheet_ids" t-as="line">
+                                            <tr t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">
+                                                <td>
+                                                    <span t-field="line.date" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.employee_id.name" />
+                                                </td>
+                                                <td class="text-start">
+                                                    <span t-field="line.display_name" />
+                                                </td>
+                                                <td class="text-start">
+                                                    <span t-field="line.hora_inicio" t-options="{'widget': 'float_time'}" />
+                                                </td>
+                                                <td class="text-start">
+                                                    <span t-field="line.hora_fin" t-options="{'widget': 'float_time'}" />
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="is_uom_day">
+                                                        <span t-out="line._convert_hours_to_days(line.unit_amount)"
+                                                            t-options="{&quot;widget&quot;: &quot;timesheet_uom&quot;}" />
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-out="line.unit_amount" t-options="{'widget': 'float_time'}" />
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-end">
+                                    <div t-attf-class="#{'col-sm-2' if report_type == 'pdf' else 'col-auto'}">
+                                        <table class="table table-sm">
+                                            <tr class="border-black o_total">
+                                                <td colspan="4" class="text-end">
+                                                    <strong class="me-2">Total</strong>
+                                                    <t t-if="is_uom_day">
+                                                        <t t-out="line._convert_hours_to_days(doc.effective_hours)"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-field="doc.effective_hours" t-options='{"widget": "float_time"}'/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </t>
+                        </div>
+
+                        <div class="footer o_background_footer">
+                            <div class="row mt-4">
+                                <div class="col-6 text-center">
+                                    <div style="width: 80%; margin: 0 auto;">
+                                        <div
+                                            style="border-top: 1px solid black; margin-top: 50px; padding-top: 5px;">
+                                            <span t-field="doc.helpdesk_ticket_id.user_id.name" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 text-center">
+                                    <div style="width: 80%; margin: 0 auto;">
+                                        <div
+                                            style="border-top: 1px solid black; margin-top: 50px; padding-top: 5px;">
+                                            <span t-field="doc.helpdesk_ticket_id.atencion_de.name" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="informes_servicios.informe_servicio_paper_format" model="report.paperformat">
+			<field name="name">Informe de servicio</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">96</field>
+		</record>
+
+        <record id="action_reporte_servicio" model="ir.actions.report">
+            <field name="name">Reporte de servicio</field>
+            <field name="model">project.task</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">informes_servicios.reporte_servicios</field>
+            <field name="report_file">informes_servicios.reporte_servicios</field>
+            <field name="binding_model_id" ref="model_project_task"/>
+            <field name="paperformat_id" ref="informes_servicios.informe_servicio_paper_format" />
+            <field name="binding_type">report</field>
+        </record>    
+    </data>
+</odoo>

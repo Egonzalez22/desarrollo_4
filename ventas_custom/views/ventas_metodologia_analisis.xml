@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- tree view -->
+		<record id="metodologia_analisis_tree_view" model="ir.ui.view">
+			<field name="name">metodologia.analisis.tree.view</field>
+			<field name="model">ventas.metodologia_analisis</field>
+			<field name="arch" type="xml">
+				<tree string="Metodología Análisis">
+					<field name="name" />
+					<field name="company_id" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- formulario -->
+		<record id="metodologia_analisis_form_view" model="ir.ui.view">
+			<field name="name">Metodología Análisis.form.view</field>
+			<field name="model">ventas.metodologia_analisis</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="company_id" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- act window -->
+		<record id="metodologia_analisis_action_window" model="ir.actions.act_window">
+			<field name="name">Metodología Análisis</field>
+			<field name="res_model">ventas.metodologia_analisis</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Agregamos el menu en la parte superior, en el menu de ventas configuracion -->
+		<menuitem
+			id="menu_metodologia_analisis"
+			name="Metodología Análisis"
+			action="metodologia_analisis_action_window"
+			parent="ventas_custom_menu_content" 
+			sequence="6" />
+
+	</data>
+</odoo>

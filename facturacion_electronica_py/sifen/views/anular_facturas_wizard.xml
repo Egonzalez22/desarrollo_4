@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- cancelar factura -->
+        <record id="cancelar_factura_wizard_form" model="ir.ui.view">
+            <field name="name">cancelar.wizard.form</field>
+            <field name="model">fe.cancelar_wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="motivo" string="Motivo de cancelación" />
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Confirmar" type="object" class="btn-primary" />
+                        <button name="action_cancel" string="Cerrar" type="object" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- inutilizar factura individual -->
+        <record id="inutilizar_factura_wizard_form" model="ir.ui.view">
+            <field name="name">inutilizar.wizard.form</field>
+            <field name="model">fe.inutilizar_wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="motivo" string="Motivo de inutilización" />
+                        <field name="fact_inicio" readonly="1" />
+                        <field name="fact_fin" readonly="1" />
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Confirmar" type="object" class="btn-primary" />
+                        <button name="action_cancel" string="Cerrar" type="object" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- inutilizar rango de nros de facturas -->
+        <record id="inutilizar_rango_factura_wizard_form" model="ir.ui.view">
+            <field name="name">inutilizar.rango.wizard.form</field>
+            <field name="model">fe.inutilizar_wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="motivo" string="Motivo de inutilización" />
+                        <field name="tipo_documento_electronico" />
+                        <field name="journal_id" />
+                        <field name="nro_timbrado" readonly="1" force_save="1" />
+                        <field name="establecimiento" readonly="1" force_save="1" />
+                        <field name="punto_expedicion" readonly="1" force_save="1" />
+                        <field name="fact_inicio" />
+                        <field name="fact_fin" />
+                    </group>
+                    <footer>
+                        <button name="action_confirm_rango" string="Confirmar" type="object" class="btn-primary" />
+                        <button name="action_cancel" string="Cerrar" type="object" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- act window -->
+        <record id="inutilizar_action_window" model="ir.actions.act_window">
+            <field name="name">Inutilizar rango de Facturas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fe.inutilizar_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="inutilizar_rango_factura_wizard_form" />
+            <field name="target">new</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <menuitem id="menu_inutilizar_rango_wizard" name="Inutilizar rango de facturas" action="inutilizar_action_window" parent="sifen_menu" groups="sifen.inutilizar_rango" sequence="2" />
+
+    </data>
+</odoo>

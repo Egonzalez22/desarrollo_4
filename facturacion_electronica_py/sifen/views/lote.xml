@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- tree view -->
+        <record id="lote_tree_view" model="ir.ui.view">
+            <field name="name">lote.tree.view</field>
+            <field name="model">fe.lote</field>
+            <field name="arch" type="xml">
+                <tree string="Lote" default_order='create_date desc'>
+                    <header>
+                        <!-- <button string="Facturar" type="object" name="button_facturar" /> -->
+                        <!-- <button string="Confirmar" type="object" name="button_confirmar" attrs="{'invisible':[('state','!=','draft')]}" class="oe_highlight"/>
+                        <button string="Cambiar a borrador" type="object" name="button_borrador" attrs="{'invisible':[('state','!=','cancel')]}"/> -->
+                    </header>
+
+                    <field name="name"/>
+                    <field name="tipo_documento_electronico"/>
+                    <field name="estado_set"/>
+                    <field name="estado_lote"/>
+                    <field name="fecha_procesamiento"/>
+                    <field name="codigo_resultado" string="Cod. Res"/>
+                    <field name="mensaje_resultado"/>
+                    <field name="numero_lote"/>
+                    <field name="invoice_ids"/>
+                    <field name="remision_ids"/>
+                    <field name="lote_loggers_ids"/>
+                    <field name="intento_envio"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- formulario -->
+        <record id="lote_form_view" model="ir.ui.view">
+            <field name="name">lote.form.view</field>
+            <field name="model">fe.lote</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="tipo_documento_electronico"/>
+                            <field name="estado_set"/>
+                            <field name="estado_lote"/>
+                            <field name="fecha_procesamiento"/>
+                            <field name="codigo_resultado" string="Cod. Res"/>
+                            <field name="mensaje_resultado"/>
+                            <field name="numero_lote"/>
+                            <field name="tiempo_procesamiento" string="Tiempo Proc."/>
+                            <field name="intento_envio"/>
+                            <field name="zipfile"/>
+                            <field name="invoice_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <!-- <field name="partner_id" string="Receptor" /> -->
+                                    <!-- <field name="invoice_date" string="Fecha" /> -->
+                                    <!-- <field name="amount_total_in_currency_signed" string="Total" /> -->
+                                    <field name="mensaje_set" />
+                                    <field name="cdc" />
+                                    <field
+                                            name="estado_set"
+                                            string="Estado SET"
+                                            widget="badge"
+                                            decoration-warning="estado_set == 'preparado'"
+                                            decoration-info="estado_set in ['ingresado', 'lote_reenviando']"
+                                            decoration-success="estado_set == 'aprobado'"
+                                            decoration-danger="estado_set in ['rechazado', 'inutilizado', 'cancelado', 'error_sifen', 'lote_rechazado']"
+                                            optional="show"
+                                    />
+                                </tree>
+                            </field>
+                            <field name="remision_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <!-- <field name="partner_id" string="Receptor"/> -->
+                                    <!-- <field name="invoice_date" string="Fecha" /> -->
+                                    <!-- <field name="amount_total_in_currency_signed" string="Total" /> -->
+                                    <field name="mensaje_set"/>
+                                    <field name="cdc"/>
+                                    <field
+                                            name="estado_set"
+                                            string="Estado SET"
+                                            widget="badge"
+                                            decoration-warning="estado_set == 'preparado'"
+                                            decoration-info="estado_set in ['ingresado', 'lote_reenviando']"
+                                            decoration-success="estado_set == 'aprobado'"
+                                            decoration-danger="estado_set in ['rechazado', 'inutilizado', 'cancelado', 'error_sifen', 'lote_rechazado']"
+                                            optional="show"
+                                    />
+                                </tree>
+                            </field>
+                            <field name="lote_loggers_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="status_code"/>
+                                    <field name="accion"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- act window -->
+        <record id="lote_action_window" model="ir.actions.act_window">
+            <field name="name">Lote</field>
+            <field name="res_model">fe.lote</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Agregamos el menu en la parte superior, en el menu de contabilidad -->
+        <menuitem id="sifen_menu" name="SIFEN" parent="account.menu_finance_configuration" sequence="10">
+            <menuitem id="menu_lote" name="Lote de Facturas" action="lote_action_window" groups="sifen.ver_lote" sequence="1"/>
+        </menuitem>
+
+    </data>
+</odoo>

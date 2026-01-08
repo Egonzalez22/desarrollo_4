@@ -1,0 +1,291 @@
+<odoo>
+	<data>
+		<!-- Equipos analiticos -->
+		<template id="informes_servicios.solicitud_servicio">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.basic_layout">
+					<link rel='stylesheet' href="/informes_servicios/static/src/css/informes.css" />
+					<style>
+					</style>
+
+					<div class="page">
+						<!-- # Cabecera -->
+						<div class="header">
+							<link rel='stylesheet'
+								href="/informes_servicios/static/src/css/informes.css" />
+
+							<div class="border">
+								<div class="col-25 p-6">
+									<div id="logo">
+										<img t-att-src='image_data_uri(o.company_id.logo)'
+											style="width: 100%" />
+									</div>
+								</div>
+
+								<div class="col-50 text-center" style="padding-top:22px; font-size: 22px; font-weight:bold"> SOLICITUD
+									DE SERVICIO DE <br /> CALIBRACIÓN O CALIFICACIÓN </div>
+
+								<div class="col-25 font-11">
+									<div class="linea">
+										<div class="col-50">Código</div>
+										<div class="col-50">SU-RE-018</div>
+
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea">
+										<div class="col-50">Vigencia</div>
+										<div class="col-50">21-12-2023</div>
+
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea">
+										<div class="col-50">Versión</div>
+										<div class="col-50">06</div>
+
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea no-border">
+										<div class="col-50">Página</div>
+										<div class="col-50"><span class="page" /> de <span class="topage" /></div>
+
+										<div class="clearfix"></div>
+									</div>
+
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<!-- # Asunto -->
+						<div id="asunto" class="border">
+							<div class="linea">
+								<div class="col-25 title-desc">SOLICITUD N°</div>
+								<div class="col-25 text-left">
+									<span t-esc="o.id" />
+								</div>
+
+								<div class="col-25 title-desc">FECHA SOLICITUD</div>
+								<div class="col-25 text-left">
+									<span t-esc="o.create_date.strftime('%d-%m-%Y %H:%M:%S')" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">EMPRESA</div>
+								<div class="col-75 text-left">
+									<span t-field="o.partner_id" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">SOLICITANTE</div>
+								<div class="col-25 text-left">
+									<span t-field="o.atencion_de" />
+								</div>
+
+								<div class="col-25 title-desc">EMAIL/TELEFONO</div>
+								<div class="col-25">
+									<span t-field="o.partner_phone" />
+									<span t-field="o.email_cc" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea no-border">
+								<div class="col-25 title-desc">COTIZACIÓN N°</div>
+								<div class="col-25"></div>
+
+								<div class="col-25 title-desc">FACTURA N°</div>
+								<div class="col-25"></div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<!-- # Detalles -->
+						<div class="border" style="margin-bottom:10px">
+							<div id="titulo" class="title-desc text-center bold">SERVICIO DE
+								CALIBRACIONES</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">Equipos</div>
+								<div class="col-75 title-desc text-center">DESCRIPCIÓN</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25">
+									<div class="linea no-border">
+										<div class="col-25 title-desc">UV</div>
+										<div class="col-25"></div>
+										<div class="col-25 title-desc">IR</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="col-75">
+
+								</div>
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6">
+								<div class="col-25">Equipo N° de Serie</div>
+								<div class="col-75 text-left">
+									<span t-field="o.product_id.default_code" />
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6">
+								<div class="col-50">Calibración para Instalación (IQ)</div>
+								<div class="col-50">Calibración de la Operación (OQ)</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6 no-border">
+								<div class="col-50">Calibración del Instrumento Analítico (PQ)</div>
+								<div class="col-50">Cantidad de Calibraciones</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+						</div>
+
+						<div class="border">
+							<div id="titulo" class="title-desc text-center bold">SERVICIO DE
+								CALIFICACIONES</div>
+
+							<div class="linea">
+								<div class="col-25 title-desc">Equipos</div>
+								<div class="col-75 title-desc text-center">DESCRIPCIÓN</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea">
+								<div class="col-25">
+									<div class="linea">
+										<div class="col-25 title-desc">HPLC</div>
+										<div class="col-25"></div>
+										<div class="col-25 title-desc">LCMS</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea">
+										<div class="col-25 title-desc">HPLC</div>
+										<div class="col-25"></div>
+										<div class="col-25 title-desc">LCMS</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea">
+										<div class="col-25 title-desc">HPLC</div>
+										<div class="col-25"></div>
+										<div class="col-25 title-desc">LCMS</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea">
+										<div class="col-25 title-desc">HPLC</div>
+										<div class="col-25"></div>
+										<div class="col-25 title-desc">LCMS</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="linea no-border">
+										<div class="col-75 title-desc">POLARIMETRO</div>
+										<div class="col-25"></div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="col-75">
+
+								</div>
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6">
+								<div class="col-25">Equipo N° de Serie</div>
+								<div class="col-75"></div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6">
+								<div class="col-50">Calibración para Instalación (IQ)</div>
+								<div class="col-50">Calibración de la Operación (OQ)</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="linea p-6 no-border">
+								<div class="col-50">Calibración del Instrumento Analítico (PQ)</div>
+								<div class="col-50">Cantidad de Calificaciones</div>
+
+								<div class="clearfix"></div>
+							</div>
+
+						</div>
+						<div style="padding-top:5px">Marcar con una X el servicio realizado</div>
+
+
+						<!-- # Firma -->
+						<div id="firma">
+
+							<span class="firma_derecho bold">
+								<t t-set="employee" t-value="o.get_employee()" />
+								<t t-if="employee">
+									<span t-esc="employee[0]" />
+								</t>
+							</span>
+
+						</div>
+
+					</div>
+				</t>
+			</t>
+		</template>
+
+
+		<record id="informes_servicios.informe_paper_format" model="report.paperformat">
+			<field name="name">Formato Impresión Servicios</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_bottom">10</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">96</field>
+		</record>
+
+		<record model="ir.actions.report" id="informes_servicios.solicitud_servicio_action">
+			<field name="name">Solicitud de Servicio</field>
+			<field name="model">helpdesk.ticket</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="paperformat_id" ref="informes_servicios.informe_paper_format" />
+			<field name="report_name">informes_servicios.solicitud_servicio</field>
+			<field name="print_report_name">'Solicitud %s' % (object.name or '')</field>
+			<field name="binding_model_id" ref="model_helpdesk_ticket" />
+		</record>
+
+	</data>
+</odoo>

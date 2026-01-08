@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- clonar_pricelist.wizard.clonar form view -->
+            <record id="clonar_pricelist.wizard_clonar_form" model="ir.ui.view">
+                <field name="name">clonar pricelist wizard form</field>
+                <field name="model">clonar_pricelist.wizard.clonar</field>
+                <field name="arch" type="xml">
+                    <form >
+                        <sheet>
+                        <p>
+                        Seleccione la tarifa a ser clonada.
+			</p>
+			<p>
+                        Se eliminarán los items de tipo 'Precio fijo de la tarifa actual'.
+			</p>
+			<p>
+			Sólo serán copiados los items de tipo 'Precio fijo'.
+                        Los demás ítems permanecerán intactos.
+			</p>	
+			<p>	
+			Los precios se convertirán a la moneda de la tarifa actual según la tasa de cambio más reciente registrada.
+                        </p>
+                            <group>
+                                <group>
+                                    <field name="dest_pricelist_id" readonly="True"/>
+                                    <field name="origin_pricelist_id" domain="[('id','!=',dest_pricelist_id)]"/>
+                                </group>
+                            </group>
+                        </sheet>
+                        <footer>
+                            <button string="Confirmar" type="object" name="button_confirm" class="oe_highlight"/>
+                            <button string="Cancelar" special="cancel"/>                        
+                        </footer>
+                    </form>
+                </field>
+            </record>
+            
+        </data>
+</odoo>

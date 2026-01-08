@@ -1,0 +1,223 @@
+<odoo>
+	<data>
+		<template id="informes_presupuestos.presupuesto_ventas4">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.basic_layout">
+					<link rel='stylesheet' href="/informes_presupuestos/static/src/css/informes.css" />
+					<div class="page">
+						<!-- Cabecera -->
+						<div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+
+							<!-- Logo principal de la compañía -->
+							<div id="logo_principal" style="flex: 1; text-align: left;">
+								<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width: 150px;"/>
+							</div>
+
+							<!-- Logo acreditado -->
+							<div id="logo_acreditado" style="flex: 1; text-align: center;">
+								<img t-if="o.company_id.logo_acreditado" t-att-src="image_data_uri(o.company_id.logo_acreditado)" style="width: 130px;"/>
+							</div>
+
+							<!-- Referencia -->
+							<div id="referencia" style="flex: 1; text-align: right;">
+								<div>Lambaré, <t t-esc="o.get_formatted_date_order()" /></div>
+								<div><strong>Cotización Nro:</strong> <t t-esc="o.name" /></div>
+							</div>
+
+						</div>
+
+						<!-- referencia -->
+						<!-- <div id="referencia">
+							<div>Lambaré, <t t-esc="o.get_formatted_date_order()" /></div>
+							<div><strong>Cotización Nro:</strong> <t t-esc="o.name" /></div>
+						</div> -->
+
+						<!-- titulo informe -->
+						<div id="titulo_informe">
+							<!-- COTIZACION DE SERVICIO DE CALIBRACIÓN Y CALIFICACION -->
+							<span class="bold"  style="font-size: 20px;"><t t-esc="o.sale_order_template_id.name" /></span>
+
+						</div>
+
+						<!-- # Asunto -->
+						<div id="asunto">
+							<p>
+								<strong>Señores</strong> <br />
+								<t t-esc="o.partner_id.name" /><br />
+								Control de Calidad <br />
+								<t t-esc="o.partner_id.street_name" /><br />
+
+								<strong>Atención:</strong> <t t-esc="o.get_related_partner()" /> <br /><br />
+								<span class="underline bold">Presente:</span> <br />
+							</p>
+
+							<p>
+								<strong><t t-esc="o.company_id.name" /> </strong> tiene el agrado de dirigirse a usted y por su intermedio a quien corresponda para presentarle la siguiente cotización de los servicios solicitados: <br />
+
+							</p>
+						</div>
+
+						<!-- # Detalles -->
+						<div id="detalles" class="border">
+							<div class="titulo">
+								<span class="bold"><t t-esc="o.titulo" /> </span>
+							</div>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>P/N</th>
+										<th>Descripción</th>
+										<th>Cant.</th>
+										<th>Precio Unit</th>
+										<th>Precio Total</th>
+									</tr>
+								</thead>
+								<tbody border="1">
+									<t t-set="total" t-value="0" />
+
+									<t t-foreach="o.order_line" t-as="l">
+										<tr>
+											<td>
+												<span t-field="l.product_id.codigo_fabricante" />
+											</td>
+											<td>
+												<span t-field="l.name" />
+											</td>
+											<td class="align-right">
+												<span t-esc="o.get_amount_format(l.product_uom_qty, o.currency_id)" />
+											</td>
+											<td style="width: 100px" class="align-right">
+												<span t-esc="o.get_amount_format(l.price_unit, o.currency_id)" />
+											</td>
+											<td class="align-right">
+												<span t-esc="o.get_amount_format(l.price_unit * l.product_uom_qty, o.currency_id)" />
+											</td>
+										</tr>
+										<!-- Sumamos el total -->
+										<t t-set="total" t-value="total + (l.price_unit*l.product_uom_qty)" />
+									</t>
+								</tbody>
+								<!-- Agregamos el total al footer -->
+								<tfoot>
+									<tr>
+										<td colspan="4" class="align-right">
+											<strong>Total General (IVA Incluido)</strong>
+										</td>
+										<td class="align-right">
+											<strong><t t-esc="o.get_amount_format(total, o.currency_id)" /></strong>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="5" class="align-right">
+											<!-- verificamos si el tipo de moneda es usd -->
+											<t t-if="o.currency_id.name == 'USD'">
+												<strong>Son Dólares americanos <t t-esc="o.amount_to_text(total)" /></strong>
+											</t>
+											<t t-else="">
+												<strong>Son Guaranies <t t-esc="o.amount_to_text(total)" /></strong>
+											</t>
+										</td>
+									</tr>
+									<!-- <tr>
+										<td colspan="5">
+											<strong>Obs:</strong> <t t-esc="o.observacion" />
+										</td>
+									</tr> -->
+								</tfoot>
+							</table>
+						</div>
+						<!-- # referencia -->
+						<div id="referencia">
+							<div class="border" >
+								<table style="width: 100%;">
+									<tbody>
+										<tr>
+											<td  class="titulo" style="width: 30%; font-weight: bold;">
+												REFERENCIA
+											</td>
+											<td style="width: 70%;">
+												<span t-field="o.sale_order_template_id.referencia"/>
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<!-- # Condiciones -->
+						<div class="condiciones" style="page-break-inside: avoid;">
+							<div class="titulo">
+								CONDICIONES GENERALES
+							</div>
+							<t t-raw="o.sale_order_template_id.note"/>
+						</div>
+
+						<div id="areditado">
+							<div class="condiciones_detalles">
+								<span t-field="o.company_id.text_acreditado"/>
+							</div>
+						</div>
+
+						<!-- # Firma -->
+						<div id="firma">
+							<div class="firma_derecho">
+								<t t-set="employee" t-value="o.get_employee()" />
+								Elaborado por <strong><span t-esc="employee[0]"/></strong> <br />
+								<span t-esc="employee[1]"/><br /> <br /> <br />
+							</div>
+							<div class="clearfix"></div>
+
+							<div class="firma_izquierdo">
+								Dirección: Pedro Gill Nº 935 Casi Ytororó <br />
+								Teléfono: (595-21)908-555 <br />
+								Lambaré - Paraguay <br />
+								<a href="http://www.sumi.com.py">www.sumi.com.py</a> <br />
+
+							</div>
+							<div class="firma_derecho">
+								<div t-if="o.sale_order_template_id.acreditado_codigo_vigencia">
+									<t t-esc="o.sale_order_template_id.acreditado_codigo_vigencia" /> <br />
+								</div>
+
+								<div t-if="o.sale_order_template_id.acreditado_fecha">
+									Vigencia: <span t-field="o.sale_order_template_id.acreditado_fecha"/>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+
+						<div class="footer">
+							<link rel='stylesheet' href="/informes_presupuestos/static/src/css/informes.css" />
+
+							<div class="paginas">
+								<span class="page" />/<span class="topage" />
+							</div>
+							<div id="logo_footer">
+								<div class="logo_footer">
+									<!-- <img t-att-src="'/informes_presupuestos/static/src/img/logo1.png'" style="width: 100%" /> -->
+									<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width: 100px;"/>
+								</div>
+							</div>
+
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</t>
+			</t>
+		</template>
+
+
+		<record model="ir.actions.report" id="informes_presupuestos.presupuesto_ventas4_action">
+			<field name="name">Cotización de servicio de calibración y calificación</field>
+			<field name="model">sale.order</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="paperformat_id" ref="informes_presupuestos.informe_paper_format" />
+			<field name="report_name">informes_presupuestos.presupuesto_ventas4</field>
+			<field name="print_report_name">'Presupuesto Calificativo %s' % (object.name or '')</field>
+			<field name="binding_model_id" ref="model_sale_order" />
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- sobreescribimos las lineas de orden de venta -->
+        <record id="ventas_custom.ventas_view_order_form_inherit" model="ir.ui.view">
+            <field name="name">ventas_custom_ventas_view_order_form_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="mostrar_campos_extras" invisible="1" />
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']/tree/field[1]" position="after">
+                    <field name="grupo_id" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=',False)]}" />
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[2]" position="after">
+                    <field name="matriz_id" domain="[('grupo_id','=',grupo_id)]" attrs="{'column_invisible': True}" />
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[3]" position="after">
+                    <field name="metodologia_id" domain="[('matriz_ids','in', matriz_id)]" attrs="{'column_invisible': [('parent.mostrar_campos_extras','=',False)]}" />
+                </xpath>
+
+                <xpath expr="//field[@name='product_template_id']" position="attributes">
+                    <attribute name="string">Producto/Método</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']/tree/field[4]" position="after">
+                    <field name="product_template_id" position="move" />
+                    <!-- Filtramos las sustancias por el producto seleccionado -->
+                    <!-- <field 
+                        name="sustancias_ids" 
+                        attrs="{'column_invisible': [('parent.mostrar_campos_extras','=',False)]}" 
+                        widget="many2many_tags"	
+                        options="{'no_create_edit': True}" 
+                        /> -->
+                        <!-- domain="[('id', 'in', product_id.product_tmpl_id.sustancias_activas_ids.ids)]" -->
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_template_id']" position="attributes">
+                    <attribute name="domain">["|", ('metodologia_ids','in', metodologia_id), ('metodologia_ids', '=', False)]</attribute>                
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

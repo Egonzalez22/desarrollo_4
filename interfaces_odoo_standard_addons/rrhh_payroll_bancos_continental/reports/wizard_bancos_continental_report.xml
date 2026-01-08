@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.report" id="rrhh_payroll_bancos_continental.wizard_bancos_continental_report">
+            <field name="name">Generar archivo TXT para pago de salarios CONTINENTAL</field>
+            <field name="model">wizard_bancos_continental</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">rrhh_payroll_bancos_continental.wizard_bancos_continental_report_t</field>
+            <field name="print_report_name">'TRANSFER'</field>
+        </record>
+        <!--
+        El siguiente template no debe de tener saltos de linea para funcionar correctamente
+        -->
+        <template id="rrhh_payroll_bancos_continental.wizard_bancos_continental_report_t">
+            <t t-set="lines" t-value="docs.get_values_for_report_bancos_continental()"/>
+            <t t-set="count_lines" t-value="0"/>
+            <t t-foreach="lines" t-as="line">
+                <t t-set="count_lines" t-value="count_lines+1"/>
+                <t t-set="count_line_columns" t-value="0"/>
+                <t t-foreach="line" t-as="line_column">
+                    <t t-set="count_line_columns" t-value="count_line_columns+1"/>"<t t-esc="line_column"/>"<t t-if="count_line_columns &lt; len(line)">,</t>
+                </t>
+
+            </t>
+        </template>
+
+    </data>
+
+    <data>
+        <record id="wizard_bancos_continental_view_form" model="ir.ui.view">
+            <field name="name">wizard_bancos_continental_view_form</field>
+            <field name="model">wizard_bancos_continental</field>
+            <field name="arch" type="xml">
+                <form string="wizard_bancos_continental_form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="tipo_novedades_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="print_wizard_bancos_continental_report" string="Imprimir archivo TXT para el Banco CONTINENTAL" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="wizard_bancos_continental_view_action" model="ir.actions.act_window">
+            <field name="name">Generar archivo TXT para en Banco CONTINENTAL</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard_bancos_continental</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem
+                id="wizard_bancos_continental_menuitem"
+                name="Generar TXT para Banco CONTINENTAL - Novedades"
+                parent="hr_payroll.menu_hr_payroll_report"
+                action="wizard_bancos_continental_view_action"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,281 @@
+<odoo>
+    <data>
+        <template id="facturacion_electronica_py.autofactura">
+            <t t-call="web.basic_layout">
+            <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_kude.css" />
+            <style>
+            </style>
+
+            <div class="page">
+
+                <!-- cabecera, se repite en todas las paginas. Se debe jugar con los valores de margin_top y header_spacing -->
+                <div class="header" style="height: 83mm !important;">
+                    <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_kude.css" />
+                    <style>
+                    </style>
+
+                   <div class="header-container">
+                        <div class="header-center">
+                            <!-- emisor -->
+                            <table id="table_emisor" class="border-table" style="margin-bottom:4px">
+                                <!-- <div class="text-center" style="background-color: #f2f2f2"> -->
+                                <div class="text-center">
+                                    <span class="text-center fs-12" id="tipo_documento_titulo">
+                                        KuDE de Autofactura Electrónica
+                                    </span>
+                                </div>
+                                <tr>
+                                    <!-- logo -->
+                                    <td style="vertical-align:middle; border-style:none !important; width:15%; text-align:center">
+                                        <div style="max-width:125px;max-height:125px;margin:5px">
+                                            <img t-att-src='image_data_uri(o.company_id.logo)' style="width: 100%" />
+                                        </div>
+                                    </td>
+                                    <td style="padding:10px;width:55%" class="fs-11">
+                                        <span t-field="o.company_id" class="fs-16 bold" />
+                                        <br />
+                                        <span t-field="o.company_id.des_actividad_economica" />
+                                        <br />
+                                        <span t-field="o.company_id.street" />
+                                        <br />
+                                        <t t-if="o.company_id.city">
+                                            <span t-field="o.company_id.city" />
+                                        </t>
+                                        <t t-if="o.company_id.country_id">
+                                            <span> - </span>
+                                            <span t-field="o.company_id.country_id" />
+                                        </t>
+                                        <br />
+                                        <strong>Tel: </strong>
+                                        <span t-field="o.company_id.phone" />
+                                        <br />
+                                        <strong>Email: </strong>
+                                        <span t-field="o.company_id.email" />
+                                    </td>
+                                    <td style="padding:10px;width:25%" class="fs-12">
+                                        <span class="bold">RUC:</span>
+                                        <span t-field="o.company_id.vat" />
+                                        <br />
+        
+                                        <span class="bold">Timbrado N°:</span>
+                                        <t t-foreach="o.journal_id.timbrados_ids.filtered(lambda x:x.tipo_documento==o.tipo_documento)"
+                                            t-as="timb">
+                                            <t t-if="timb.active == 1 ">
+                                                <span t-field="timb.name" />
+                                            </t>
+                                        </t>
+                                        <br />
+                                        <t t-foreach="o.journal_id.timbrados_ids.filtered(lambda x:x.tipo_documento==o.tipo_documento)"
+                                            t-as="timb">
+                                            <span class="bold">Inicio de vigencia: </span>
+                                            <span>
+                                                <t t-if="timb.active == 1 ">
+                                                    <span t-esc="timb.inicio_vigencia.strftime('%d/%m/%Y')" />
+                                                </t>
+                                            </span>
+                                        </t>
+                                        <br />
+                                        <p class="bold">AUTOFACTURA N°:</p>
+                                        <span t-field="o.name" />
+                                    </td>
+                                </tr>
+                            </table>
+        
+                            <!-- receptor -->
+                            <table id="table_receptor" class="border-table font-small">
+                                <tr>
+                                    <td style="padding-top:10px">
+                                        <span class="bold">Fecha y hora de emisión: </span>
+                                        <span t-field="o.invoice_datetime" />
+                                    </td>
+                                    <td>
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="bold">Nombre y Apellido del Vendedor: </span>
+                                        <span t-field="o.partner_id" />
+                                    </td>
+                                    <td>
+                                        <span class="bold">Tipo de Documento: </span>
+                                        <span t-field="o.partner_id.tipo_documento" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="bold">Dirección del Vendedor: </span>
+                                        <span t-field="o.partner_id.street" />
+                                    </td>
+                                    <td>
+                                        <span class="bold">Documento de Identidad: </span>
+                                        <span t-field="o.partner_id.nro_documento" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="bold">Lugar de Transacción: </span>
+                                        <span t-field="o.company_id.street" />
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom:10px">
+                                        <span class="bold">Razón Social del Comprador: </span>
+                                        <span t-field="o.company_id.nombre_contribuyente" />
+                                    </td>
+                                    <td style="padding-bottom:10px">
+                                        <span class="bold">RUC del Comprador: </span>
+                                        <span t-field="o.company_id.vat" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                   </div>
+
+                </div>
+
+                <div>
+                    <!-- marca de agua -->
+                    <div style="position:absolute;opacity:0.20;z-index:1000;transform:rotate(310deg);-webkit-transform:rotate(310deg);width:50%;margin-left:150px;margin-top:300px">
+                        <p id="marca_agua" style="font-size:40px">
+                            <t t-esc="mensaje_marca_agua" />
+                        </p>
+                    </div>
+                    
+                    <!-- contenido del kude -->
+                    <table id="table_detalles" class="table table-condensed t-detalle fs-11" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th class="lineaDetalle bold" style="width:10%">
+                                    Cod.
+                                </th>
+                                <th class="lineaDetalle bold" style="width:10%">
+                                    Cant.
+                                </th>
+                                <th class="lineaDetalle text-center bold" style="width:50%">
+                                    Descripción
+                                </th>
+                                <th class="lineaDetalle bold" style="width:10%">
+                                    P. unit.
+                                </th>
+                                <th class="lineaDetalle bold" style="width:20%">
+                                    Valor de la Venta
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="subtotalExentas" t-value="0" />
+                            <t t-set="subtotalCinco" t-value="0" />
+                            <t t-set="subtotalDiez" t-value="0" />
+                            
+                            <t t-foreach="o.get_lineas_facturables()" t-as="l">
+                                <!-- solo mostramos si la cantidad es mayor a 0 -->
+                                <tr t-if="l.quantity > 0">
+                                    <!-- codigo -->
+                                <td class="lineaDetalle" style="width:5%">
+                                    <t t-if="l.product_id and l.product_id.default_code">
+                                        <span t-field="l.product_id.default_code" />
+                                    </t>
+                                    <t t-else="">
+                                        <span></span>
+                                    </t>
+                                </td>
+                                <!-- cantidad -->
+                                <td class="lineaDetalle" style="width:5%">
+                                    <span t-esc="l.quantity" />
+                                </td>
+                                <!-- descripcion -->
+                                <td class="lineaDetalle text-center" style="width:40%">
+                                    <t t-esc="l.name" />
+                                </td>
+                                <!-- precio unit -->
+                                <td class="lineaDetalle" style="width:10%">
+                                    <span t-esc="o.format_monto_kude(l.price_unit)" />
+                                </td>
+
+                                <!-- exenta -->
+                                <t t-if="l.tax_ids.amount==0.0000" style="width:10%">
+                                    <td class="lineaDetalle" style="width:15%">
+                                        <t t-set="subtotal1" t-value="l.getdTotOpeItem()" />
+                                        <span t-esc="o.format_monto_kude(subtotal1)" />
+                                        <t t-set="subtotalExentas" t-value="subtotalExentas+subtotal1" />
+                                    </td>
+                                </t>
+                                </tr>
+                            </t>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- footer, se repite en todas las paginas. El alto debe coincidir o ser similar al margin bottom del paperformat  -->
+                <div class="footer" style="height: 60mm !important;">
+                    <link rel='stylesheet' href="/facturacion_electronica_py/static/src/css/style_kude.css" />
+                    <style>
+                    </style>
+
+                    <div class="footer-container">
+                        <div>
+                             <!-- informacion de totales -->
+                            <table id="table_totales" class="border-table fs-11" style="margin-bottom: 10px;">
+                                <tr class="fs-14" style="background-color: #f2f2f2">
+                                    <td colspan="6">
+                                        <span class="bold">TOTAL A PAGAR: </span>
+                                        <span t-esc="o.amount_to_text_fe(o.get_amount_total(), o.currency_id)" />
+                                    </td>
+                                    <td class="text-right" style="width:10%">
+                                        <t t-set="totalPagarNumeros" t-value="o.get_amount_total()" />
+                                        <span class="text-right" t-esc="o.format_monto_kude(totalPagarNumeros)" />
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- información del código QR -->
+                            <table id="table_qr_informacion" class="border-table fs-11">
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <div style="width: 18%; float:left;">
+                                                <div style="max-width:120px; max-height:120px; margin: 0 auto;">
+                                                    <img t-att-src="image_data_uri(o.fe_qr_code)" style="width:100%" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 82%; float:left; margin-top:5px">
+                                                <!-- QR y aclaracion  -->
+                                                <div>
+                                                    Consulte la validez de esta Autofactura Electrónica con el número de CDC impreso abajo en: <br /> 
+                                                    https://ekuatia.set.gov.py/consultas/
+                                                    <p style="margin: 5px 0px">
+                                                        <span>CDC: </span>
+                                                        <span class="cdc-content">
+                                                            <span t-esc="o.separar_cdc(o.cdc)" />
+                                                        </span>
+                                                    </p>
+                                                    <span class="bold">
+                                                        ESTE DOCUMENTO ES UNA REPRESENTACIÓN GRÁFICA DE UN DOCUMENTO ELECTRÓNICO (XML)
+                                                    </span>
+                                                    <br />
+                                                    Si su documento electrónico presenta algún error puede solicitar la modificación
+                                                    dentro de las 72 horas siguientes a la emisión de este comprobante
+                                                </div>
+                                                    
+                                                <!-- página del kude -->
+                                                <div class="col-xs-12 pull-right">
+                                                    <span>Página </span>
+                                                    <span class="page" />/<span class="topage" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+        </template>
+    </data>
+</odoo>

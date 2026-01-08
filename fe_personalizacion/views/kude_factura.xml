@@ -1,0 +1,107 @@
+<odoo>
+    <data>
+
+        <template id="fe_personalizacion.kude" inherit_id="facturacion_electronica_py.factura">
+
+
+            <!-- Ajustes en la cabecera -->
+            <xpath expr="//table[@id='table_receptor']/tr[5]" position="replace">
+                <tr>
+                    <td>
+                        <span class="bold">Teléfono: </span>
+                        <span t-field="o.partner_id.phone" />
+                    </td>
+                    <td>
+                        <span class="bold">Tipo de operación: </span>
+                        <span t-field="o.iTipTra" />
+                    </td>
+                </tr>
+                <tr style="padding-bottom:10px">
+                    <td t-if="o.move_type=='out_invoice'">
+                        <span class="bold">Presupuesto: </span>
+                        <span t-esc="o.invoice_origin" />
+                    </td>
+                    <td></td>
+                </tr>
+            </xpath>
+
+            <!-- Reemplazamos el grupo de detalles -->
+            <xpath expr="//table[@id='table_detalles']/tbody" position="replace">
+                <tbody>
+                    <t t-set="subtotalExentas" t-value="0" />
+                    <t t-set="subtotalCinco" t-value="0" />
+                    <t t-set="subtotalDiez" t-value="0" />
+
+                    <t t-foreach="o.invoice_line_ids" t-as="l">
+                        <!-- solo mostramos si la cantidad es mayor a 0 -->
+                        <tr t-if="l.quantity > 0">
+                            <!-- codigo -->
+                            <td class="lineaDetalle" style="width:5%; white-space: nowrap;">
+                                <t t-if="l.product_id and l.product_id.default_code">
+                                    <span t-field="l.product_id.default_code" />
+                                </t>
+                                <t t-else="">
+                                    <span></span>
+                                </t>
+                            </td>
+                            <!-- cantidad -->
+                            <td class="lineaDetalle" style="width:5%">
+                                <span t-esc="l.quantity" />
+                            </td>
+                            <!-- descripcion -->
+                            <td class="lineaDetalleIzquierda" style="width:40%">
+                                <t t-esc="l.getdDesProSer()" />
+                            </td>
+                            <!-- precio unit -->
+                            <td class="lineaDetalle" style="width:10%">
+                                <span t-esc="o.format_monto_kude(l.price_unit)" />
+                            </td>
+                            <!-- descuento -->
+                            <td class="lineaDetalle" style="width:10%">
+                                <t t-if="l.getdDescItem() > 0">
+                                    <span t-esc="o.format_monto_kude(l.getdDescItem())" />
+                                </t>
+                                <t t-if="l.getdDescGloItem() > 0">
+                                    <span t-esc="o.format_monto_kude(l.getdDescGloItem())" />
+                                </t>
+                            </td>
+                            <!-- exenta -->
+                            <t t-if="l.tax_ids.amount==0.0000" style="width:10%">
+                                <td class="lineaDetalle" style="width:7%">
+                                    <t t-set="subtotal1" t-value="l.getdTotOpeItem()" />
+                                    <span t-esc="o.format_monto_kude(subtotal1)" />
+                                    <t t-set="subtotalExentas" t-value="subtotalExentas+subtotal1" />
+                                </td>
+                                <td class="lineaDetalle" style="width:7%" />
+                                <td class="lineaDetalle" style="width:7%" />
+                            </t>
+                            <!-- monto iva 5 -->
+                            <t t-if="l.tax_ids.amount==5.0000" style="width:10%">
+                                <td class="lineaDetalle" style="width:7%" />
+                                <td class="lineaDetalle" style="width:7%">
+                                    <t t-set="subtotal1" t-value="l.getdTotOpeItem()" />
+                                    <span t-esc="o.format_monto_kude(subtotal1)" />
+                                    <t t-set="subtotalCinco" t-value="subtotalCinco+subtotal1" />
+                                </td>
+                                <td class="lineaDetalle" style="width:7%" />
+                            </t>
+                            <!-- monto iva 10 -->
+                            <t t-if="l.tax_ids.amount==10.0000" style="width:10%">
+                                <td class="lineaDetalle" style="width:7%" />
+                                <td class="lineaDetalle" style="width:7%" />
+                                <td class="lineaDetalle" style="width:7%">
+                                    <t t-set="subtotal1" t-value="l.getdTotOpeItem()" />
+                                    <span t-esc="o.format_monto_kude(subtotal1)" />
+                                    <t t-set="subtotalDiez" t-value="subtotalDiez+subtotal1" />
+                                </td>
+                            </t>
+                        </tr>
+                    </t>
+
+                </tbody>
+            </xpath>
+
+
+        </template>
+    </data>
+</odoo>

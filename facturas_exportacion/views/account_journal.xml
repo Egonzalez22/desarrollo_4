@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<record id="view_account_journal_form_inherit_facturas_exportacion" model="ir.ui.view">
+			<field name="name">view.account.journal.form.inherit.facturas.exportacion</field>
+			<field name="model">account.journal</field>
+			<field name="inherit_id" ref="account.view_account_journal_form" />
+			<field name="arch" type="xml">
+
+        <!-- Agregamos un check para indicar si es factura de exportacion -->
+				<xpath expr="//field[@name='type']" position="after">
+          			<field name="es_factura_exportacion" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

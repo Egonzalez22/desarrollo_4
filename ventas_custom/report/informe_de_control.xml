@@ -1,0 +1,181 @@
+<odoo>
+    <template id="custom_report_layout">
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid black;
+            }
+            th {
+                background-color: #d1d1d1;
+                font-weight: bold;
+            }
+            h2, h3 {
+                margin: 0;
+                padding: 5px;
+            }
+            .page-number {
+                position: running(pageNum);
+            }
+            @page {
+                @bottom-right {
+                    content: "Página " counter(page) " de " counter(pages);
+                }
+            }
+            thead { display: table-header-group }
+            tfoot { display: table-row-group }
+            tr { page-break-inside: avoid }
+        </style>
+        <t t-set="company" t-value="docs.get('cabecera', {}).get('company_id', False)"/>
+        <div t-attf-class="header">
+            <table style="border-collapse: collapse; table-layout: auto; width: auto;">
+                <tr>
+                    <td rowspan="4" style="text-align: center; padding: 4px 8px; vertical-align: middle; white-space: nowrap;">
+                        <t t-if="docs.get('cabecera', {}).get('company_id', False)">
+                            <img t-att-src="image_data_uri(docs.get('cabecera', {}).get('company_id', '').logo)" style="height: 80px; width:auto" />
+                        </t>
+                    </td>
+
+                    <td rowspan="4" style="text-align: center; padding: 4px 8px; vertical-align: middle;">
+                        <h3><t t-esc="docs.get('cabecera', {}).get('titulo', '')" /></h3>
+                    </td>
+
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;">Código</td>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;"><t t-esc="docs.get('cabecera', {}).get('codigo', '')"/></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;">Versión</td>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;"><t t-esc="docs.get('cabecera', {}).get('version', '')"/></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;">Vigencia</td>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;"><t t-esc="docs.get('cabecera', {}).get('vigencia', '')"/></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;">Página</td>
+                    <td style="font-size: 12px; padding: 4px 8px; vertical-align: middle;"><span class="page"/> de <span class="topage"/></td>
+                </tr>
+            </table>
+        </div>
+
+        <div t-attf-class="article">
+            <t t-out="0"/>
+        </div>
+    </template>
+
+    <template id="ventas_custom.informe_de_control">
+        <t t-call="web.html_container">    
+            <t t-call="ventas_custom.custom_report_layout">
+                <t t-set="doc" t-value="docs"/>
+                    <style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-family: Arial, sans-serif;
+                            border: 1px solid black;
+                        }
+                        th, td {
+                            padding: 8px;
+                            text-align: left;
+                            border: 1px solid black;
+                        }
+                        th {
+                            background-color: #d1d1d1;
+                            font-weight: bold;
+                        }
+                        h2, h3 {
+                            margin: 0;
+                            padding: 5px;
+                        }
+                        .text-right {
+                            text-align: right;
+                        }
+                        .text-center {
+                            text-align: center;
+                        }
+                    </style>
+                    <t t-set="company_id" t-value="docs.get('cabecera', {}).get('company_id', False)"/>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>N° DE SOLICITUD</th>
+                                <th>EMPRESA / CLIENTE</th>
+                                <th>ANÁLISIS SOLICITADO</th>
+                                <th>FECHA DE INGRESO</th>
+                                <th>CÓDIGO DE MUESTRAS</th>
+                                <th>FECHA ENTREGA A LAB.</th>
+                                <th>RECIBIDO EN LAB. POR</th>
+                                <th>ANALIZADO POR</th>
+                                <th>FECHA DE INICIO</th>
+                                <th>FECHA DE FIN</th>
+                                <th>N° DE INFORME</th>
+                                <th>FECHA DE ENTREGA RECEPCIÓN</th>
+                                <th>FECHA DE ENTREGA AL CLIENTE</th>
+                                <th>ENTREGADO A</th>
+                                <th>OBS.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs.get('detalle', [])" t-as="line">
+                                <tr>
+                                    <td t-esc="line.get('nro_solicitud', '.')"/>
+                                    <td t-esc="line.get('cliente', '.')"/>
+                                    <td t-esc="line.get('analisis_solicitado', '.')"/>
+                                    <td t-esc="line.get('fecha_ingreso', '.')"/>
+                                    <td t-esc="line.get('codigo_muestra', '.')"/>
+                                    <td t-esc="line.get('fecha_entraga_lab', '.')"/>
+                                    <td t-esc="line.get('recibido_por', '.')"/>
+                                    <td t-esc="line.get('analizado_por', '.')"/>
+                                    <td t-esc="line.get('fecha_inicio', '.')"/>
+                                    <td t-esc="line.get('fecha_fin', '.')"/>
+                                    <td t-esc="line.get('nro_informe', '.')"/>
+                                    <td t-esc="line.get('fecha_entrega_recepcion', '.')"/>
+                                    <td t-esc="line.get('fecha_entrega_cliente', '.')"/>
+                                    <td t-esc="line.get('entregado_a', '.')"/>
+                                    <td t-esc="line.get('observaciones', '.')"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+            </t>
+        </t>
+    </template>
+
+    <record id="ventas_custom.informe_de_control_paperformat" model="report.paperformat">
+        <field name="name">Informe de control</field>
+        <field name="format">custom</field>
+        <field name="orientation">Landscape</field>
+        <field name="page_height">300</field>
+        <field name="page_width">220</field>
+        <field name="margin_top">27</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="ventas_custom.informe_control_pdf" model="ir.actions.report">
+        <field name="name">Reporte de control</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ventas_custom.informe_de_control</field>
+        <field name="print_report_name">Reporte de control</field>
+        <field name="paperformat_id" ref="ventas_custom.informe_de_control_paperformat" />
+    </record>
+
+    <record id="ventas_custom.informe_control_xlsx" model="ir.actions.report">
+        <field name="name">Informe de control</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ventas_custom.informe_de_control_xlsx</field>
+        <field name="report_file">ventas_custom.informe_de_control_xlsx</field>
+        <field name="print_report_name">'Informe de costos'</field>
+    </record>
+</odoo>

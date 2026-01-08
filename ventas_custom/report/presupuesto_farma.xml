@@ -1,0 +1,401 @@
+<odoo>
+	<data>
+		<template id="presupuesto_farma">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.basic_layout">
+					<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+					<style>
+					</style>
+
+					<div class="page">
+						<!-- # Cabecera -->
+						<div class="header" style="font-size: 10px">
+							<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+
+							<div class="">
+								<div class="col-25 p-6">
+									<div id="logo">
+										<img t-att-src='image_data_uri(o.company_id.logo)' style="width: 135%; max-width: none;" />
+									</div>
+								</div>
+
+								<div class="col-50 text-center" style="padding-top:16px; font-size: 14px !important; font-weight:bold">
+									COTIZACION DE ANALISIS DE MEDICAMENTOS Y DOMISANITARIOS
+								</div>
+
+								<div class="col-25 font-11">
+									<div id="fecha">
+										<div>Lambaré, <t t-esc="o.get_current_date()" /></div>
+										<div style="padding: 2px 0">
+											<strong>N/Ref:</strong> <t t-esc="o.informe_obtener_version()" /> <br />
+											<strong>Presupuesto:</strong> <t t-esc="o.name" />
+										</div>
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+
+
+						<!-- # Asunto -->
+						<div id="asunto" style="font-size:10px">
+							<p>
+								<strong>Señores: </strong>
+								<t t-esc="o.partner_id.name" />
+								<br />
+								<strong>Atención: </strong>
+								<t t-esc="o.informe_get_related_partner()" />
+								<br />
+							</p>
+
+							<p>
+								<span class="underline bold">Presente:</span> <br /> Nos dirigimos a
+								Ud. a fin de presentarle nuestra cotización para análisis detallada
+								a continuación: <br />
+							</p>
+						</div>
+
+						<!-- # Detalles -->
+						<t t-foreach="o.muestras_ids" t-as="muestra">
+							<t t-set="count" t-value="0" />
+
+							<div class="border muestras" style="font-size: 10px">
+								<div class="titulo">
+									<div class="linea" style="padding:0">
+										<div class="col-25 bold title-white title-bg-blue" style="padding: 5px 2px;">MUESTRA</div>
+										<div class="col-75" style="padding-top: 2px; padding-left: 4px">
+											<span t-field="muestra.muestra_id" />
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="titulo">
+									<div class="linea" style="padding:0">
+										<div class="col-25 bold title-white title-bg-blue" style="padding: 5px 2px;">PRINCIPIO ACTIVO</div>
+										<div class="col-75" style="padding-top: 2px; padding-left: 4px">
+											<t t-foreach="muestra.principios_activos_ids" t-as="pa">
+												<!-- Si no es la ultima iteracion, agregamos coma -->
+												<t t-if="not pa == muestra.principios_activos_ids[-1]">
+													<span t-field="pa.name" />,
+												</t>
+												<!-- Si es la ultima iteracion, no agregamos coma -->
+												<t t-else="">
+													<span t-field="pa.name" />
+												</t>
+											</t>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="titulo">
+									<div class="linea" style="padding:0">
+										<div class="col-25 bold title-white title-bg-blue" style="padding: 5px 2px;">NOMBRE COMERCIAL</div>
+										<div class="col-75" style="padding-top: 2px; padding-left: 4px">
+											<span t-field="muestra.muestra_id.default_code" />
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+								<t t-set="total" t-value="0" />
+
+								<table class="table" border="0">
+									<thead>
+										<tr class="title-desc title-bg-blue">
+											<th class="font-9 text-center title-white title-bg-blue" style="width: 5%; padding-top: 3px">ÍTEM</th>
+											<th class="font-9 text-center title-white title-bg-blue" style="width: 75%; padding-top: 3px">ANALISIS SOLICITADO</th>
+											<th class="font-9 text-center title-white title-bg-blue" style="width: 20%">CANTIDAD DE LOTES / <br /> PRODUCTOS A ANALIZAR </th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<t t-foreach="muestra.metodos_ids" t-as="metodo">
+											<t t-set="count" t-value="count + 1" />
+											<tr>
+												<!-- item -->
+												<td style="width: 90px;">
+													<t t-esc="count" />
+												</td>
+
+												<!-- metodo -->
+												<td>
+													<span t-field="metodo.default_code" /> <span t-field="metodo.name" />
+												</td>
+
+												<!-- Lote -->
+												<td class="align-right text-center">
+													<t t-set="index_counter" t-value="0"/>
+													<span t-foreach="muestra.sale_id.order_line" t-as="line">
+														<t t-set="index_counter" t-value="index_counter + 1"/>
+														<t t-if="index_counter == count">
+															<span t-field="line.product_uom_qty" />
+														</t>
+													</span>
+												</td>
+											</tr>
+											<!-- Sumamos el total -->
+											<t t-set="total_metodo" t-value="o.informe_obtener_precio_metodo(muestra, metodo)" />
+											<t t-set="total" t-value="total + total_metodo" />
+										</t>
+
+									</tbody>
+								</table>
+
+								<!-- precio -->
+								<div class="border bg-gray" style="font-size: 10px">
+									<div class="linea title-desc">
+										<div class="col-25">
+											<t t-if="o.currency_id.name == 'USD'">
+												<span class="bold">Total USD (IVA Incluido)</span>
+											</t>
+											<t t-else="">
+												<span class="bold">Total Gs. (IVA Incluido)</span>
+											</t>
+										</div>
+										<div class="col-75 text-right">
+
+											<t t-esc="o.get_amount_format(o.amount_total, o.currency_id)" />
+										</div>
+
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+								<!-- observaciones -->
+								<div class="border bg-gray">
+									<div class="linea" style="padding: 5px">
+										<div class="col-100 text-center">Presupuesto sujeto a condición indicada a continuación</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="linea" style="padding-left:5px">
+										<div class="col-25">Cantidad de muestra al enviar</div>
+										<!-- <div class="col-75"><span t-field="muestra.cantidad" /> <span t-field="muestra.presentacion_id" /></div> -->
+										<div class="col-75"><span t-field="muestra.cantidad"/> <span t-field="muestra.lote_unidad_medida"/></div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="linea" style="padding-left:5px">
+										<div class="col-25">Estándar</div>
+										<div class="col-75"><span t-field="muestra.estandard" /></div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="linea" style="padding-left:5px">
+										<div class="col-25">Comentario</div>
+										<div class="col-75"><span t-field="muestra.observacion" /></div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+
+							</div>
+						</t>
+
+						<!-- totales -->
+						<div class="new-page"></div>
+						<div class="border" style="font-size: 10px">
+							<div class="title-bg-blue">
+								<div class="text-center title-white" style="padding: 6px"><strong class="title-white">COSTOS TOTALES</strong></div>
+							</div>
+							<div class="linea" style="padding: 3px 0">
+								<div class="col-25">
+									<span class="text-center">
+										PRECIO TOTAL POR <t t-out="o.informe_obtener_cantidad_muestras()" /> <br /> MUESTRAS (IVA INCLUIDO):
+									</span>
+								</div>
+								<div class="col-50 text-center">
+									<t t-if="o.currency_id.name == 'USD'">
+										DOLARES <t t-esc="o.amount_to_text(o.amount_total)" />
+									</t>
+									<t t-else="">
+										GUARANIES <t t-esc="o.amount_to_text(o.amount_total)" />
+									</t>
+								</div>
+								<div class="col-25 text-center">
+									<span class="">
+										<t t-if="o.currency_id.name == 'USD'">
+											<t t-esc="o.get_amount_format(o.amount_total, o.currency_id)" /> USD
+										</t>
+										<t t-else="">
+											<t t-esc="o.get_amount_format(o.amount_total, o.currency_id)" /> Gs.
+										</t>
+									</span>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<!-- FORMA DE PAGO -->
+						<div class="border" style="font-size: 10px">
+							<div class="title-bg-blue">
+								<div class="text-center title-white" style="padding: 6px"><strong class="title-white">FORMA DE PAGO</strong></div>
+							</div>
+							<div class="linea" style="padding: 3px 0">
+								<div class="col-100 text-center">
+									<span style="color:red">Contado, 100% para confirmación del trabajo y posterior entrega de muestras. </span>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+
+						<!-- # observaciones -->
+						<!-- <div class="seccion">
+							<div class="titulo underline bold">
+								Habilitación
+							</div>
+							<div class="border p-3">
+								<t t-esc="o.observacion" />
+							</div>
+						</div> -->
+
+						<!-- # equipos -->
+						<!-- <div class="seccion">
+							<div class="titulo underline bold">
+								EQUIPOS
+							</div>
+							<div class="border p-3">
+								<t t-foreach="o.order_line" t-as="line">
+									<t t-foreach="line.product_template_id.equipos" t-as="equipo">
+										- <span t-esc="equipo.name" /> <br />
+									</t>
+								</t>
+							</div>
+						</div> -->
+						<div class="seccion" style="font-size: 10px">
+							<div class="titulo underline bold">
+								Notas
+							</div>
+							<div class="border p-3">
+								<t t-esc="o.notas" />
+							</div>
+						</div>
+
+						<!-- # condiciones -->
+						<div class="seccion" style="font-size: 10px">
+							<div class="titulo underline bold">
+								CONDICIONES
+							</div>
+							<table class="table-condiciones">
+								<tr>
+									<td class="bg-gray">Equipos</td>
+									<td>
+										<t t-esc="o.equipos" />
+									</td>
+								</tr>
+								<tr>
+									<td class="bg-gray">Mantenimiento de la Oferta</td>
+									<td>
+										<t t-esc="o.mantenimiento_oferta" />
+
+									</td>
+								</tr>
+
+								<tr>
+									<td class="bg-gray">
+										Plazo de entrega de
+										resultados ycantidad de
+										muestra - División de
+										Medicamentos y
+										Domisanitarios
+									</td>
+									<td>
+										<t t-esc="o.plazo_entrega" />
+									<!-- • Agua TOC: 1-2 días Hábiles <br /> • Microbiología Agua:
+										7-10 días Hábiles <br /> • Medicamentos, Esterilidad,
+										Segregados y Domisanitarios: 15 días Hábiles <br /> Una vez
+										recibida la muestra en nuestro laboratorio y verificada que
+										la misma se encuentra en condiciones óptimas y no presenta
+										ninguna anormalidad o defecto observable.
+										<span style="color:red">Una vez recibida la muestra en nuestro laboratorio y verificada que la misma se
+											encuentra en condiciones óptimas yno presenta ninguna anormalidad o defecto
+											observable.
+										</span> -->
+									</td>
+								</tr>
+
+								<tr>
+									<td class="bg-gray">Precios</td>
+									<td>
+										Los precios cotizados incluyen IVA.
+									</td>
+								</tr>
+
+								<tr>
+									<td class="bg-gray">Entrega de resultados, facturas, recibos. </td>
+									<td>
+										<t t-esc="o.entrega_resultado" />
+									</td>
+								</tr>
+							</table>
+						</div>
+
+						<br />
+						<p style="font-size: 10px"> Quedamos a su disposición para aclarar cualquier duda. <br /> Saludos
+							Cordiales. </p>
+
+						<!-- # Firma -->
+						<div id="firma" style="font-size: 10px">
+							<t t-set="employee" t-value="o.user_id.employee_id" />
+							<strong>
+								<span t-esc="employee.name" />
+							</strong>
+							<br />
+							<span t-esc="employee.job_title" />
+							<br />
+							<span t-esc="employee.work_phone" />
+						</div>
+
+						<div class="footer" style="font-size: 10px">
+							<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+							<div style="height:5px"></div>
+							<div class="linea">
+								<div class="col-25">
+									ANALITICA S. A. <br />
+									Pedro Gill c/ Ytororó <br />
+									Número 935. Lambaré. <br />
+									Paraguay
+								</div>
+								<div class="col-50">
+									Telefono: 595 (21) 908555 / 595 (21) 614700 <br />
+									Celular: 595 (0981) 207 504 <br />
+									www.analitica.com.py <br />
+									E-mail: info@analitica.com.py
+								</div>
+								<div class="col-25 text-right">
+									<span class="page" /> de <span class="topage" /> <br />
+									<strong>AN-RE-123</strong> Ver. 07 <br />
+									Vigencia: 19/04/2024 <br />
+								</div>
+							</div>
+						</div>
+					</div>
+				</t>
+			</t>
+		</template>
+
+		<record id="presupuestos_analitica_paper_format" model="report.paperformat">
+			<field name="name">Presupuestos Analitica</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_right">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_bottom">15</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">96</field>
+		</record>
+
+		<record model="ir.actions.report" id="presupuesto_farma_action">
+			<field name="name">Presupuesto Farma</field>
+			<field name="model">sale.order</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="paperformat_id" ref="presupuestos_analitica_paper_format" />
+			<field name="report_name">ventas_custom.presupuesto_farma</field>
+			<field name="print_report_name">'Presupuesto Farma %s' % (object.name or '')</field>
+			<!-- <field name="binding_model_id" ref="model_sale_order" /> -->
+		</record>
+
+	</data>
+</odoo>

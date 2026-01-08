@@ -1,0 +1,131 @@
+* {
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.clearfix {
+    clear: both;
+}
+
+#cabecera {
+    padding: 10px 0;
+}
+
+#asunto {
+    padding: 5px 0;
+}
+
+
+#detalles {
+    margin-bottom: 20px;
+}
+
+#totales {
+    padding: 5px 0;
+}
+
+
+#firma {
+    padding: 5px 0;
+    margin-top: 25px;
+}
+
+#logo {
+    width: 190px;
+    float: left;
+}
+
+#fecha {
+    font-weight: bold;
+    margin-bottom: 10px;
+    float: right;
+}
+
+#referencia {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.paginas {
+    float: right;
+}
+
+#logo_footer {
+    float: left;
+}
+
+.logo_footer {
+    width: 140px;
+}
+
+#titulo_informe{
+    background-color: #e6e6e6;
+    border-bottom: 1px solid #333;
+    padding: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}
+
+tfoot, thead{
+    background-color: #e6e6e6;
+    border: none;
+}
+
+#condiciones {
+    border: 1px solid #333;
+}
+.condiciones_detalles{
+    padding: 4px;
+}
+
+.titulo{
+    background-color: #e6e6e6;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.border{
+    /* border: 2px solid #333; */
+}
+
+th{
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.firma_izquierdo{
+    float: left;
+    width: 50%;
+}
+.firma_derecho{
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+
+.o_table {
+        width: 100% !important;
+    }
+.o_table td:first-child {
+        width: 30% !important;
+}
+.o_table td:last-child {
+       width: 70% !important;
+}
+
+.o_table p {
+    margin-bottom: 0px !important;
+}

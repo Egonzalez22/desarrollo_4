@@ -1,0 +1,380 @@
+<odoo>
+	<data>
+		<template id="presupuesto_alta_complejidad">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.basic_layout">
+					<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+					<style>
+					</style>
+
+					<div class="page">
+						<!-- # Cabecera -->
+						<div class="header">
+							<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+
+							<div class="">
+								<div class="col-25 p-6">
+									<div id="logo">
+										<img t-att-src='image_data_uri(o.company_id.logo)' style="width: 150%; max-width: none;" />
+									</div>
+								</div>
+
+								<div class="col-50 text-center" style="padding-top:16px; font-size: 22px !important; font-weight:bold">
+									<!-- <img t-att-src="'/ventas_custom/static/src/img/logo_certificado.png'" style="width: 90px" /> -->
+									<t t-if="o.grupo_id.es_acreditado">
+										<img t-att-src="image_data_uri(o.company_id.logo_acreditacion)" style="width: 90px" />
+									</t>
+								</div>
+
+								<div class="col-25 font-11">
+									<div id="fecha">
+										<div>Lambaré, <t t-esc="o.get_current_date()" /></div>
+										<div style="padding: 2px 0">
+											<strong>N/Ref:</strong> <t t-esc="o.informe_obtener_version()" /> <br />
+											<strong>Presupuesto:</strong> <t t-esc="o.name" />
+										</div>
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<div>
+							<br />
+							<h6 style="font-weight:bold; text-align:center;">COTIZACION DE ANALISIS DE ALTA COMPLEJIDAD</h6>
+						</div>
+
+						<!-- # Asunto -->
+						<div id="asunto">
+							<p>
+								<strong>Señores: </strong>
+								<t t-esc="o.partner_id.name" />
+								<br />
+								<strong>Atención: </strong>
+								<t t-esc="o.informe_get_related_partner()" />
+								<br />
+							</p>
+
+							<p>
+								<span class="underline bold">Presente:</span> <br /> Nos dirigimos a
+								Ud. a fin de presentarle nuestra cotización para análisis detallada
+								a continuación: <br />
+							</p>
+						</div>
+
+						<!-- # Detalles -->
+						<t t-foreach="o.muestras_ids" t-as="muestra">
+							
+							<!-- <div class="border muestras"> -->
+							<div class="seccion">
+								<!-- Muestra -->
+								<div class="titulo">
+									<div class="linea" style="padding:0">
+										<div class="col-15 bold title-white title-bg-blue" style="padding: 5px 2px;">MUESTRA</div>
+										<div class="col-85" style="padding-top: 2px; padding-left: 4px">
+											<span t-field="muestra.muestra_id" />
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+								<!-- Metodos -->
+								<div class="titulo">
+									<div class="linea" style="padding:0">
+										<div class="col-100 bold title-white title-bg-blue" style="padding: 5px 2px; text-align: center;">MÉTODOS SOLICITADOS</div>
+									</div>
+								</div>
+								
+								<t t-foreach="muestra.metodos_ids" t-as="metodo">
+									<!-- Nombre metodo -->
+									<div class="titulo">
+										<div class="linea" style="padding:0">
+											<div class="col-100 bold title-white title-bg-blue" style="padding: 5px 2px; text-align: left;"><span class="title-white" t-field="metodo.display_name" /></div>
+										</div>
+									</div>
+
+									<!-- Referencia -->
+									<div class="titulo">
+										<div class="linea" style="padding:0">
+											<div class="col-15 bold bg-gray" style="padding: 5px 2px;">REFERENCIA</div>
+											<div class="col-85" style="padding-top: 2px; padding-left: 4px">
+												<span t-field="metodo.referencia_bibliografica" />
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</div>
+
+									<!-- Lista de precios -->
+									<t t-foreach="metodo._custom_get_pricelists()" t-as="pl_item" >
+										<!-- from_pricelist.currency_id._convert(item.fixed_price, self.currency_id, self.env.company, date.today()), -->
+										<t t-set="converted_price" t-value="pl_item.currency_id._convert(pl_item.fixed_price, o.pricelist_id.currency_id, o.company_id, o.date_order)" />
+
+										<div class="titulo">
+											<div class="linea" style="padding:0">
+												<div class="col-75 bold bg-gray" style="padding: 5px 2px;">
+													Precio desde <t t-esc="int(pl_item.min_quantity)"/> muestra(s) en <t t-esc="pl_item.pricelist_id.name"/>
+												</div>
+												<div class="col-25" style="padding-top: 2px; padding-left: 4px; text-align: right">
+													<p t-esc="o.get_amount_format(converted_price)"/>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+									</t>
+
+									<!-- Titulo sustancias -->
+									<div class="titulo">
+										<div class="linea" style="padding:0">
+											<div class="col-100 bold bg-gray" style="padding: 5px 2px;text-align:center;">Sustancias Activas</div>
+										</div>
+									</div>
+									<br/>
+									<div class="clearfix"></div>
+									
+									<t t-set="total" t-value="0" />
+									<t t-set="count" t-value="0" />
+									
+									<!-- Iteramos por las sustancias activas -->
+									<!-- <div class="linea seccion p-0"> -->
+									<t t-foreach="metodo.sustancias_activas_ids" t-as="sustancia">
+										<t t-set="count" t-value="count + 1" />
+										<!-- <div style="width: 33%; float:left; border-bottom:1px solid #999"> -->
+										<div class="col-4 p-0 m-0" style="float:left; border-bottom:1px solid #999; border-top:1px solid #999; border-left:1px solid #999; border-right:1px solid #999">
+											<div class="p-0 m-0" style="page-break-inside: avoid;height:35px">
+												<div class="p-0 m-0" style="width: 10%; float:left; border-right: 1px solid #999; height:35px; padding: 2px;margin: 0px">
+													<span t-esc="count" />
+												</div>
+												<div class="p-0 m-0" style="width: 50%; float:left; border-right: 1px solid #999; height:35px; padding: 2px;margin: 0px">
+													<span t-field="sustancia.name" />
+												</div>
+												<!-- <div class="p-0 m-0" style="width: 40%; float:left; border-right: 1px solid #999; height:35px; padding: 2px;margin: 0px"> -->
+												<div class="p-0 m-0" style="width: 40%; float:left; height:35px; padding: 2px;margin: 0px">
+													LQ: <span t-field="sustancia.u_loq" /> <br />
+													LD: <span t-field="sustancia.lod" />
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+									</t>		
+									<div class="clearfix"></div>
+									<!-- Sumamos el total -->
+									<t t-set="total_metodo" t-value="o.informe_obtener_precio_metodo(muestra, metodo)" />
+									<t t-set="total" t-value="total + total_metodo" />
+						
+								</t>
+				
+							</div> 
+						</t>
+
+						<!-- totales -->
+						<div class="new-page"></div>
+						<div class="border">
+							<div class="title-bg-blue">
+								<div class="text-center title-white" style="padding: 6px"><strong class="title-white">COSTOS TOTALES</strong></div>
+							</div>
+							<div class="linea" style="padding: 3px 0">
+								<div class="col-25">
+									<span class="text-center">
+										PRECIO TOTAL POR (IVA INCLUIDO):
+									</span>
+								</div>
+								<div class="col-50 text-center">
+									<t t-if="o.currency_id.name == 'USD'">
+										DOLARES <t t-esc="o.amount_to_text(o.amount_total)" />
+									</t>
+									<t t-else="">
+										GUARANIES <t t-esc="o.amount_to_text(o.amount_total)" />
+									</t>
+								</div>
+								<div class="col-25 text-center">
+									<span class="">
+										<t t-if="o.currency_id.name == 'USD'">
+											<t t-esc="o.get_amount_format(o.amount_total, o.currency_id)" /> USD
+										</t>
+										<t t-else="">
+											<t t-esc="o.get_amount_format(o.amount_total, o.currency_id)" /> Gs.
+										</t>
+									</span>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<!-- FORMA DE PAGO -->
+						<div class="border">
+							<div class="title-bg-blue">
+								<div class="text-center title-white" style="padding: 6px"><strong class="title-white">FORMA DE PAGO</strong></div>
+							</div>
+							<div class="linea" style="padding: 3px 0">
+								<div class="col-100 text-center">
+									<span style="color:red">Contado, 100% para confirmación del trabajo y posterior entrega de muestras. </span>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+														
+						<!-- # observaciones -->
+						<!-- <div class="seccion">
+							<div class="titulo underline bold">
+								Observación
+							</div>
+							<div class="border p-3">
+								<t t-esc="o.observacion" />
+							</div>
+						</div> -->
+						<div class="seccion">
+							<div class="titulo underline bold">
+								Notas
+							</div>
+							<div class="border p-3">
+								<t t-esc="o.notas" />
+							</div>
+						</div>
+
+						<!-- # condiciones -->
+						<div class="seccion">
+							<table class="table-condiciones">
+								<!-- Abreviaturas -->
+								<tr>
+									<td class="bg-gray">Abreviaturas</td>
+									<td>
+										<t t-esc="o.abreviaturas" />
+									</td>
+								</tr>
+
+								<!-- Equipos -->
+								<tr>
+									<td class="bg-gray">Equipos</td>
+									<td>
+										<t t-esc="o.equipos" />
+									</td>
+								</tr>
+
+								<!-- Mantenimiento de la oferta -->
+								<tr>
+									<td class="bg-gray">Mantenimiento de la Oferta</td>
+									<td>
+										<t t-esc="o.mantenimiento_oferta" />
+									</td>
+								</tr>
+
+								<!-- Resultados -->
+								<tr>
+									<td class="bg-gray">
+										Plazo de entrega de
+										resultados y cantidad de
+										muestra
+									</td>
+									<td>
+										<t t-esc="o.plazo_entrega" />
+									</td>
+								</tr>
+
+								<!-- Declaración de la conformidad -->
+								<tr>
+									<td class="bg-gray">Declaración de la conformidad</td>
+									<td>
+										En caso de requerir una declaración de la conformidad, debe ser indicado previa aprobación de este presupuesto.
+									</td>
+								</tr>
+
+								<!-- Precios y formas de pago -->
+								<tr>
+									<td class="bg-gray">Precios y formas de pago</td>
+									<td>
+										Los precios cotizados <b>incluyen IVA.</b>
+										Los medios de pago pueden ser con:<b> efectivo, cheque o transferencia bancaria.</b>
+									</td>
+								</tr>
+
+								<!-- Entrega de resutlados -->
+								<tr>
+									<td class="bg-gray">Entrega de resultados, facturas, recibos. </td>
+									<td>
+										<t t-esc="o.entrega_resultado" />
+									</td>
+								</tr>
+
+								<!-- Cancelación de toma de muestra -->
+								<tr>
+									<td class="bg-gray">Cancelación de Toma de muestra</td>
+									<td>
+										Se deberá solicitar 24-48hs de anticipación. En el caso de que el personal ya se encuentre en
+										el sitio de la toma de muestra y las condiciones climáticas no sean aptas para la toma de muestra, el cliente correrá con el 50% del gasto de traslado.
+
+									</td>
+								</tr>
+
+								<!-- Refacturación -->
+								<tr>
+									<td class="bg-gray">Refacturación</td>
+									<td>
+										La reimpresión de la factura, tendrá un costo de G/	por gastos administrativos, IVA incluido
+									</td>
+								</tr>
+
+
+							</table>
+						</div>
+
+						<br />
+						<p> Quedamos a su disposición para aclarar cualquier duda. <br /> Saludos
+							Cordiales. </p>
+
+						<!-- # Firma -->
+						<div id="firma">
+							<t t-set="employee" t-value="o.user_id.employee_id" />
+							<strong>
+								<span t-esc="employee.name" />
+							</strong>
+							<br />
+							<span t-esc="employee.job_title" />
+							<br />
+							<span t-esc="employee.work_phone" />
+						</div>
+
+						<div class="clearfix"></div>
+						<div class="footer">
+							<link rel='stylesheet' href="/ventas_custom/static/src/css/informes.css" />
+							<!-- <div style="height:5px"></div> -->
+							<!-- <div class="linea"> -->
+							<div style="width:100%; padding: -5px 0; border-bottom: 1px solid #ccc">
+								<div class="col-25">
+									ANALITICA S. A. <br />
+									Pedro Gill c/ Ytororó <br />
+									Número 935. Lambaré. <br />
+									Paraguay
+								</div>
+								<div class="col-50">
+									Telefono: 595 (21) 908555 / 595 (21) 614700 <br />
+									Celular: 595 (0981) 207 504 <br />
+									www.analitica.com.py <br />
+									E-mail: info@analitica.com.py
+								</div>
+								<div class="col-25 text-right">
+									<span class="page" /> de <span class="topage" /> <br />
+									<strong><t t-esc="o.grupo_id.nombre_iso"/></strong><br />
+									Vigencia: <t t-esc="o.grupo_id.fecha_desde"/> <br />
+								</div>
+							</div>
+						</div>
+					</div>
+				</t>
+			</t>
+		</template>
+
+
+		<record model="ir.actions.report" id="presupuesto_alta_complejidad_action">
+			<field name="name">Presupuesto Alta Complejidad</field>
+			<field name="model">sale.order</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="paperformat_id" ref="presupuestos_analitica_paper_format" />
+			<field name="report_name">ventas_custom.presupuesto_alta_complejidad</field>
+			<field name="print_report_name">'Presupuesto Alta Complejidad %s' % (object.name or '')</field>
+			<!-- <field name="binding_model_id" ref="model_sale_order" /> -->
+		</record>
+
+	</data>
+</odoo>

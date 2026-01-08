@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_calculo_despido_form" model="ir.ui.view">
+        <field name="name">wizard.calculo.despido.form.inherit</field>
+        <field name="model">wizard.calculo.despido</field>
+        <field name="inherit_id" ref="rrhh_liquidacion.wizard_calculo_despido_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fecha_fin']" position="after">
+                <field name="motivo_salida_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

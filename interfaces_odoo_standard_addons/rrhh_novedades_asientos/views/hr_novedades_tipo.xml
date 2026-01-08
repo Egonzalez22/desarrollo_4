@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="hr_novedades_tipo_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr_novedades_tipo_view_form</field>
+            <field name="model">hr.novedades.tipo</field>
+            <field name="inherit_id" ref="rrhh_novedades.hr_novedades_tipo_view_form" />
+            <field name="arch" type="xml"> 
+                <xpath expr="//field[@name='tipo_novedad_adelanto_aguinaldo']" position="after">
+					<field name="cuentas_pagos_pendientes"/>
+				</xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

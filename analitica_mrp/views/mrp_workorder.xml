@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- mrp.workorder inherit tree view -->
+            <record id="mrp_production_workorder_tree_view" model="ir.ui.view">
+                <field name="name">mrp.workorder.inherit.view.tree</field>
+                <field name="model">mrp.workorder</field>
+                <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_view"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//tree" position="inside">
+                        <header>
+                            <button string="Iniciar" type="object" name="button_iniciar"/>
+                            <button string="Hecho" type="object" name="button_hecho"/>
+                        </header>
+                        
+                    </xpath>
+                    
+                </field>
+            </record>
+            
+        </data>
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="firma_nueva_personalizacion" model="ir.ui.view">
+            <field name="name">firma_nueva_personalizacion</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook/page[@name='public']" position="inside">
+                    <group string="Firma">
+                        <field name="firma_nueva" string="Descripción de firma" widget="html" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

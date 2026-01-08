@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="account_payment_inherit_limite_credito" model="ir.ui.view">
+            <field name="name">account.payment.inherit.limite_credito</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form" />
+            <field name="arch" type="xml">
+
+                <!-- el campo nro de cuenta debe ser opcional -->
+                <xpath expr="//field[@name='nro_cuenta']" position="replace">
+                    <field name="tipo_pago" invisible="1" />
+                    <field name="es_diferido" invisible="1" />
+                    <field name="nro_cuenta"
+                        attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_pago','not in',['Cheque'])]}" />
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <!-- Vista de solo lectura para el campo `date` (aplicado a todos los usuarios) -->
+        <record id="account_move_inherit_readonly_date" model="ir.ui.view">
+            <field name="name">account.move.reversal.form.readonly.date</field>
+            <field name="model">account.move.reversal</field>
+            <field name="inherit_id" ref="account.view_account_move_reversal" />
+            <field name="arch" type="xml">
+                <field name="date" position="attributes">
+                    <attribute name="attrs"> {'readonly': [('can_edit_date', '=', False), ('move_type', '=', 'out_invoice')]}</attribute>
+                </field>
+               <xpath expr="//field[@name='date']" position="after">
+                     <field name="can_edit_date" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

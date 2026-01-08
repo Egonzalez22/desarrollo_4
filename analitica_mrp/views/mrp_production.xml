@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- mrp.production inherit form view -->
+            <record id="mrp_production_form_view" model="ir.ui.view">
+                <field name="name">mrp.production.inherit.view.form</field>
+                <field name="model">mrp.production</field>
+                <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//sheet/group/group[1]" position="inside">
+                        <field name="grupo_id" readonly="True"/>
+                        <field name="muestra_id"/>
+                        <field name="muestra_lot_id"/>
+                        <field name="codigo_muestra"/>
+                        <field name="fecha_estimada_entrega"/>
+                    </xpath>
+                    
+                    
+                </field>
+            </record>
+            <!-- mrp.production inherit tree view -->
+            <record id="mrp_production_tree_view" model="ir.ui.view">
+                <field name="name">mrp.production.inherit.view.tree</field>
+                <field name="model">mrp.production</field>
+                <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='product_id']" position="after">
+                        <field name="fecha_estimada_entrega" string="Fecha a Entregar"/>
+                        <field name="grupo_id" readonly="True"/>
+                        <field name="muestra_id"/>
+                        <field name="codigo_muestra_compute"/>
+                        <field name="cantidad_muestra" string="Cant. muestra" attrs="{'readonly':[('muestra_id','=',False)]}"/>
+                    </xpath>
+                    <xpath expr="//tree" position="attributes">
+                        <attribute name="editable">top</attribute>
+                        <attribute name="create">true</attribute>
+                        <attribute name="edit">true</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='name']" position="before">
+                        <button string="Abrir" type="object" name="open_mrp_form"/>
+                    </xpath>
+                    <xpath expr="//field[@name='user_id']" position="replace">
+                    </xpath>
+                    <xpath expr="//field[@name='fecha_estimada_entrega']" position="after">
+                        <field name="user_id" string="Responsable"  widget="many2one_avatar_user"/>
+                    </xpath>
+                </field>
+            </record>          
+        </data>
+</odoo>

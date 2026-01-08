@@ -1,0 +1,242 @@
+<odoo>
+    <data>
+        <!-- Template for report layout -->
+        <template id="ventas_custom.reporte_muestra">
+            <t t-call="web.basic_layout">
+                <style>
+                    .cell-style {
+                    padding: 5px;
+                    font-size: 12px;
+                    text-align: left;
+                    }
+                    .cell-right {
+                    text-align: right;
+                    }
+                    .cell-center {
+                    text-align: center;
+                    }
+                    .cell-detalle {
+                    font-size: 15px;
+                    font-weight: bold;
+                    }
+                    .page {
+                    page-break-after: always;
+                    }
+                    .page:last-child {
+                    page-break-after: auto;
+                    }
+                    .footer-table {
+                    width: 30%;
+                    border-collapse: collapse;
+                    font-size: 10px;
+                    float: right;
+                    }
+                    .footer-right {
+                    text-align: right;
+                    }
+                    .footer-signature {
+                    border-top: 1px solid black;
+                    padding-top: 5px;
+                    text-align: center;
+                    font-size: 12px;
+                    font-weight: normal;
+                    }
+                    .header, .footer {
+                    border: 1px solid white;
+                    }
+                </style>
+                <t t-foreach="docs" t-as="o">
+                    <t t-if="muestra_grupo_id">
+                        <t t-foreach="o.move_line_ids_without_package" t-as="move_line">
+                            <div class="page">
+                                <div class="header">
+                                    <div class="col-25 p-6">
+                                        <div id="logo">
+                                            <img t-att-src="'/ventas_custom/static/src/logo.png'" style="text-align: center; width:25%" />
+                                        </div>
+                                        <div style="color:gray;text-align:right;font-weight:bold"><p><t t-esc="muestra_grupo_id.nombre_iso.upper()"/></p></div>
+                                        <div style="color:gray;text-align:right;font-weight:bold"><p><t t-esc="muestra_grupo_id.fecha_desde"/></p></div>
+                                    </div>
+                                </div>
+
+                                <table class="table tabla_encabezado header">
+                                    <tr>
+                                        <th>SOLICITUD DE ANALISIS DE <t t-esc="muestra_grupo_id.description.upper()"/></th>
+                                    </tr>
+                                </table>
+
+                                <table class="table tabla_encabezado">
+                                    <tr>
+                                        <td class="cell-style">FECHA DE SOLICITUD: <t t-esc="o.scheduled_date"/></td>
+                                        <td class="cell-style">SOLICITUD N°: <t t-if="move_line.codigo_muestra"><t t-esc="move_line.codigo_muestra[-5:]"/></t></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-style">EMPRESA:
+                                            <t t-if="sale_order.partner_id.parent_id">
+                                                <t t-esc="sale_order.partner_id.parent_id.name"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="sale_order.partner_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td class="cell-style">TELEFONO: <t t-esc="sale_order.partner_id.phone"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-style">SOLICITANTE:<t t-esc="sale_order.partner_id.name"/></td>
+                                        <td class="cell-style">E-MAIL: <t t-esc="sale_order.partner_id.email"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-style">COTIZACION N°: <t t-esc="o.origin"/></td>
+                                        <td class="cell-style"></td>
+                                    </tr>
+                                </table>
+
+                                <table class="table table-encabezado">
+                                    <tr>
+                                        <th class="cell-style">TIPO DE MUESTRA</th>
+                                        <th class="cell-style">LOTE</th>
+                                        <t t-if="muestra_grupo_id.tipo_grupo.lower()=='farma'"><th class="cell-style">VTO</th></t>
+                                        <th class="cell-style">NRO. DE MUESTRA</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="cell-style"><p><t t-esc="move_line.product_id.name"/></p></th>
+                                        <th class="cell-style"><t t-esc="move_line.nro_lote"/></th>
+                                        <t t-if="muestra_grupo_id.tipo_grupo.lower()=='farma'"> <th class="cell-style"><t t-esc="move_line.fecha_vencimiento_lote"/></th></t>
+                                        <th class="cell-style"><t t-esc="move_line.codigo_muestra"/></th>
+                                    </tr>
+
+                                    <!--  Farma -->
+                                    <t t-if="muestra_grupo_id.tipo_grupo.lower()=='farma'">
+                                        <tr>
+                                            <th class="cell-style">MOTIVO DE ANALISIS</th>
+                                            <th class="cell-style">FORMA FARMACEUTICA</th>
+                                            <th class="cell-style">CANTIDAD</th>
+                                            <th class="cell-style">CONDICION</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell-style"><t t-esc="move_line.move_id.motivo_id.name"/></th>
+                                            <th class="cell-style"><t t-esc="move_line.move_id.presentacion_id.name"/></th>
+                                            <th class="cell-style"><t t-esc="move_line.move_id.quantity_done"/> <t t-esc="move_line.move_id.product_id.uom_id.name"/></th>
+                                            <th class="cell-style"><t t-esc="o.condicion_almacenamiento"/></th>
+                                        </tr>
+                                    </t>
+                                </table>
+
+                                <!--  Agroquimico -->
+                                <t t-if="muestra_grupo_id.tipo_grupo.lower()=='agroquimico'">
+                                    <table class="table table-encabezado">
+                                        <tr>
+                                            <th class="cell-style">TIPO DE SOLICITUD</th>
+                                            <th class="cell-style">ASPECTO</th>
+                                            <th class="cell-style">TIPO DE ENVASE</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell-style"><p><t t-esc="o.tipo_solicitud"/></p></th>
+                                            <th class="cell-style"><p><t t-esc="o.aspecto"/></p></th>
+                                            <th class="cell-style"><t t-esc="move_line.move_id.presentacion_id.name"/></th>
+                                        </tr>
+                                    </table>
+                                </t>
+
+                                <!--  Alta Complejidad -->
+                                <t t-if="muestra_grupo_id.tipo_grupo.lower()=='alta_complejidad'">
+                                    <table class="table table-encabezado">
+                                        <tr>
+                                            <th class="cell-style">PROCEDENCIA</th>
+                                            <th class="cell-style">CANTIDAD</th>
+                                            <th class="cell-style">CONDICION</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell-style"><p><p><t t-esc="o.procedencia"/></p></p></th>
+                                            <th class="cell-style"><t t-esc="move_line.move_id.quantity_done"/> <t t-esc="move_line.move_id.product_id.uom_id.name"/></th>
+                                            <th class="cell-style"><p><t t-esc="o.condicion"/></p></th>
+                                        </tr>
+                                    </table>
+                                </t>
+
+                                <table class="table table-encabezado">
+                                    <tr>
+                                        <th class="cell-style"><p>OBSERVACION:</p></th>
+                                    </tr>
+                                </table>
+
+                                <table class="table table-encabezado">
+                                    <th colspan="2">METODO DE ANALISIS</th>
+                                    <t t-foreach="sale_order.order_line.filtered(lambda l: l.muestra_id == move_line.product_id)" t-as="metodos">
+                                        <t t-foreach="range(int(metodos.product_uom_qty))" t-as="i">
+                                            <tr>
+                                                <td class="cell-center cell-detalle">
+                                                    <p>
+                                                        <t t-esc="metodos.product_template_id.default_code"/>
+                                                    </p>
+                                                </td>
+                                                <td class="cell-center cell-detalle">
+                                                    <p>
+                                                        <t t-esc="metodos.product_template_id.name"/>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </table>
+
+                                <table class="table table-encabezado">
+                                    <tr>
+                                        <td><p><strong>NOTA:</strong> LOS RECLAMOS REFERENTES AL/LOS CERTIFICADO/S PUEDEN SER PRESENTADOS HASTA 15 DIAS DESPUES DE SU EMISION</p></td>
+                                    </tr>
+                                </table>
+
+                                <div style="padding-top: 70px">
+                                    <table class="footer-table">
+                                        <tr>
+                                            <td  class="footer-right footer">
+                                                <p style="text-align:center;font-weight:bold;">
+                                                    <t t-esc="move_line.move_id.create_uid.name"/>
+                                                </p>
+                                                <div class="footer-signature">
+                                                    <p>Responsable de recepción</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="page">
+                            <div style="text-align:center; font-weight:bold; color:red;">
+                                <p>No se encontró ningún grupo de muestras para esta solicitud.</p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Define a custom paper format for the report -->
+        <record id="ventas_custom.formato_normalizado" model="report.paperformat">
+            <field name="name">Formato Muestra Normalizado</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_right">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">25</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <report
+                id="ventas_custom.reporte_muestra_action"
+                model="stock.picking"
+                string="Ingreso de Muestras Normalizado"
+                report_type="qweb-pdf"
+                name="ventas_custom.reporte_muestra"
+                file="ventas_custom.reporte_muestra"
+                paperformat="ventas_custom.formato_normalizado"
+                attachment_use="False"
+        />
+    </data>
+</odoo>

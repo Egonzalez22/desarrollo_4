@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="ventas_custom.gestionar_caracteristicas" model="res.groups">
+            <field name="name">Puede gestionar características</field>
+        </record>
+    </data>
+</odoo>

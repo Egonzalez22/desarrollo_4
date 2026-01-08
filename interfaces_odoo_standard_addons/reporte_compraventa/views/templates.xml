@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.report" id="reporte_compraventa.reporte_compra_xlsx_action">
+            <field name="name">Exportar a xlsx</field>
+            <field name="print_report_name">"Libro de compras"</field>
+            <field name="model">reporte_compraventa.wizardcompra</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">reporte_compraventa.reporte_compra_xlsx</field>
+            <field name="binding_model_id" ref="reporte_compraventa.model_reporte_compraventa_wizardcompra"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record model="ir.actions.report" id="reporte_compraventa.reporte_venta_xlsx_action">
+            <field name="name">Exportar a xlsx</field>
+            <field name="print_report_name">"Libro de ventas"</field>
+            <field name="model">reporte_compraventa.wizardventa</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">reporte_compraventa.reporte_venta_xlsx</field>
+            <field name="binding_model_id" ref="reporte_compraventa.model_reporte_compraventa_wizardventa"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

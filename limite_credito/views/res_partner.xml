@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="res_partner_inherit_limite_credito" model="ir.ui.view">
+            <field name="name">res.partner.inherit.limite_credito</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//group[@name='credit_limits']" position="inside">
+                    <field name="credito_aprobado" />
+                    <field name="puede_generar_fact_contado" />
+                    <field name="puede_superar_credito" />
+                    <field name="total_nc" readonly="1" />
+                    <field name="total_cheques_diferidos" readonly="1" />
+                    <field name="total_pagos_sin_factura" readonly="1" />
+                    <field name="credito_disponible" readonly="1" />
+                    <field name="bloqueado" />
+                    <field name="motivo_bloqueo" attrs="{'invisible':[('bloqueado','=',False)]}" />
+                </xpath>
+
+                <!-- Agregamos un grupo -->
+                <xpath expr="//group[@name='credit_limits']" position="attributes">
+                    <attribute name="groups">limite_credito.ver_limite_credito</attribute>
+                </xpath>
+
+                <!-- traducimos el use_partner_credit_limit -->
+                <xpath expr="//field[@name='use_partner_credit_limit']" position="attributes">
+                    <attribute name="string">Límite de crédito</attribute>
+                </xpath>
+
+                <!-- Agregamos una nueva pestaña para las referencias -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Referencias" name="referencias">
+
+                        <group>
+                            <group string="Referencia Bancaria">
+                                <field name="ref_banc_banco" />
+                                <field name="ref_banc_agencia" />
+                                <field name="ref_banc_telefono" />
+                                <field name="ref_banc_agente" />
+                            </group>
+
+                            <group string="Referencia Comercial">
+                                <field name="ref_com_nombre" />
+                                <field name="ref_com_telefono" />
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

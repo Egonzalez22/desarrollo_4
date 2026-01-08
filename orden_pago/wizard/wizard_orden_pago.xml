@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- model.name form view -->
+        <record id="orden_pago_informe_wizard_view" model="ir.ui.view">
+            <field name="name">orden_pago_informe_wizard_view</field>
+            <field name="model">orden_pago.orden_pago_informe_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="referencia" string="Referencia de OP" />
+                        </group>
+                        <footer>
+                            <button string="Generar Informe" type="object" name="generar_informe" class="oe_highlight" />
+                            <button string="Cancelar" special="cancel" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

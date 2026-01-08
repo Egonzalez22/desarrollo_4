@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="sumi_purchase_aprobacion.list">
+      <field name="name">sumi_purchase_aprobacion list</field>
+      <field name="model">sumi_purchase_aprobacion.sumi_purchase_aprobacion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="sumi_purchase_aprobacion.action_window">
+      <field name="name">sumi_purchase_aprobacion window</field>
+      <field name="res_model">sumi_purchase_aprobacion.sumi_purchase_aprobacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="sumi_purchase_aprobacion.action_server">
+      <field name="name">sumi_purchase_aprobacion server</field>
+      <field name="model_id" ref="model_sumi_purchase_aprobacion_sumi_purchase_aprobacion"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="sumi_purchase_aprobacion" id="sumi_purchase_aprobacion.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="sumi_purchase_aprobacion.menu_1" parent="sumi_purchase_aprobacion.menu_root"/>
+    <menuitem name="Menu 2" id="sumi_purchase_aprobacion.menu_2" parent="sumi_purchase_aprobacion.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="sumi_purchase_aprobacion.menu_1_list" parent="sumi_purchase_aprobacion.menu_1"
+              action="sumi_purchase_aprobacion.action_window"/>
+    <menuitem name="Server to list" id="sumi_purchase_aprobacion" parent="sumi_purchase_aprobacion.menu_2"
+              action="sumi_purchase_aprobacion.action_server"/>
+-->
+  </data>
+</odoo>

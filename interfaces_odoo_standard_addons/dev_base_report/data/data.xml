@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="report.paperformat" id="dev_base_report.base_paperformat_portrait">
+            <field name="name">base_paperformat_portrait</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">18</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">12</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record model="report.paperformat" id="dev_base_report.base_paperformat_landscape">
+            <field name="name">base_paperformat_landscape</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">18</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">12</field>
+            <field name="dpi">90</field>
+        </record>
+    </data>
+</odoo>

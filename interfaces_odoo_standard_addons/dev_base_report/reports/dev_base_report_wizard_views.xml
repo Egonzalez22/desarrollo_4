@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+
+        <record id="dev_base_report_wizard_view_form" model="ir.ui.view">
+            <field name="name">dev_base_report_wizard_view_form</field>
+            <field name="model">dev.base.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Base para reportes">
+                    <sheet>
+                        <group>
+                            <field name="company_ids" widget="many2many_tags"/>
+                            <field name="item_qty"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="report_type"/>
+                            <field name="sections"/>
+                            <field name="pages"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Generar reporte PDF" type="object" name="print_report_pdf" class="oe_highlight"/>
+                        <button string="Generar reporte XLSX" type="object" name="print_report_xlsx" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="dev_base_report_wizard_action" model="ir.actions.act_window">
+            <field name="name">dev_base_report_wizard_action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dev.base.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="dev_base_report_wizard_menuitem" name="Base para reportes" action="dev_base_report_wizard_action"/>
+
+    </data>
+</odoo>

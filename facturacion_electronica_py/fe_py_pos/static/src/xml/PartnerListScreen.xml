@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="point_of_sale.PartnerListScreen" t-inherit-mode="extension" owl="1">
+
+        <xpath expr="//div[hasclass('button') and hasclass('back')]" position="after">
+            <div t-if="state.detailIsShown" class="button custom-function" t-on-click="consultarRUC">
+                <i t-if="env.isMobile" class="fa fa-refresh"/>
+                <t t-if="!env.isMobile">Verificar RUC</t>
+            </div>
+        </xpath>
+    </t>
+</templates>

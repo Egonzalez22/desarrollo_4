@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <data>
+
+    <template id="facturas_exportacion_fe.kude" inherit_id="facturacion_electronica_py.factura">
+      <style>
+        .exportacion{
+          font-size: 10px;
+        }
+        .border-table {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        .border-table td {
+          border: 1px solid black;
+          padding: 2px;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        .exportacion-td{
+          width: 33%;
+        }
+      </style>
+      
+      <xpath expr="//span[@id='tipo_documento_titulo']" position="replace">
+        <t t-if="o.es_factura_exportacion">
+          KuDE de Factura Electrónica de Exportación
+        </t>
+        <t t-elif="o.move_type=='out_invoice'">
+          KuDE de Factura Electrónica
+        </t>
+        <t t-elif="o.move_type=='out_refund'">
+          KuDE de Nota de Crédito Electrónica
+        </t>
+        <t t-elif="o.move_type=='out_debit'">
+          KuDE de Nota de Débito Electrónica
+        </t>
+      </xpath>
+
+      <xpath expr="//table[@id='table_detalles']" position="after">
+          <!-- Agregamos una tabla con los datos de la exportación si el diario es de exportacion es_factura_exportacion -->
+          <t t-if="o.es_factura_exportacion">
+            <table class="table border-table exportacion">
+            <tbody>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Tipo de Operación:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_tipo_operacion"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Condición de Negociación:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_condicion_negociacion"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>País de Destino:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_pais_destino.name"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Empresa Fletera o Exportador Nacional:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_exportador_nacional.name"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Agente de Transporte:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_agente_transporte.name"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>N° de Conocimientos de Embarque:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_numero_embarque"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>N° de Manifiesto Internacional de Carga:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_numero_manifiesto"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>N° de Barcaza o Remolcador:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_numero_barcaza"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Instrucción del Pago:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_instruccion_pago"/>
+                </td> 
+              </tr>
+              <!-- fila -->
+              <tr>
+                <td class="exportacion-td">
+                  <strong>Información Adicional:</strong>
+                </td>
+                <td>
+                  <t t-esc="o.export_informacion_adicional"/>
+                </td> 
+              </tr>
+
+            </tbody>  
+            </table>
+          </t>
+      </xpath>
+      <xpath expr="//div[@class='footer']/div[@class='footer-container']/div/table[@id='table_qr_informacion']" position="replace">
+
+						<!-- información del código QR -->
+						<table id="table_qr_informacion" class="border-table fs-11" style="font-size: 9px !important;">
+							<tr>
+								<td>
+									<div>
+										<div style="width: 18%; float:left;">
+											<div
+												style="max-width:120px; max-height:120px; margin: 0 auto;">
+												<img t-att-src="image_data_uri(o.fe_qr_code)"
+													style="width:100%" />
+											</div>
+										</div>
+										<div style="width: 82%; float:left; margin-top:5px">
+											<!-- QR y aclaracion  -->
+											<div> Consulte la validez de esta Factura Electrónica
+												con el número de CDC impreso abajo en: <br />
+												https://ekuatia.set.gov.py/consultas/ <p
+													style="margin: 5px 0px">
+													<span>CDC: </span>
+													<span class="cdc-content">
+														<span t-esc="o.separar_cdc(o.cdc)" />
+													</span>
+												</p>
+                                          <span
+													class="bold">
+													ESTE DOCUMENTO ES UNA REPRESENTACIÓN GRÁFICA DE
+												UN DOCUMENTO ELECTRÓNICO (XML)
+												</span>
+                                          <br />
+												Si su documento electrónico presenta algún error
+												puede solicitar la modificación dentro de las 72
+												horas siguientes a la emisión de este comprobante
+                        <br />
+                          <t t-esc="o.narration"/>
+                        </div>
+                     
+
+											<!-- página del kude -->
+											<div class="col-xs-12 pull-right">
+												<span>Página </span>
+                                          <span class="page" />/<span
+													class="topage" />
+											</div>
+
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+
+					
+			</xpath>
+
+
+  </template>
+  </data>
+</odoo>

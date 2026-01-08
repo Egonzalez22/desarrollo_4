@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="helpdesk_ticket_view_form_inherit_informes_servicios" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.view.form.inherit.informes.servicios</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="atencion_de" />
+                    <field name="cotizacion_nro" />
+                    <field name="invoice_id" domain="[('partner_id','=',partner_id)]"/>
+                </xpath>
+
+                <xpath expr="//group[@class='mb-0 mt-4']" position="after">
+                    <group>
+                        <field name="nro_contrato" />
+                        <!-- <field name="piezas_cambiadas" /> -->
+                    </group>
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='description']" position="after">
+                    <field name="descripcion_calificacion" />
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Descripción Calificación">
+                        <group>
+                            <field name="descripcion_calificacion" />
+                        </group>
+                    </page>
+                </xpath> -->
+
+            </field>
+        </record>
+    </data>
+</odoo>

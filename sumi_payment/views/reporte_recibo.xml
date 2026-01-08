@@ -1,0 +1,10 @@
+<odoo>
+    <template id="view_sumi_reporte_recibo_pago" inherit_id="interfaces_payment.reporte_pagos_editado_multi">
+      <xpath expr="//table[1]/t[1]/tr[1]/td[4]" position="replace">
+        <td>
+          <span t-esc="i.currency_id.symbol" />
+          <span t-esc="env['interfaces_tools.tools'].format_amount(pagos[i.id] ,i.currency_id)" />
+        </td>
+      </xpath>
+    </template>
+</odoo>

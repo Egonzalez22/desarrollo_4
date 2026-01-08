@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- product.pricelist inherit form view -->
+        <record id="product_pricelist_view" model="ir.ui.view">
+            <field name="name">product.pricelist.inherit.view.form</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Clonar otra Tarifa" type="object" name="button_clone_pricelist" />
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

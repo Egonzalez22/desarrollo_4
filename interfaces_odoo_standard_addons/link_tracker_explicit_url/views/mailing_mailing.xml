@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="mailing_mailing_form_view_inherit">
+            <field name="name">mailing_mailing_form_view_inherit</field>
+            <field name="model">mailing.mailing</field>
+            <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//label[@for='mailing_model_id']/.." position="inside">
+                    <field name="explicit_url_id" required="True" domain="[('company_id','!=',False)]"
+                           options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

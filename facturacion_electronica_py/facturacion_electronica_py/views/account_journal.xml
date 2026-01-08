@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <!-- account.journal inherit form view -->
+        <record id="view_account_journal_form" model="ir.ui.view">
+            <field name="name">view_account_journal_form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="es_documento_electronico" />
+                    <field name="tipo_documento_electronico" attrs="{'invisible':[('es_documento_electronico','=',False)],'required':[('es_documento_electronico','=',True)]}" />
+                </xpath>
+
+                <!-- Se habilita el timbrado para autofactura, se agrega de esta forma porque no se puede obtener por el string  -->
+                <!-- View inheritance may not use attribute 'string' as a selector. -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Timbrado" attrs="{'invisible':[('type','==','sale')]}">
+                        <field name="timbrados_ids" context="{ 'default_journal_id':id }" />
+                    </page>
+                </xpath>
+
+                <!-- Se agrega cabecera pesonalizada -->
+                <xpath expr="//page[@name='advanced_settings']" position="inside">
+                    <group string="Facturación Electrónica">
+                        <field name="actividad_economica_ids" widget="many2many_tags" />
+                        <field name="habilitar_datos_establecimiento" />
+                        <field name="nombre_establecimiento" attrs="{'invisible':[('habilitar_datos_establecimiento','=',False)]}" />
+                        <field name="direccion_establecimiento" attrs="{'invisible':[('habilitar_datos_establecimiento','=',False)]}" />
+                        <field name="telefono_establecimiento" attrs="{'invisible':[('habilitar_datos_establecimiento','=',False)]}" />
+                        <field name="ciudad_establecimiento" attrs="{'invisible':[('habilitar_datos_establecimiento','=',False)]}" />
+                        <field name="encabezado_kude_img" widget="image"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

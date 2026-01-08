@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- tree view -->
+		<record id="matriz_tree_view" model="ir.ui.view">
+			<field name="name">matriz.tree.view</field>
+			<field name="model">ventas.matriz</field>
+			<field name="arch" type="xml">
+				<tree string="Matriz">
+					<field name="name" />
+					<field name="description" />
+					<field name="company_id" />
+					<field name="grupo_id" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- formulario -->
+		<record id="matriz_form_view" model="ir.ui.view">
+			<field name="name">matriz.form.view</field>
+			<field name="model">ventas.matriz</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="description" />
+							<field name="company_id" />
+							<field name="grupo_id" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- act window -->
+		<record id="matriz_action_window" model="ir.actions.act_window">
+			<field name="name">Matriz</field>
+			<field name="res_model">ventas.matriz</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Agregamos el menu en la parte superior, en el menu de ventas configuracion -->
+		<menuitem
+			id="menu_matriz"
+			name="Matriz"
+			action="matriz_action_window"
+			parent="ventas_custom_menu_content" 
+			sequence="2" />
+
+	</data>
+</odoo>

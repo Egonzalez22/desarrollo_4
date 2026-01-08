@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_muestra_reports_muestra_reports,muestra_reports.muestra_reports,model_muestra_reports_muestra_reports,base.group_user,1,1,1,1

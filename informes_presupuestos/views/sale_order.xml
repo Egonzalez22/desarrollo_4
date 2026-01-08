@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="sale_order_inherit_presupuesto_reportes" model="ir.ui.view">
+            <field name="name">sale.order.inherit.presupuesto.reportes</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+
+
+                <!-- <xpath expr="//field[@name='partner_invoice_id']" position="before">
+                    <field name="departamento" />
+                    <field name="atencion_de" />
+                </xpath> -->
+
+
+                <!-- debajo de date_order agregamos -->
+                <!-- <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="tipo_presupuesto" /> -->
+                    <!-- visible si tipo_presupuesto no es calificativo -->
+                    <!-- <field name="cotizacion_nro" attrs="{'invisible': [('tipo_presupuesto', '=', 'calificativo')]}"/> -->
+                    <!-- visible si tipo_presupuesto es calificativo -->
+                    <!-- <field name="cotizacion_calificativo_nro" attrs="{'invisible': [('tipo_presupuesto', '!=', 'calificativo')]}"/>
+                    <field name="codigo_calidad" />
+                    <field name="vigencia_calidad" />
+                </xpath> -->
+
+                <!-- al date order le quitamos el grupo -->
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="groups">base.group_user</attribute>
+                </xpath>
+                <xpath expr="//div[@class='o_td_label']" position="attributes">
+                    <attribute name="groups">base.group_user</attribute>
+                </xpath>
+
+
+                <!-- Agregamos otra pestaña para el detalle del presupuesto -->
+                <xpath expr="//notebook" position="inside">
+
+                    <page id="detalles" string="Detalles Presupuestos">
+                        <group>
+                            <field name="titulo" />
+                            <field name="observacion" />
+                            <field name="condicion" string="Condiciones generales de venta" widget="html" /> 
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

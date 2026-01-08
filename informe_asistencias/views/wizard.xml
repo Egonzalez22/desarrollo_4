@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="informe_asistencias_informe_asistencias_wizard_form">
+            <field name="name">Informe de Asistencias</field>
+            <field name="model">informe_asistencias.informe_asistencias_wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="anho"/>
+                                <field name="mes"/>
+                                <field name="departamento_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="button_print_pdf" string="Imprimir PDF" type="object" class="oe_highlight"/>
+                        <button name="button_print_xlsx" string="Imprimir XLSX" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="informe_asistencias_action"
+                    name="Informe de asistencias"
+                    res_model="informe_asistencias.informe_asistencias_wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <menuitem id="informe_asistencia_menu" name="Informe de asistencias" parent="rrhh_asistencias.menu_asistencias_padre" action="informe_asistencias_action"/>
+
+    </data>
+</odoo>

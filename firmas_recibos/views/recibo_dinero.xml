@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+        
+        <template id="firmas_recibos.recibo_dinero" inherit_id="interfaces_payment.reporte_pagos_editado_multi">
+            <xpath expr="//div[@id='original']/table[2]" position="after">
+                <br></br>
+                 <div style="text-align: center; margin-top: 20px;">
+                    <div t-raw="o.create_uid.employee_id.firma_nueva" style="text-align: center;"/>
+                </div>
+
+            </xpath>
+
+        </template>
+  </data>
+</odoo>

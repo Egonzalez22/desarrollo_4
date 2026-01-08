@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ventas_metodologia,ventas_custom.ventas_metodologia,ventas_custom.model_ventas_metodologia,base.group_user,1,1,1,1
+access_ventas_matriz,ventas_custom.ventas_matriz,ventas_custom.model_ventas_matriz,base.group_user,1,1,1,1
+access_ventas_grupo,ventas_custom.ventas_grupo,ventas_custom.model_ventas_grupo,base.group_user,1,1,1,1
+access_muestras,ventas_custom.ventas_muestras,ventas_custom.model_ventas_muestras,base.group_user,1,1,1,1
+access_motivo,ventas_custom.ventas_motivo,ventas_custom.model_ventas_motivo,base.group_user,1,1,1,1
+access_presentacion,ventas_custom.ventas_presentacion,ventas_custom.model_ventas_presentacion,base.group_user,1,1,1,1
+access_metodologia_analisis,ventas_custom.ventas_metodologia_analisis,ventas_custom.model_ventas_metodologia_analisis,base.group_user,1,1,1,1
+access_wizard_informe_control,ventas_wizard_informe_control,model_wizard_informe_control,base.group_user,1,1,1,1

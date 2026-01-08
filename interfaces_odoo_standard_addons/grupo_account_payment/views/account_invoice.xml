@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <!-- <record id="invoice_form" model="ir.ui.view">
+            <field name="name">invoice_form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@id='account_invoice_payment_btn']" position="replace">
+                    <button string="Registrar pago" class="oe_highlight" type="object" name="button_pago" attrs="{'invisible':[('state','!=','posted')]}" groups="grupo_account_payment.grupo_cobrador"/>
+                </xpath>
+            </field>
+        </record> -->
+<!--        <record id="invoice_supplier_form" model="ir.ui.view">-->
+<!--            <field name="name">invoice_supplier_form</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="inherit_id" ref="account.invoice_supplier_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//button[2]" position="replace">-->
+<!--                    <button string="Registrar pago" class="oe_highlight" type="object" name="button_pago" attrs="{'invisible':[('state','!=','posted')]}" groups="grupo_account_payment.grupo_orden_pago"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="action_pagos_batch" model="ir.actions.server">
+            <field name="name">Pagar múltiples facturas</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">
+not_pendientes=records.filtered(lambda x:x.state != 'posted')
+if not_pendientes:
+    raise Warning('Sólo se pueden pagar facturas pendientes de pago')
+if records:
+    partner=records[0].partner_id
+for i in records:
+    if i.partner_id!=partner:
+        raise Warning('Sólo puede elegir facturas de una misma empresa')
+action=model.button_pago_multi(records)
+            </field>
+        </record>
+        <!-- Se comenta para verificar error 05/2024 -->
+        <!-- <delete id="account.action_account_payment_from_invoices" model="ir.actions.act_window"/> -->
+<!--        <delete id="account.menu_action_account_payments_receivable" model="ir.ui.menu"/>-->
+<!--        <delete id="account.menu_action_account_payments_payable" model="ir.ui.menu"/>-->
+
+
+    </data>
+</odoo>

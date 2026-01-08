@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="reparacion_personalizacion.list">
+      <field name="name">reparacion_personalizacion list</field>
+      <field name="model">reparacion_personalizacion.reparacion_personalizacion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="reparacion_personalizacion.action_window">
+      <field name="name">reparacion_personalizacion window</field>
+      <field name="res_model">reparacion_personalizacion.reparacion_personalizacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="reparacion_personalizacion.action_server">
+      <field name="name">reparacion_personalizacion server</field>
+      <field name="model_id" ref="model_reparacion_personalizacion_reparacion_personalizacion"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="reparacion_personalizacion" id="reparacion_personalizacion.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="reparacion_personalizacion.menu_1" parent="reparacion_personalizacion.menu_root"/>
+    <menuitem name="Menu 2" id="reparacion_personalizacion.menu_2" parent="reparacion_personalizacion.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="reparacion_personalizacion.menu_1_list" parent="reparacion_personalizacion.menu_1"
+              action="reparacion_personalizacion.action_window"/>
+    <menuitem name="Server to list" id="reparacion_personalizacion" parent="reparacion_personalizacion.menu_2"
+              action="reparacion_personalizacion.action_server"/>
+-->
+  </data>
+</odoo>

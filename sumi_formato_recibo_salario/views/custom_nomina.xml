@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <template id="custom_template_nomina" inherit_id="rrhh_payroll.template_nomina">
+            <xpath expr="//tr[td[contains(text(), 'Salario Gs.')]]/td[2]/t" position="replace">    
+                <t t-esc="'{0:,}'.format(round(payslip.contract_id.wage)).replace(',', '.')"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

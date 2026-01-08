@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <template id="modulo_pharma.token_invalido">
+            <div style="text-align:center">
+                <span style="font-size:20px">Token inválido</span>
+            </div>
+        </template>
+    </data>
+</odoo>

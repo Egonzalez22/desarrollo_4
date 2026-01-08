@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fe_de,access_fe_de,sifen.model_fe_de,base.group_user,1,1,1,1
+access_fe_wsdl,access_fe_wsdl,sifen.model_fe_wsdl,base.group_user,1,1,1,1
+access_fe_de_loggers,access_fe_de_loggers,sifen.model_fe_de_loggers,base.group_user,1,0,0,0
+access_fe_lote,access_fe_lote,sifen.model_fe_lote,base.group_user,1,0,0,0
+access_fe_lote_loggers,access_fe_lote_loggers,sifen.model_fe_lote_loggers,base.group_user,1,0,0,0
+access_fe_inutilizar_rango,access_fe_inutilizar_rango,sifen.model_fe_inutilizar_rango,base.group_user,1,0,0,0
+access_fe_cancelar_wizard,access_fe_cancelar_wizard,sifen.model_fe_cancelar_wizard,base.group_user,1,1,1,1
+access_fe_inutilizar_wizard,access_fe_inutilizar_wizard,sifen.model_fe_inutilizar_wizard,base.group_user,1,1,1,1

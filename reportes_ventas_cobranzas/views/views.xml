@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record id="reportes_ventas_cobranzas_view_form" model="ir.ui.view">
+            <field name="name">reportes_ventas_cobranzas_view_form</field>
+            <field name="model">reportes_ventas_cobranzas.reporte</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="fecha" string="Fecha Inicio"/>
+                            <field name="fecha_fin" string="Fecha Fin"/>
+                            <field name="tipo_reporte"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Generar reporte PDF" type="object" name="button_generar"
+                                class="oe_highlight"/>
+                        <button string="Generar reporte XLSX" type="object" name="button_generar_xlsx"
+                                class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="reportes_ventas_cobranzas.ventas_cobranzas_action_window"
+                model="ir.actions.act_window">
+            <field name="name">Reporte de Ventas y Cobranzas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reportes_ventas_cobranzas.reporte</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="reportes_ventas_cobranzas.ventas_cobranzas_menu"
+                  name="Reporte de Ventas y Cobranzas" parent="account.menu_finance_receivables"
+                  action="reportes_ventas_cobranzas.ventas_cobranzas_action_window" sequence="120"/>
+    </data>
+</odoo>

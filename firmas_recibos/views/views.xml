@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="firmas_recibos.list">
+      <field name="name">firmas_recibos list</field>
+      <field name="model">firmas_recibos.firmas_recibos</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="firmas_recibos.action_window">
+      <field name="name">firmas_recibos window</field>
+      <field name="res_model">firmas_recibos.firmas_recibos</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="firmas_recibos.action_server">
+      <field name="name">firmas_recibos server</field>
+      <field name="model_id" ref="model_firmas_recibos_firmas_recibos"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="firmas_recibos" id="firmas_recibos.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="firmas_recibos.menu_1" parent="firmas_recibos.menu_root"/>
+    <menuitem name="Menu 2" id="firmas_recibos.menu_2" parent="firmas_recibos.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="firmas_recibos.menu_1_list" parent="firmas_recibos.menu_1"
+              action="firmas_recibos.action_window"/>
+    <menuitem name="Server to list" id="firmas_recibos" parent="firmas_recibos.menu_2"
+              action="firmas_recibos.action_server"/>
+-->
+  </data>
+</odoo>

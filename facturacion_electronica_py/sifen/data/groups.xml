@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="sifen" model="ir.module.category">
+            <field name="name">SIFEN</field>
+        </record>
+
+        <record id="sifen.logs_requests" model="res.groups">
+            <field name="name">Puede ver logs requests</field>
+            <field name="category_id" ref="sifen.sifen" />
+        </record>
+
+        <record id="sifen.datos_sifen" model="res.groups">
+            <field name="name">Puede ver datos de SIFEN</field>
+            <field name="category_id" ref="sifen.sifen" />
+        </record>
+
+        <record id="sifen.ver_lote" model="res.groups">
+            <field name="name">Puede ver lote</field>
+            <field name="category_id" ref="sifen.sifen" />
+        </record>
+
+        <record id="sifen.inutilizar_rango" model="res.groups">
+            <field name="name">Puede inutilizar rango de facturas</field>
+            <field name="category_id" ref="sifen.sifen" />
+        </record>
+
+        <record id="sifen.ver_rango_facturas_inutilizadas" model="res.groups">
+            <field name="name">Puede ver rango de facturas inutilizadas</field>
+            <field name="category_id" ref="sifen.sifen" />
+        </record>
+
+    </data>
+</odoo>

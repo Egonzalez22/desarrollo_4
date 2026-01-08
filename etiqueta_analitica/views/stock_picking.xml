@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- sobreescribimos las lineas de orden de venta -->
+        <record id="stock_view_picking_form_inherit_etiqueta_analitica" model="ir.ui.view">
+            <field name="name">stock.view.picking.form.inherit.etiqueta.analitica</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//header" position="inside">
+                    <button name="action_imprimir_etiqueta_analitica" string="Etiqueta Analítica" type="object" class="btn btn-warning" />
+                </xpath>
+
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- tree view -->
+        <record id="iutilizar_tree_view" model="ir.ui.view">
+            <field name="name">inutilizar.tree.view</field>
+            <field name="model">fe.inutilizar_rango</field>
+            <field name="arch" type="xml">
+                <tree default_order='create_date desc'>
+                    <field name="name" />
+
+                    <field name="fecha_procesamiento" />
+                    <field name="mensaje_resultado" />
+                    <field name="mensaje_resultado_detalle" />
+                    <field name="status" />
+
+                    <field name="motivo" />
+                    <field name="fact_inicio" />
+                    <field name="fact_fin" />
+                    <field name="journal_id" />
+                    <field name="establecimiento" />
+                    <field name="punto_expedicion" />
+                    <field name="tipo_documento_electronico" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- formulario -->
+        <record id="iutilizar_form_view" model="ir.ui.view">
+            <field name="name">inutilizar.form.view</field>
+            <field name="model">fe.inutilizar_rango</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="request" />
+                            <field name="response" />
+                            <field name="status_code" />
+
+                            <field name="fecha_procesamiento" />
+                            <field name="codigo_resultado" />
+                            <field name="mensaje_resultado" />
+                            <field name="mensaje_resultado_detalle" />
+                            <field name="id_resultado" />
+
+                            <field name="motivo" />
+                            <field name="fact_inicio" />
+                            <field name="fact_fin" />
+                            <field name="journal_id" />
+                            <field name="nro_timbrado" />
+                            <field name="establecimiento" />
+                            <field name="punto_expedicion" />
+                            <field name="tipo_documento_electronico" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- act window -->
+        <record id="rango_inutilizado_action_window" model="ir.actions.act_window">
+            <field name="name">Rango de Facturas inutilizadas</field>
+            <field name="res_model">fe.inutilizar_rango</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Agregamos el menu en la parte superior, en el menu de contabilidad -->
+        <menuitem id="menu_rango_inutilizado" name="Rango de Facturas Inutilizadas" action="rango_inutilizado_action_window" parent="sifen_menu" groups="sifen.ver_rango_facturas_inutilizadas" sequence="3" />
+
+    </data>
+</odoo>

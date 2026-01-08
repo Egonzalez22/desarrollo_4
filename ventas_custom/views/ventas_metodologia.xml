@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- tree view -->
+		<record id="metodologia_tree_view" model="ir.ui.view">
+			<field name="name">metodologia.tree.view</field>
+			<field name="model">ventas.metodologia</field>
+			<field name="arch" type="xml">
+				<tree string="Metodologia">
+					<field name="name" />
+					<field name="description" />
+					<field name="company_id" />
+					<field name="matriz_ids" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- formulario -->
+		<record id="metodologia_form_view" model="ir.ui.view">
+			<field name="name">metodologia.form.view</field>
+			<field name="model">ventas.metodologia</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="description" />
+							<field name="company_id" />
+							<field name="matriz_ids" widget="many2many_tags" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- act window -->
+		<record id="metodologia_action_window" model="ir.actions.act_window">
+			<field name="name">Metodologia</field>
+			<field name="res_model">ventas.metodologia</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Agregamos el menu en la parte superior, en el menu de ventas configuracion -->
+		<menuitem id="ventas_custom_menu_content" name="Características" parent="sale.menu_sale_config" sequence="40" groups="ventas_custom.gestionar_caracteristicas">
+			<menuitem
+				id="menu_metodologia"
+				name="Metodologías"
+				action="metodologia_action_window"
+				sequence="3" />
+		</menuitem>
+
+
+	</data>
+</odoo>

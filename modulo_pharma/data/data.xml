@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="email_template_certificado_pharma" model="mail.template">
+            <field name="name">Certificado PHARMA: Enviar por correo</field>
+            <field name="model_id" ref="model_certificados_laboratorio"/>
+            <field name="subject">Certificado de Laboratorio PHARMA: {{object.certificado_analisis_nro}}</field>
+            <field name="email_from">{{user.email or ''}}</field>
+            <field name="email_to">{{object.cliente_id.email}}</field>
+            <field name="report_template" ref="modulo_pharma.reporte_certificado_laboratorio_action"/>
+            <field name="report_name">{{(object.certificado_analisis_nro or '').replace('/','_')}}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="margin: 0px; padding: 0px;">
+                        Estimado Cliente,
+                        <br/><br/>
+                        Adjunto encontrará el Certificado de Laboratorio.
+                        <br/><br/>
+                        Saludos,
+                        <br/>
+                        Equipo de Soporte
+                    </div>
+                </div>
+            </field>
+            <field name="lang">{{object.cliente_id.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+         <record id="email_template_certificado_alta_complejidad" model="mail.template">
+            <field name="name">Certificado Alta Complejidad: Enviar por correo</field>
+            <field name="model_id" ref="model_certificados_laboratorio"/>
+            <field name="subject">Certificado de Alta Complejidad: {{object.certificado_analisis_nro}}</field>
+            <field name="email_from">{{user.email or ''}}</field>
+            <field name="email_to">{{object.cliente_id.email}}</field>
+            <field name="report_template" ref="modulo_pharma.reporte_certificado_alta_complejidad_action"/>
+            <field name="report_name">{{(object.certificado_analisis_nro or '').replace('/','_')}}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="margin: 0px; padding: 0px;">
+                        Estimado Cliente,
+                        <br/><br/>
+                        Adjunto encontrará el Certificado de Alta Complejidad.
+                        <br/><br/>
+                        Saludos,
+                        <br/>
+                        Equipo de Soporte
+                    </div>
+                </div>
+            </field>
+            <field name="lang">{{object.cliente_id.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="email_template_certificado_agroquimico" model="mail.template">
+            <field name="name">Certificado Agroquímico: Enviar por correo</field>
+            <field name="model_id" ref="model_certificados_laboratorio"/>
+            <field name="subject">Certificado de Agroquímico: {{object.certificado_analisis_nro}}</field>
+            <field name="email_from">{{user.email or ''}}</field>
+            <field name="email_to">{{object.cliente_id.email}}</field>
+            <field name="report_template" ref="modulo_pharma.reporte_certificado_agroquimico_action"/>
+            <field name="report_name">{{(object.certificado_analisis_nro or '').replace('/','_')}}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="margin: 0px; padding: 0px;">
+                        Estimado Cliente,
+                        <br/><br/>
+                        Adjunto encontrará el Certificado de Control de Calidad.
+                        <br/><br/>
+                        Saludos,
+                        <br/>
+                        Equipo de Soporte
+                    </div>
+                </div>
+            </field>
+            <field name="lang">{{object.cliente_id.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="email_template_certificado_toxicologico" model="mail.template">
+            <field name="name">Certificado Agroquímico: Enviar por correo</field>
+            <field name="model_id" ref="model_certificados_laboratorio"/>
+            <field name="subject">Certificado de Análisis Clínico Toxicológico: {{object.certificado_analisis_nro}}</field>
+            <field name="email_from">{{user.email or ''}}</field>
+            <field name="email_to">{{object.cliente_id.email}}</field>
+            <field name="report_template" ref="modulo_pharma.reporte_certificado_toxicologico_action"/>
+            <field name="report_name">{{(object.certificado_analisis_nro or '').replace('/','_')}}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="margin: 0px; padding: 0px;">
+                        Estimado Cliente,
+                        <br/><br/>
+                        Adjunto encontrará el Certificado de Análisis Clínico Toxicológico.
+                        <br/><br/>
+                        Saludos,
+                        <br/>
+                        Equipo de Soporte
+                    </div>
+                </div>
+            </field>
+            <field name="lang">{{object.cliente_id.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+
+
+        <record id="secuencia_pharma_certificado" model="ir.sequence">
+            <field name="name">Secuencia Certificado Pharma</field>
+            <field name="code">seq_cer_pharma</field>
+            <field name="implementation">no_gap</field>
+            <field name="use_date_range">True</field>
+            <field name="padding">4</field>
+            <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+            <field name="company_id">2</field>
+        </record>
+    </data>
+</odoo>

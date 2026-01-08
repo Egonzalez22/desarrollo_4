@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="orden_pago_groups" model="ir.module.category">
+            <field name="name">Orden de Pago</field>
+        </record>
+
+        <record id="orden_pago.solicitar_aprobacion" model="res.groups">
+            <field name="name">Puede solicitar aprobación</field>
+            <field name="category_id" ref="orden_pago.orden_pago_groups" />
+        </record>
+
+        <record id="orden_pago.restablecer_orden" model="res.groups">
+            <field name="name">Puede restablecer órden de pago</field>
+            <field name="category_id" ref="orden_pago.orden_pago_groups" />
+        </record>
+        
+        <record id="orden_pago.aprobar_orden" model="res.groups">
+            <field name="name">Puede aprobar órden de pago</field>
+            <field name="category_id" ref="orden_pago.orden_pago_groups" />
+        </record>
+
+        <record id="orden_pago.cancelar_orden" model="res.groups">
+            <field name="name">Puede cancelar órden de pago</field>
+            <field name="category_id" ref="orden_pago.orden_pago_groups" />
+        </record>
+
+        <record id="orden_pago.crear_pagos_orden" model="res.groups">
+            <field name="name">Puede crear pagos desde la órden de pago</field>
+            <field name="category_id" ref="orden_pago.orden_pago_groups" />
+        </record>
+
+    </data>
+</odoo>
